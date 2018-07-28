@@ -1,4 +1,4 @@
 library(testthat)
-library(longsplinetree)
+library(splinetree)
 
-test_check("longsplinetree")
+test_check("splinetree")
