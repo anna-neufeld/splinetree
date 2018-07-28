@@ -1,0 +1,81 @@
+---
+title: "Introduction to Spline Trees"
+author: "Brianna Heggeseth and Anna Neufeld"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Motivation
+
+Longitudinal studies, where an outcome of interest is measured in the same subjects over time, play a key role in research across a variety of disciplines, from medicine and epidemiology to the social and behavioral sciences. In these studies, it is often useful to understand whether different groups of the population display distinct trajectory patterns. This can be done through clustering the trajectories of different observational units into homogeneous groups. We propose using longitudinal regression trees, specifically ``splinetree``, to uncover subgroups of homogeneous trajectories where each subgroup is labeled by common covariate values. Then, to obtain more stable measures of variable importance, we propose using longitudinal random forests. 
+
+Longitudinal trajectories have two prominent features: level and shape of change over time. The ``splinetree`` package makes it possible to form clusters based solely on shape while ignoring the level of the trajectory. The splitting methodology used in the ``splinetree'' package is based off the work of Yu and Lambert, 1999. Yu and Lambert suggest treating time series data as a functional curve and reducing the dimension of the outcome vector using smoothing splines.
+
+$$Y_i(t) = f_i(t) + \epsilon_i(t)$$
+
+where $f_i(t) = \sum_{k = 1}^q\beta_{ik} X_k(t)$ for a set of basis functions, $X_k(t)$, and coefficient vector $\boldsymbol{\beta}_i = (\beta_{i1},...,\beta_{iq})^T$, and where $\epsilon_i(t)$ is white noise with mean zero and constant variance. A regression tree is then built using the coefficient vectors $\boldsymbol{\beta}_i = (\beta_{i1},...,\beta_{iq})^T$ as the response. 
+
+This framework allows for the modeling of complex, non-linear trajectories with internal knots. By ignoring the coefficient corresponding to the intercept in the splitting process, the splitting methodology can take into account only change over time while ignoring level. Once the dimesnion of the response is reduced to a set of coefficient vectors, the tree-splitting process essentially follows CART (Brieman, 1984) with a modified split function, which means thatit can be implemented using the custom function functionality of the widely used package rpart. 
+
+This paper is intended as a straightforward guide to using our package to create longitudinal regression trees and longitudinal random forests using the ``splinetree'' package. For more information on the methodology or the implementation, see our paper (cite here when it gets written). 
+
+Moosstraße, 5020 Salzburg# Building and Understanding a Spline Tree
+
+In this section, we will walk through the process of building a tree, from choosing a dataset to visualizing and evaluating the model. For our examples, we will use data from the National Longitudinal Survey of Youth, 1979 (NLSY). Specifically, we choose body mass index (BMI) as our response variable, and numerous variables related to baseline soioeconomic status and family background as our covariates. We randomly sample 1,000 individuals from the NLSY who have non-missing BMI data at at least 10 timepoints spread out over at least 20 years. 
+
+## Preparing your data
+
+- Make sure it is long format
+
+- No time varying covariates (if you wanted, you could turn these into an average or a summary, but you would need to reformat your data to make sure they are included correctly). 
+
+## Choosing model parmaters
+
+- Intercept or no intercept
+
+- Pick a basis and pick notes- be aware of unstable spline coefficients if you don't have data on both side of knots, be aware that if you have more degrees of freedom than datapoints you will have NA coefficients and these people will be thrown out. 
+
+- Tree size parameters
+
+## Fitting the model
+
+- Example code of building a spline tree. Show some stuff about how to print a summary. 
+- Explain that the model is just an rpart object which is nice. Has extra info stored in parms in case you forget.
+- Show a few with different types of coefficients. 
+
+## Plotting the model
+
+- Example code of plotting a spline tree
+
+## Evaluating the model
+
+- R2-type measures. Explain difference between them 
+
+
+# Building and Understanding a Spline Forest
+- If you don't care so much about interpretability, but you really care about variable importance, you might want to build a forest. 
+
+## Building the forest
+- Warning- this code runs very slowly. We highly recommend saving your forest as .RData when it runs so that later you do not have to rebuild it
+- 
+
+## Evaluating the forest
+- 
+
+## Variable Importance
+- You CAN do variable importance from a single tree (show this)
+- You can also do variable importance from a forest
+- Compare the two. 
+- Show shortcomings of the single tree version (example- dependent on pruning,e tc. )
+

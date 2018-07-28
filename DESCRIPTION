@@ -1,0 +1,18 @@
+Package: splinetree
+Title: Builds and Plots Longitudinal Regression Trees
+Version: 0.0.0.9000
+Authors@R: c(person("Anna", "Neufeld", email = "aneufeld@uw.edu", role = c("aut", "cre")), person("Brianna", "Heggeseth", email = "bheggese@macalester.edu", role = c("aut","ths")))
+Description: This package builds longitudinal regression trees and longitudinal random forests using a spline projection method. 
+Depends: R (>= 3.5.0), rpart, nlme, splines
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    mosaic,
+    ggplot2,
+    treeClust
+RoxygenNote: 6.0.1.9000
+Suggests: knitr,
+    rmarkdown,
+    testthat
+VignetteBuilder: knitr
