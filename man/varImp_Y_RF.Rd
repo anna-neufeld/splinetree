@@ -11,6 +11,13 @@ varImp_Y_RF(forest, method = "oob")
 
 \item{method}{the method to be used. This must be one of "oob" (out of bag), "all", "itb" (in the bag).}
 }
+\value{
+a matrix storing variable importance metrics.
+}
 \description{
 Returns the random forest variable importance based on the permutation accruacy measure, which is calculated as the difference in mean squared error between the original data and from randomly permutating the values of a variable.
+}
+\details{
+The "method" parameter deals with the way in which forest performance should be measured. Since varaible importance is based on a change
+in performance, the "method" parameter is necessary for a variable importance measure. The choices are "oob" (out of bag), "all", or "itb" (in the bag).
 }

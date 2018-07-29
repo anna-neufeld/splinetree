@@ -4,7 +4,7 @@
 \name{nlsySample}
 \alias{nlsySample}
 \title{Baseline socioeconomic information and BMIs of 500 individuals.}
-\format{A data frame with 8083 rows and 18 columns. 
+\format{A data frame with 8083 rows and 18 columns.
 \describe{
   \item{ID}{jj}
   \item{News}{gj}
@@ -24,7 +24,7 @@
   \item{Two_Adults_14}{aa}
   \item{WEIGHT}{aa}
   \item{WHITE}{aa}
-  
+
   ...
 }}
 \source{
@@ -35,10 +35,10 @@ nlsySample
 }
 \description{
 A dataset containing the body mass index (BMI) and baseline
-socioeconomic information of 500 individuals from the National 
-Longitudinal Survey of Youth 1979 (NLSY), a freely available longitudinal dataset. 
+socioeconomic information of 500 individuals from the National
+Longitudinal Survey of Youth 1979 (NLSY), a freely available longitudinal dataset.
 The 500 individuals were drawn randomly from among all NLSY respondents with at least 10
-non-missing height/weight responses spread out over at least 20 years. 
+non-missing height/weight responses spread out over at least 20 years.
 This dataset is used for many of our code examples.
 }
 \keyword{datasets}

@@ -80,16 +80,16 @@ getBasisMat <- function(yvar, tvar, idvar, data,
         if (is.null(df)) {
             #### If both KNOTS and df are NULL, assume you
             #### want no internal knots
-            num_internal_knots = 0
-            df = degree + intercept
+            num_internal_knots <- 0
+            df <- degree + intercept
             innerKnots <- NULL
         } else {
             ### If knots = null but df specified, place
             ### default knots at data quantiles.
-            num_internal_knots = df - degree -
+            num_internal_knots <- df - degree -
                 intercept
             if (num_internal_knots > 0) {
-                innerQuantiles = seq(0, 1, length.out = num_internal_knots +
+                innerQuantiles <- seq(0, 1, length.out = num_internal_knots +
                   2)[2:(num_internal_knots + 1)]
                 innerKnots <- quantile(data[[tvar]],
                   innerQuantiles, na.rm = TRUE)
@@ -105,8 +105,15 @@ getBasisMat <- function(yvar, tvar, idvar, data,
     #### Choosing common basis matrix for evaluating
     #### at all nodes during tree building Number of
     #### points specified by parameter nGrid.
+
+    #Current Version- includes endpoints.
     basisTimes = quantile(data[[tvar]], probs = seq(0,
         1, length.out = nGrid))
+
+    #PROPOSED CHANGE
+    #basisTimes <- quantile(data[[tvar]], probs = seq(0,
+                                                    #1, length.out = nGrid+2))[-c(1, nGrid+2)]
+
 
 
     ## If the intercept parameter is TRUE, then we
@@ -125,23 +132,27 @@ getBasisMat <- function(yvar, tvar, idvar, data,
 
 }
 
-#' Build a spline tree
+#' Build a splinetree object
 #'
-#' Builds an rpart object for the responses projected onto a specified spline basis. Either knots or df (but not both) should be specified. If neither is specified, the default is to have no internal knots in the spline.
-#' Knots is the location of the internal knots, whereas df specifies indirectly how many internal knots should be used.
+#' Builds a regression tree for longitudinal or functional data using the spline projection method. The underlying tree building process uses the rpart package,
+#' and the splinetree object is an rpart object with additional stored information. The parmaters df, knots, degree, interept, and nGrid allow for flexibility
+#' in the spline basis used for splitting. The parameters minNodeSize and cp allow for flexibility in controlling the size of the final tree.
 #'
-#' @param splitFormula Formula specifying the longitudinal response variable and the time-constant variables that will be used for splitting in the tree
-#' @param tformula Formula specifying the longitudinal response variable and the variable that acts as the time variable
-#' @param idvar The name of the variable that serves as the ID variable. Must be in quotes
-#' @param data dataframe that contains all variables specified in the formulas (long format)
-#' @param knots defaults to NULL, specified locations for INTERNAL knots.
-#' @param df If this is specified but knots is not, we will add the approriate number of internal knots. Defaults to NULL, which corresponds to no internal knots.
-#' @param degree Specifies degree of splines used in the tree
-#' @param intercept Should the spline tree be built with or without the spline intercept coefficient? Default to FALSE.
-#' @param nGrid Number of grid points along time variable in which trajectories are compared.
-#' @param minNodeSize Minimum number of IDS that can be in a terminal node
-#' @param cp Complexity parameter passed to rpart building process.
-#' @return An rpart object with extra information stored in model$parms.
+#' @param splitFormula Formula specifying the longitudinal response variable and the time-constant variables that will be used for splitting in the tree.
+#' @param tformula Formula specifying the longitudinal response variable and the variable that acts as the time variable.
+#' @param idvar The name of the variable that serves as the ID variable for grouping observations. Must be in quotes
+#' @param data dataframe that contains all variables specified in the formulas- in long format.
+#' @param knots Specified locations for internal knots in the spline basis. Defaults to NULL, which corresponds to no internal knots.
+#' @param df Degrees of freedom of the spline basis. If this is specified but the knots parameter is NULL, then the appropriate number of internal knots
+#' will be added at quantiles of the training data. If both df and knots are unspecified, the spline basis will have no internal knots.
+#' @param degree Specifies degree of spline basis used in the tree.
+#' @param intercept Specifies whether or not the splitting process will consider the intercept coefficient of the spline projections.
+#' Defaults to FALSE, which means that the tree will split based on trajectory shape, ignoring response level.
+#' @param nGrid Number of grid points to evaluate projection sum of squares at. The default is 7, which corresponds to evaluating projections
+#' at the endpoints and quintiles of the time variable.
+#' @param minNodeSize Minimum number of observational units that can be in a terminal node. Controls tree size and helps avoid overfitting.
+#' @param cp Complexity parameter passed to the rpart building process.
+#' @return An rpart object with additional splinetree-specific information stored in model$parms.
 #' @export
 #' @import nlme
 #' @import rpart
@@ -149,11 +160,13 @@ getBasisMat <- function(yvar, tvar, idvar, data,
 #' @importFrom graphics barplot layout par plot points rect text
 #' @importFrom stats complete.cases formula lm quantile runif sd terms time
 #' @examples
-#' form1 <-BMI~HISP+WHITE+BLACK+HGC_MOTHER+SEX
-#' model1 <- splineTree(form1, BMI~AGE, 'ID', nlsySample, degree=1, intercept=FALSE, cp=0.005)
-#' model2 <- splineTree(form1, BMI~AGE, 'ID', nlsySample, degree=3, intercept=TRUE, cp=0.005)
+#' splitForm <-BMI~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs
+#' model1 <- splineTree(splitForm, BMI~AGE, 'ID', nlsySample, degree=1, intercept=FALSE, cp=0.005)
+#' model2 <- splineTree(splitForm, BMI~AGE, 'ID', nlsySample, degree=3, intercept=TRUE, cp=0.005)
 #' stPlots(model1)
 #' stPlots(model2)
+#' R2_projected(model1)
+#' R2_projected(model2)
 splineTree <- function(splitFormula, tformula,
     idvar, data, knots = NULL, df = NULL, degree = 3,
     intercept = FALSE, nGrid = 7, minNodeSize = 10,
@@ -232,8 +245,8 @@ splineTree <- function(splitFormula, tformula,
       result$frame$yval2 <- result$frame$yval
     }
 
-    ### Save all of this for later use in
-    ### plotting/eval functions
+    ### Save extra information to the rpart object for
+    ### later use in plotting/eval functions
     saveparms <- list(flat_data, data, yvar, tvar,
         basisMatrix, idvar, df, degree, intercept,
         splitFormula, boundaryKnots, innerKnots)

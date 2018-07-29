@@ -4,7 +4,7 @@
 \name{nlsySample_large}
 \alias{nlsySample_large}
 \title{Additional socioeconomic information and BMIs of 1000 individuals.}
-\format{A data frame with 8083 rows and 18 columns. 
+\format{A data frame with 8083 rows and 18 columns.
 \describe{
   \item{ID}{jj}
   \item{News}{gj}
@@ -40,8 +40,8 @@
   \item{URBAN_14}{}
   \item{HOUSEHOLD_14}{}
   \item{RACE}{}
-  
- 
+
+
   ...
 }}
 \source{

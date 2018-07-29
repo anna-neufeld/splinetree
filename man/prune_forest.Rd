@@ -18,8 +18,8 @@ A new splinetree forest object, where each tree has a new size
 Prunes each tree in forest using a given complexity parameter.
 }
 \examples{
-data(big_forest)
-print(av_size(big_forest))
-print(av_size(prune_forest(big_forest, cp=0.007)))
-print(av_size(prune_forest(big_forest, cp=0.01)))
+data(sample_forest)
+print(av_size(sample_forest))
+print(av_size(prune_forest(sample_forest, cp=0.007)))
+print(av_size(prune_forest(sample_forest, cp=0.01)))
 }

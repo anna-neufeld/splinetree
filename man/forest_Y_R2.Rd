@@ -19,12 +19,12 @@ Returns 1-SSE/SST, where SSE is the total sum of squared errors of the true resp
 and SST is the total sum of squared erros of the responses around their mean. If this forest was not built with an intercept, returns NULL.
 }
 \description{
-Computes the R-squared metric for a splineforest object. Goal is to see how well the predicted response values match the 
-actual response values. Note that this function should only be used on forests where the intercept parameter is TRUE. 
+Computes the R-squared metric for a splineforest object. Goal is to see how well the predicted response values match the
+actual response values. Note that this function should only be used on forests where the intercept parameter is TRUE.
 A simple 1-SSE/SST calculation.
 }
 \examples{
-forest_Y_R2(big_intercept_forest, method="oob")
-forest_Y_R2(big_intercept_forest, method="all")
-forest_Y_R2(big_intercept_forest, method="itb")
+forest_Y_R2(sample_intercept_forest, method="oob")
+forest_Y_R2(sample_intercept_forest, method="all")
+forest_Y_R2(sample_intercept_forest, method="itb")
 }

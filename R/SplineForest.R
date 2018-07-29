@@ -1,24 +1,37 @@
-
-
-
-#' Build a spline random forest
+#' Build a splinetree random forest
 #'
-#' Builds an rpart object for the responses projected onto a specified spline basis. Either knots or df (but not both) should be specified. If neither is specified, the default is to have no internal knots in the spline.
-#' Knots is the location of the internal knots, whereas df specifies indirectly how many internal knots should be used.
+#' Builds an ensemble of regression trees for longitudinal or functional data using the spline projection method. The resulting object
+#' is a list of splinetree objects along with some additional information. All parameters are used in the same way that they are used in the splineTree
+#' function. The additional parameter ntree specifies how many trees should be in the ensemble, and diceProb controls the
+#' probability of selecting a given variable for split consideration at a node.
 #'
-#' @param splitFormula Formula specifying the longitudinal response variable and the time-constant variables that will be used for splitting in the tree
-#' @param tformula Formula specifying the longitudinal response variable and the variable that acts as the time variable
-#' @param idvar The name of the variable that serves as the ID variable. Must be in quotes
-#' @param data dataframe that contains all variables specified in the formulas (long format)
-#' @param knots defaults to NULL, specified locations for INTERNAL knots.
-#' @param df If this is specified but knots is not, we will add the approriate number of internal knots. Defaults to NULL, which corresponds to no internal knots.
-#' @param degree Specifies degree of splines used in the tree
-#' @param intercept Should the spline tree be built with or without the spline intercept coefficient? Default to FALSE.
-#' @param nGrid Number of grid points along time variable in which trajectories are compared.
+#' The ensemble method is highly similar to the random forest methodology of Brieman (2001). Each tree in the ensemble is fit to a bootstrap sample
+#' of the data. At each node of each tree, only a subset of the split variables are considered candidates for the split. In our methodology,
+#' the subset of variables considered at each node is determined by a random process. The diceProb parameter specifies the probability that a given variable
+#' will be selected at a certain node. Because the method is based on probability, the same number of variables are not considered for splitting at each node
+#' (as in the randomForest package). Note that if diceProb is small and the number of variables in the splitFormula is also small, there is a high probability that
+#' no variables will be considered for splitting at a certain node, which is problematic. The fewer total variables there are, the larger diceProb should be to
+#' ensure good results.
+#'
+#' @param splitFormula Formula specifying the longitudinal response variable and the time-constant variables that will be used for splitting in the tree.
+#' @param tformula Formula specifying the longitudinal response variable and the variable that acts as the time variable.
+#' @param idvar The name of the variable that serves as the ID variable for grouping observations. Must be in quotes
+#' @param data dataframe that contains all variables specified in the formulas- in long format.
+#' @param knots Specified locations for internal knots in the spline basis. Defaults to NULL, which corresponds to no internal knots.
+#' @param df Degrees of freedom of the spline basis. If this is specified but the knots parameter is NULL, then the appropriate number of internal knots
+#' will be added at quantiles of the training data. If both df and knots are unspecified, the spline basis will have no internal knots.
+#' @param degree Specifies degree of spline basis used in the tree.
+#' @param intercept Specifies whether or not the splitting process will consider the intercept coefficient of the spline projections.
+#' Defaults to FALSE, which means that the tree will split based on trajectory shape, ignoring response level.
+#' @param nGrid Number of grid points to evaluate projection sum of squares at. The default is 7, which corresponds to evaluating projections
+#' at the endpoints and quintiles of the time variable.
+#' @param minNodeSize Minimum number of observational units that can be in a terminal node. Controls tree size and helps avoid overfitting.
+#' @param cp Complexity parameter passed to the rpart building process.
 #' @param ntree Number of trees in the forest
 #' @param diceProb Probability of selecting a variable to included as a candidate for each split.
-#' @param cp Complexity parameter passed to rpart building process.
-#' @return An rpart object with extra information stored in model$parms.
+#' @return A splineforest object, which stores a list of splinetree objects (in model$Trees), along with information about the
+#' spline basis used (model$intercept, model$innerKnots, model$boundaryKnots, etc.), and information about which datapoints were
+#' used to build each tree (model$oob_indices and model$index).
 #' @export
 #' @import nlme
 #' @import rpart
@@ -26,9 +39,8 @@
 #' @importFrom graphics barplot layout par plot points rect text
 #' @importFrom stats complete.cases formula lm quantile runif sd terms time
 #' @examples
-#' form1 <-BMI~HISP+WHITE+BLACK+HGC_MOTHER+SEX
-#' model1 <- splineForest(form1, BMI~AGE, 'ID', nlsySample, degree=1, intercept=FALSE, cp=0.005)
-#' model2 <- splineForest(form1, BMI~AGE, 'ID', nlsySample, degree=3, intercept=TRUE, cp=0.005)
+#' splitForm <-BMI~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs
+#' model1 <- splineForest(splitForm, BMI~AGE, 'ID', nlsySample, degree=1, intercept=FALSE, cp=0.005, ntree=30)
 splineForest <- function(splitFormula, tformula,
     idvar, data, knots = NULL, df = NULL, degree = 3,
     intercept = FALSE, nGrid = 7, ntree = 50, diceProb = 0.3,
@@ -89,19 +101,17 @@ splineForest <- function(splitFormula, tformula,
     #### the flat data dataframe
     ulist <- list(eval = spline_eval, split = splineforest_split,
         init = spline_init)
-    # assign('diceProb', diceProb, envir
-    # =.GlobalEnv)
 
     control = rpart.control(cp = cp)
     form = formula(paste("Ydata ~ ", paste(attr(terms(formula(splitFormula)),
         "term.labels"), collapse = "+")))
 
-    #### FOREST SETUP
+    #### Now preprocessing done: begin forest building.
     sampleSize = NROW(flat_data)
 
     myForest = list()
-    index = list()
-    oobIs = list()
+    itbIndices = list()
+    oobIndices = list()
 
     splits = c()
     print("Building Tree:")
@@ -109,7 +119,6 @@ splineForest <- function(splitFormula, tformula,
         print(j)
         indices = sample(1:NROW(flat_data), sampleSize,
             replace = TRUE)
-        oobIndices = (1:NROW(flat_data))[-unique(indices)]
         bootstrap_sample = flat_data[indices, ]
 
         #### Since data is already processed, just
@@ -120,14 +129,14 @@ splineForest <- function(splitFormula, tformula,
                 diceProb))
 
         ### Save information from this iteration to forest.
-        index[[j]] = unique(indices)
+        itbIndices[[j]] = unique(indices)
         myForest[[j]] = fit
-        oobIs[[j]] = oobIndices
+        oobIndices[[j]] = (1:NROW(flat_data))[-unique(indices)]
         splits = c(splits, row.names(fit$splits))
     }
 
-    results = list(myForest, index, splits, data,
-        flat_data, splitFormula, oobIs, degree,
+    results = list(myForest, itbIndices, splits, data,
+        flat_data, splitFormula, oobIndices, degree,
         intercept, Ydata, df, boundaryKnots, innerKnots,
         idvar, yvar, tvar)
     names(results) = c("Trees", "index", "splits",

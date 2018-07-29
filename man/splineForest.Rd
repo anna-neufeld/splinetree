@@ -2,46 +2,63 @@
 % Please edit documentation in R/SplineForest.R
 \name{splineForest}
 \alias{splineForest}
-\title{Build a spline random forest}
+\title{Build a splinetree random forest}
 \usage{
 splineForest(splitFormula, tformula, idvar, data, knots = NULL, df = NULL,
   degree = 3, intercept = FALSE, nGrid = 7, ntree = 50,
   diceProb = 0.3, cp = 0.001)
 }
 \arguments{
-\item{splitFormula}{Formula specifying the longitudinal response variable and the time-constant variables that will be used for splitting in the tree}
+\item{splitFormula}{Formula specifying the longitudinal response variable and the time-constant variables that will be used for splitting in the tree.}
 
-\item{tformula}{Formula specifying the longitudinal response variable and the variable that acts as the time variable}
+\item{tformula}{Formula specifying the longitudinal response variable and the variable that acts as the time variable.}
 
-\item{idvar}{The name of the variable that serves as the ID variable. Must be in quotes}
+\item{idvar}{The name of the variable that serves as the ID variable for grouping observations. Must be in quotes}
 
-\item{data}{dataframe that contains all variables specified in the formulas (long format)}
+\item{data}{dataframe that contains all variables specified in the formulas- in long format.}
 
-\item{knots}{defaults to NULL, specified locations for INTERNAL knots.}
+\item{knots}{Specified locations for internal knots in the spline basis. Defaults to NULL, which corresponds to no internal knots.}
 
-\item{df}{If this is specified but knots is not, we will add the approriate number of internal knots. Defaults to NULL, which corresponds to no internal knots.}
+\item{df}{Degrees of freedom of the spline basis. If this is specified but the knots parameter is NULL, then the appropriate number of internal knots
+will be added at quantiles of the training data. If both df and knots are unspecified, the spline basis will have no internal knots.}
 
-\item{degree}{Specifies degree of splines used in the tree}
+\item{degree}{Specifies degree of spline basis used in the tree.}
 
-\item{intercept}{Should the spline tree be built with or without the spline intercept coefficient? Default to FALSE.}
+\item{intercept}{Specifies whether or not the splitting process will consider the intercept coefficient of the spline projections.
+Defaults to FALSE, which means that the tree will split based on trajectory shape, ignoring response level.}
 
-\item{nGrid}{Number of grid points along time variable in which trajectories are compared.}
+\item{nGrid}{Number of grid points to evaluate projection sum of squares at. The default is 7, which corresponds to evaluating projections
+at the endpoints and quintiles of the time variable.}
 
 \item{ntree}{Number of trees in the forest}
 
 \item{diceProb}{Probability of selecting a variable to included as a candidate for each split.}
 
-\item{cp}{Complexity parameter passed to rpart building process.}
+\item{cp}{Complexity parameter passed to the rpart building process.}
+
+\item{minNodeSize}{Minimum number of observational units that can be in a terminal node. Controls tree size and helps avoid overfitting.}
 }
 \value{
-An rpart object with extra information stored in model$parms.
+A splineforest object, which stores a list of splinetree objects (in model$Trees), along with information about the
+spline basis used (model$intercept, model$innerKnots, model$boundaryKnots, etc.), and information about which datapoints were
+used to build each tree (model$oob_indices and model$index).
 }
 \description{
-Builds an rpart object for the responses projected onto a specified spline basis. Either knots or df (but not both) should be specified. If neither is specified, the default is to have no internal knots in the spline.
-Knots is the location of the internal knots, whereas df specifies indirectly how many internal knots should be used.
+Builds an ensemble of regression trees for longitudinal or functional data using the spline projection method. The resulting object
+is a list of splinetree objects along with some additional information. All parameters are used in the same way that they are used in the splineTree
+function. The additional parameter ntree specifies how many trees should be in the ensemble, and diceProb controls the
+probability of selecting a given variable for split consideration at a node.
+}
+\details{
+The ensemble method is highly similar to the random forest methodology of Brieman (2001). Each tree in the ensemble is fit to a bootstrap sample
+of the data. At each node of each tree, only a subset of the split variables are considered candidates for the split. In our methodology,
+the subset of variables considered at each node is determined by a random process. The diceProb parameter specifies the probability that a given variable
+will be selected at a certain node. Because the method is based on probability, the same number of variables are not considered for splitting at each node
+(as in the randomForest package). Note that if diceProb is small and the number of variables in the splitFormula is also small, there is a high probability that
+no variables will be considered for splitting at a certain node, which is problematic. The fewer total variables there are, the larger diceProb should be to
+ensure good results.
 }
 \examples{
-form1 <-BMI~HISP+WHITE+BLACK+HGC_MOTHER+SEX
-model1 <- splineForest(form1, BMI~AGE, 'ID', nlsySample, degree=1, intercept=FALSE, cp=0.005)
-model2 <- splineForest(form1, BMI~AGE, 'ID', nlsySample, degree=3, intercept=TRUE, cp=0.005)
+splitForm <-BMI~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs
+model1 <- splineForest(splitForm, BMI~AGE, 'ID', nlsySample, degree=1, intercept=FALSE, cp=0.005, ntree=30)
 }

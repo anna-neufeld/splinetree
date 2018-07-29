@@ -15,24 +15,24 @@ forest_projection_R2(forest, method = "oob", removeIntercept = TRUE)
 datapoint. "itb" means that predictions for a datapoint are made using only the trees for which this datapoint was IN the bootstrap sample.}
 
 \item{removeIntercept}{If true, the projection sum of squared error is computed while ignoring the intercept coefficient.
-This will help capture the tree's performance at clustering based on shape, not based on level. 
+This will help capture the tree's performance at clustering based on shape, not based on level.
 This parameter is only meaningful if this tree was built using an intercept.}
 }
 \value{
 Returns 1-SSE/SST, where SSE is the total sum of squared projection errors of the true coefficients compared
-to the predicted coefficients, and SST is the total sum of squared projection erros of the true coefficients compared to 
+to the predicted coefficients, and SST is the total sum of squared projection erros of the true coefficients compared to
 the population mean coefficients.
 }
 \description{
 Computes an R-squared-like evaluation metric for a splineforest object. Goal is to see how well the predicted spline coefficients for each individual
 match the spline coefficients obtained when fitting a spline only to this individual's data (we call these coefficients the true coefficients). Computes 1-SSE/SST, where SSE is the total sum of squared projection errors of the true coefficients compared
-to the predicted coefficients, and SST is the total sum of squared projection erros of the true coefficients compared to 
+to the predicted coefficients, and SST is the total sum of squared projection erros of the true coefficients compared to
 the population mean coefficients. If this is an intercept forest, have the option to compute these sum of squares either with the intercept included or with the intercept ignored to isolate the shape.
 }
 \examples{
-forest_projection_R2(big_forest, method="oob")
-forest_projection_R2(big_forest, method="all")
-forest_projection_R2(big_forest, method="itb")
-forest_projection_R2(big_intercept_forest, method="all")
-forest_projection_R2(big_intercept_forest, method="all", removeIntercept=FALSE)
+forest_projection_R2(sample_forest, method="oob")
+forest_projection_R2(sample_forest, method="all")
+forest_projection_R2(sample_forest, method="itb")
+forest_projection_R2(sample_intercept_forest, method="all")
+forest_projection_R2(sample_intercept_forest, method="all", removeIntercept=FALSE)
 }

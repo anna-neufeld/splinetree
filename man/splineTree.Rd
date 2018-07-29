@@ -2,46 +2,52 @@
 % Please edit documentation in R/SplineTree.R
 \name{splineTree}
 \alias{splineTree}
-\title{Build a spline tree}
+\title{Build a splinetree object}
 \usage{
 splineTree(splitFormula, tformula, idvar, data, knots = NULL, df = NULL,
   degree = 3, intercept = FALSE, nGrid = 7, minNodeSize = 10,
   cp = 0.01)
 }
 \arguments{
-\item{splitFormula}{Formula specifying the longitudinal response variable and the time-constant variables that will be used for splitting in the tree}
+\item{splitFormula}{Formula specifying the longitudinal response variable and the time-constant variables that will be used for splitting in the tree.}
 
-\item{tformula}{Formula specifying the longitudinal response variable and the variable that acts as the time variable}
+\item{tformula}{Formula specifying the longitudinal response variable and the variable that acts as the time variable.}
 
-\item{idvar}{The name of the variable that serves as the ID variable. Must be in quotes}
+\item{idvar}{The name of the variable that serves as the ID variable for grouping observations. Must be in quotes}
 
-\item{data}{dataframe that contains all variables specified in the formulas (long format)}
+\item{data}{dataframe that contains all variables specified in the formulas- in long format.}
 
-\item{knots}{defaults to NULL, specified locations for INTERNAL knots.}
+\item{knots}{Specified locations for internal knots in the spline basis. Defaults to NULL, which corresponds to no internal knots.}
 
-\item{df}{If this is specified but knots is not, we will add the approriate number of internal knots. Defaults to NULL, which corresponds to no internal knots.}
+\item{df}{Degrees of freedom of the spline basis. If this is specified but the knots parameter is NULL, then the appropriate number of internal knots
+will be added at quantiles of the training data. If both df and knots are unspecified, the spline basis will have no internal knots.}
 
-\item{degree}{Specifies degree of splines used in the tree}
+\item{degree}{Specifies degree of spline basis used in the tree.}
 
-\item{intercept}{Should the spline tree be built with or without the spline intercept coefficient? Default to FALSE.}
+\item{intercept}{Specifies whether or not the splitting process will consider the intercept coefficient of the spline projections.
+Defaults to FALSE, which means that the tree will split based on trajectory shape, ignoring response level.}
 
-\item{nGrid}{Number of grid points along time variable in which trajectories are compared.}
+\item{nGrid}{Number of grid points to evaluate projection sum of squares at. The default is 7, which corresponds to evaluating projections
+at the endpoints and quintiles of the time variable.}
 
-\item{minNodeSize}{Minimum number of IDS that can be in a terminal node}
+\item{minNodeSize}{Minimum number of observational units that can be in a terminal node. Controls tree size and helps avoid overfitting.}
 
-\item{cp}{Complexity parameter passed to rpart building process.}
+\item{cp}{Complexity parameter passed to the rpart building process.}
 }
 \value{
-An rpart object with extra information stored in model$parms.
+An rpart object with additional splinetree-specific information stored in model$parms.
 }
 \description{
-Builds an rpart object for the responses projected onto a specified spline basis. Either knots or df (but not both) should be specified. If neither is specified, the default is to have no internal knots in the spline.
-Knots is the location of the internal knots, whereas df specifies indirectly how many internal knots should be used.
+Builds a regression tree for longitudinal or functional data using the spline projection method. The underlying tree building process uses the rpart package,
+and the splinetree object is an rpart object with additional stored information. The parmaters df, knots, degree, interept, and nGrid allow for flexibility
+in the spline basis used for splitting. The parameters minNodeSize and cp allow for flexibility in controlling the size of the final tree.
 }
 \examples{
-form1 <-BMI~HISP+WHITE+BLACK+HGC_MOTHER+SEX
-model1 <- splineTree(form1, BMI~AGE, 'ID', nlsySample, degree=1, intercept=FALSE, cp=0.005)
-model2 <- splineTree(form1, BMI~AGE, 'ID', nlsySample, degree=3, intercept=TRUE, cp=0.005)
+splitForm <-BMI~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs
+model1 <- splineTree(splitForm, BMI~AGE, 'ID', nlsySample, degree=1, intercept=FALSE, cp=0.005)
+model2 <- splineTree(splitForm, BMI~AGE, 'ID', nlsySample, degree=3, intercept=TRUE, cp=0.005)
 stPlots(model1)
 stPlots(model2)
+R2_projected(model1)
+R2_projected(model2)
 }

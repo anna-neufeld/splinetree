@@ -12,27 +12,27 @@ test_that("Building Forests", {
 
 # ### Test prediction functions
 test_that("Forest Predictions", {
-   preds_coeffs <- predict_coeffs_RF(big_intercept_forest)
+   preds_coeffs <- predict_coeffs_RF(sample_intercept_forest)
    expect_equal(dim(preds_coeffs), c(3, 500))
-   preds_y <- predict_y_RF(big_intercept_forest, method="oob")
+   preds_y <- predict_y_RF(sample_intercept_forest, method="oob")
    expect_equal(length(preds_y), 8083)
  })
 
 test_that("Forest Projections", {
   ### Test R2 type measure for coefficients (option for oob, itb, all)
-  expect_true(forest_projection_R2(big_intercept_forest, method="itb")>0)
-  expect_true(forest_projection_R2(big_intercept_forest, method="oob")<1)
-  expect_true(forest_projection_R2(big_intercept_forest, method="all")>0)
-  expect_true(forest_projection_R2(big_intercept_forest, method="itb", removeIntercept = FALSE)>0)
-  expect_true(forest_projection_R2(big_intercept_forest, method="oob", removeIntercept = FALSE)<1)
-  expect_true(forest_projection_R2(big_intercept_forest, method="all", removeIntercept = FALSE)>0)
-  expect_true(forest_Y_R2(big_intercept_forest, method="itb")>0)
-  expect_true(forest_Y_R2(big_intercept_forest, method="oob")>0)
-  expect_true(forest_Y_R2(big_intercept_forest, method="all")>0)
-  #Yimp = varImp_Y_RF(forest, method="oob")
+  expect_true(forest_projection_R2(sample_intercept_forest, method="itb")>0)
+  expect_true(forest_projection_R2(sample_intercept_forest, method="oob")<1)
+  expect_true(forest_projection_R2(sample_intercept_forest, method="all")>0)
+  expect_true(forest_projection_R2(sample_intercept_forest, method="itb", removeIntercept = FALSE)>0)
+  expect_true(forest_projection_R2(sample_intercept_forest, method="oob", removeIntercept = FALSE)<1)
+  expect_true(forest_projection_R2(sample_intercept_forest, method="all", removeIntercept = FALSE)>0)
+  expect_true(forest_Y_R2(sample_intercept_forest, method="itb")>0)
+  expect_true(forest_Y_R2(sample_intercept_forest, method="oob")>0)
+  expect_true(forest_Y_R2(sample_intercept_forest, method="all")>0)
+  Yimp = varImp_Y_RF(sample_intercept_forest, method="oob")
   plot_varimp(Yimp[,3])
   ### Variable importance for coeffs
-  Cimp = varImp_coeff_RF(big_forest, method="oob")
+  Cimp = varImp_coeff_RF(sample_forest, method="oob")
   plot_varimp(Cimp[,3])
   })
 
