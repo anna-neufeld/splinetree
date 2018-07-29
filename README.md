@@ -2,7 +2,7 @@
 splinetree
 ==========
 
-The goal of this package is to create regression trees and random forests for longitudinal data through the spline projection method described in (link to paper). The package also allows users to evaluate and plot their models.
+This package allows users to create, visualize, and evaluate regression trees and random forests for longitudinal or functional data through a spline projection method first suggested by Yu and Lambert (1999). 
 
 Example
 -------
