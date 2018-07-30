@@ -4,7 +4,7 @@
 \alias{predict_y}
 \title{Returns predicted responses.}
 \usage{
-predict_y(model, testData = model$parms$data)
+predict_y(model, testData = NULL)
 }
 \arguments{
 \item{model}{a SplineTree object}

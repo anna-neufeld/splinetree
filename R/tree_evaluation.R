@@ -14,7 +14,7 @@ R2_y <- function(model) {
     if (model$parms$intercept) {
     yvar <- model$parms$yvar
     realResp <- model$parms$data[[yvar]]
-    predResp <- predict_y(model)
+    predResp <- predict_y_training(model)
     meanResp <- mean(model$parms$data[[yvar]])
     SSE = sum((predResp - realResp)^2)
     SST = sum((realResp - meanResp)^2)
@@ -37,23 +37,29 @@ R2_y <- function(model) {
 #' @export
 #' @examples tree1 <- splineTree(BMI~HISP+WHITE+BLACK+HGC_MOTHER+SEX, BMI~AGE, "ID", nlsySample, degree=1, intercept=FALSE, cp=0.005)
 #' plot(predict_y(tree1), tree1$parms$data[[tree1$parms$yvar]])
-predict_y <- function(model, testData = model$parms$data) {
+predict_y <- function(model, testData = NULL) {
 
-    degree = model$parms$degree
-    df = model$parms$df
-    intercept = model$parms$intercept
-    basisMatrix = model$parms$basisMatrix
-    boundaryKnots = model$parms$boundaryKnots
-    innerKnots = model$parms$innerKnots
-    tvar = model$parms$tvar
-    yvar = model$parms$yvar
-    idvar = model$parms$idvar
+    ### Calls a different version of the function that returns predicted Ys for training dataset
+    if (is.null(testData)) {
+      predict_y_training(model)
+    }
 
-    preds = rep(NA, NROW(testData))
+    else {
+      degree = model$parms$degree
+      df = model$parms$df
+      intercept = model$parms$intercept
+      basisMatrix = model$parms$basisMatrix
+      boundaryKnots = model$parms$boundaryKnots
+      innerKnots = model$parms$innerKnots
+      tvar = model$parms$tvar
+      yvar = model$parms$yvar
+      idvar = model$parms$idvar
 
-    nodes <- rpart.predict.leaves(model, newdata=testData)
-    ### Loop through every test unit.
-    for (i in 1:NROW(testData)) {
+      preds = rep(NA, NROW(testData))
+
+      nodes <- rpart.predict.leaves(model, newdata=testData)
+      ### Loop through every test unit.
+      for (i in 1:NROW(testData)) {
         node = nodes[i]
         predCoeffs = model$frame[node, ]$yval2
 
@@ -66,8 +72,9 @@ predict_y <- function(model, testData = model$parms$data) {
                 knots = innerKnots, degree = degree)
         }
         preds[i] = basisMat %*% t(predCoeffs)
+      }
+      preds
     }
-    preds
 }
 
 
@@ -144,4 +151,50 @@ predict_spline_coeffs <- function(tree, testset = tree$parms$flat_data) {
     }
     preds
 }
+
+
+
+predict_y_training <- function(model) {
+
+  testData = model$parms$flat_data
+  dat = model$parms$data
+  nodes <- rpart.predict.leaves(model, newdata=testData)
+
+
+
+  degree = model$parms$degree
+  df = model$parms$df
+  intercept = model$parms$intercept
+  basisMatrix = model$parms$basisMatrix
+  boundaryKnots = model$parms$boundaryKnots
+  innerKnots = model$parms$innerKnots
+  tvar = model$parms$tvar
+  yvar = model$parms$yvar
+  idvar = model$parms$idvar
+
+  preds = rep(0, nrow(dat))
+
+  for (i in 1:nrow(testData)) {
+    node = nodes[i]
+    predCoeffs = model$frame[node, ]$yval2
+
+    ### Get all data associated with this person's ID
+    ID <- testData[i, ][[idvar]]
+    personDat <- dat[dat[[idvar]] == ID, ]
+
+    ### Build basis matrix using same parameters as the common forest-wide basis matrix, but tailored
+    ### to this person's individual time points.
+    personBasis <- cbind(1, bs(personDat[[tvar]],
+                               knots =  innerKnots, Boundary.knots = boundaryKnots,
+                               degree = degree))
+
+    ### Compute this person's predicted responses at all the same time points that they have real responses at.
+    ### Two cases because depending on vector/matrix stuff, sometimes you need to transpose and sometimes you don't.
+    ### Probably able to get rid of these cases - from Anna 7/12.
+
+    preds[which(dat[[idvar]] == ID)] <- personBasis %*% t(predCoeffs)
+  }
+  preds
+}
+
 

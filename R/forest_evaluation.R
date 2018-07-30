@@ -87,11 +87,7 @@ forest_Y_R2 <- function(forest, method = "oob") {
     # First step is to get predicted coefficients for all individuals using appropriate method.
     forest_pred_coeffs = t(predict_coeffs_RF(forest, method))
 
-    innerKnots <- forest$innerKnots
-    boundaryKnots <- forest$boundaryKnots
-    degree <- forest$degree
     dat <- forest$data
-
     meanYs <- mean(dat[[forest$yvar]])
 
 
@@ -111,8 +107,8 @@ forest_Y_R2 <- function(forest, method = "oob") {
         ### Build basis matrix using same parameters as the common forest-wide basis matrix, but tailored
         ### to this person's individual time points.
         personBasis <- cbind(1, bs(personDat[[forest$tvar]],
-            knots = innerKnots, Boundary.knots = boundaryKnots,
-            degree = degree))
+            knots =  forest$innerKnots, Boundary.knots = forest$boundaryKnots,
+            degree = forest$degree))
 
         ### Compute this person's predicted responses at all the same time points that they have real responses at.
         ### Two cases because depending on vector/matrix stuff, sometimes you need to transpose and sometimes you don't.
@@ -128,10 +124,9 @@ forest_Y_R2 <- function(forest, method = "oob") {
 
         ### Compute SSE and SST between real responses and preducted responses.
         realYs <- personDat[[forest$yvar]]
-        SST = SST + sum((realYs - meanYs)^2)
-        SSE = SSE + sum((realYs - predYs)^2)
+        SST <- SST + sum((realYs - meanYs)^2)
+        SSE <- SSE + sum((realYs - predYs)^2)
     }
     1 - SSE/SST
     }
 }
-
