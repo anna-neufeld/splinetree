@@ -78,9 +78,6 @@
 #'   \item{URBAN_14}{}
 #'   \item{HOUSEHOLD_14}{}
 #'   \item{RACE}{}
-#'
-#'
-#'   ...
 #' }
 #' @source \url{https://www.bls.gov/nls/nlsy79.htm}
 "nlsySample_large"
