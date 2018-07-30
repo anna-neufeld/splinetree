@@ -205,10 +205,6 @@ predict_y_training <- function(model) {
                         degree = degree)
     }
 
-    ### Compute this person's predicted responses at all the same time points that they have real responses at.
-    ### Two cases because depending on vector/matrix stuff, sometimes you need to transpose and sometimes you don't.
-    ### Probably able to get rid of these cases - from Anna 7/12.
-
     preds[which(dat[[idvar]] == ID)] <- personBasis %*% t(predCoeffs)
   }
   preds
