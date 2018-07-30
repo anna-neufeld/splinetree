@@ -154,13 +154,23 @@ predict_spline_coeffs <- function(tree, testset = tree$parms$flat_data) {
 
 
 
+#' Predict responses for the training data
+#'
+#' Returns a vector of predicted responses for the dataset used to build the tree
+#'
+#' Calling predict_y(model) and predict_y_training(model) return identical results, because when no test data is
+#' provided to predict_y(), the default is to use the training set. This is a slightly faster version that
+#' can be used when you know that you wish to predict on the training data.
+#'
+#' @param model a splinetree object
+#' @return A vector of predicted responses
+#' @export
+#' @importFrom treeClust rpart.predict.leaves
 predict_y_training <- function(model) {
 
   testData = model$parms$flat_data
   dat = model$parms$data
   nodes <- rpart.predict.leaves(model, newdata=testData)
-
-
 
   degree = model$parms$degree
   df = model$parms$df
@@ -184,9 +194,16 @@ predict_y_training <- function(model) {
 
     ### Build basis matrix using same parameters as the common forest-wide basis matrix, but tailored
     ### to this person's individual time points.
-    personBasis <- cbind(1, bs(personDat[[tvar]],
+    if (intercept) {
+      personBasis <- cbind(1, bs(personDat[[tvar]],
                                knots =  innerKnots, Boundary.knots = boundaryKnots,
                                degree = degree))
+    }
+    else {
+      personBasis <- bs(personDat[[tvar]],
+                        knots =  innerKnots, Boundary.knots = boundaryKnots,
+                        degree = degree)
+    }
 
     ### Compute this person's predicted responses at all the same time points that they have real responses at.
     ### Two cases because depending on vector/matrix stuff, sometimes you need to transpose and sometimes you don't.
