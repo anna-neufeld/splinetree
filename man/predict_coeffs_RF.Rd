@@ -11,7 +11,7 @@ predict_coeffs_RF(forest, method = "oob", testdata = NULL)
 
 \item{method}{a string; either "oob", "itb", or "all". "oob" is the default value.
 if "oob", predictions for a given data point are made only using trees for which this
-data point was "out of the bag" (not in the bootstrap sample). If "itb", predictions for 
+data point was "out of the bag" (not in the bootstrap sample). If "itb", predictions for
 a given data point are made using onle the trees for which this datapoint was in the bag (in the bootstrap sample).
 If "all", all trees are used.}
 

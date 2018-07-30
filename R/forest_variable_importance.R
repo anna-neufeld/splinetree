@@ -11,11 +11,8 @@
 #' @importFrom mosaic shuffle
 varImp_Y_RF = function(forest, method = "oob") {
 
-
-    formula = forest$formula
-    vars = attr(terms(formula), "term.labels")
+    vars = attr(terms(forest$formula), "term.labels")
     trees = forest$Trees
-    # t=trees[[1]]
     yvar = forest$yvar
     idvar = forest$idvar
     tvar = forest$tvar
@@ -48,14 +45,17 @@ varImp_Y_RF = function(forest, method = "oob") {
             indices = forest$index[[i]]
         }
         IDS = forest$Xdata[indices, ][[idvar]]
-        testset = data[data[[idvar]] %in% IDS,
-            ]
+        testset = data[data[[idvar]] %in% IDS,]
+
+        basisMat = cbind(1, bs(testset[[tvar]],
+                               knots = innerKnots, Boundary.knots = boundaryKnots,
+                               degree = degree))
+
 
         #### Figure out this function and the arguements
         #### it is supposed to have!!!
         preds = predict_Y_helper(tree, testset,
-            innerKnots, boundaryKnots, degree,
-            tvar = tvar, idvar = idvar, yvar = yvar)
+            basisMat)
 
         MSE_real = sum((testset[[yvar]] - preds)^2)/NROW(testset)
 
@@ -63,10 +63,7 @@ varImp_Y_RF = function(forest, method = "oob") {
             permutedOOB = testset
             permutedOOB[[var]] = shuffle(permutedOOB[[var]])
             perm_preds = predict_Y_helper(tree = tree,
-                testset = permutedOOB, innerKnots = innerKnots,
-                boundaryKnots = boundaryKnots,
-                degree = degree, tvar = tvar, yvar = yvar,
-                idvar = idvar)
+                testset = permutedOOB, basisMat)
             MSE_permuted = sum((permutedOOB[[yvar]] -
                 perm_preds)^2)/NROW(permutedOOB)
 
@@ -230,34 +227,30 @@ varImp_coeff_RF <- function(forest, removeIntercept = TRUE,
 
 
 
-predict_Y_helper <- function(tree, testset, innerKnots,
-    boundaryKnots, degree, tvar, idvar, yvar) {
-    #wheres <- rpart:::pred.rpart(tree, rpart:::rpart.matrix(testset))
-    wheres <- treeClust::rpart.predict.leaves(tree, testset)
 
-    preds <- rep(NA, NROW(testset))
-    for (i in 1:NROW(testset)) {
-        node = wheres[i]
-        coeffs = tree$frame[node, ]$yval2
-        basisMat = cbind(1, bs(testset[i, ][[tvar]],
-            knots = innerKnots, Boundary.knots = boundaryKnots,
-            degree = degree))
-        try1 = try({
-            pred = basisMat %*% t(as.matrix(coeffs))
-        }, silent = TRUE)
-        if (class(try1) == "try-error") {
-            try2 = try({
-                pred = basisMat %*% as.matrix(coeffs)
-            }, silent = TRUE)
-        }
-        preds[i] = pred
-    }
+
+#### If I can make this faster by flattening data, could go a long way.
+#### Only to be used when there is an intercept.
+predict_Y_helper <- function(tree, testset, basisMat) {
+
+    wheres <- treeClust::rpart.predict.leaves(tree, testset)
+    #preds <- rep(NA, NROW(testset))
+    #basisMat = cbind(1, bs(testset[[tvar]],
+                           #knots = innerKnots, Boundary.knots = boundaryKnots,
+                           #degree = degree))
+
+    preds <- apply(array(1:NROW(testset)), 1, function(x) sum(tree$frame[wheres[x], ]$yval2*basisMat[x,]))
+
+    #for (i in 1:NROW(testset)) {
+     #   coeffs = tree$frame[wheres[i], ]$yval2
+      #  basis = basisMat[i,]
+       # preds[i] = sum(coeffs*basis)
+    #}
     preds
 }
 
 
 predict_COEFF_helper <- function(tree, testset) {
-    #wheres <- rpart:::pred.rpart(tree, rpart:::rpart.matrix(testset))
     wheres <- treeClust::rpart.predict.leaves(tree, testset)
 
     if (is.null(tree$frame$yval2)) {
@@ -265,14 +258,6 @@ predict_COEFF_helper <- function(tree, testset) {
     }
 
     preds <- sapply(1:NROW(testset), function(i) tree$frame[wheres[i], ]$yval2)
-
-    #coeffDims = NCOL(tree$frame$yval2)
-    #preds <- array(NA, c(coeffDims, NROW(testset)))
-    #for (i in 1:NROW(testset)) {
-    #    node = wheres[i]
-    #    coeffs = tree$frame[node, ]$yval2
-    #    preds[, i] = coeffs
-    #}
     preds
 }
 

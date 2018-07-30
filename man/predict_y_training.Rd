@@ -16,5 +16,7 @@ A vector of predicted responses
 Returns a vector of predicted responses for the dataset used to build the tree
 }
 \details{
-Calling predict_y(model) and predict_y_training(model) return identical results, because when no test set
+Calling predict_y(model) and predict_y_training(model) return identical results, because when no test data is
+provided to predict_y(), the default is to use the training set. This is a slightly faster version that
+can be used when you know that you wish to predict on the training data.
 }

@@ -25,9 +25,13 @@ predict_coeffs_RF = function(forest, method = "oob", testdata=NULL) {
 
   t <- forest$Trees[[1]]
   coeffDims = NCOL(t$frame$yval2)
-  predictions <- array(NA, c(length(forest$Trees),
-                             coeffDims, NROW(Xdata)))
+
+
   if (is.null(testdata)) {
+
+    predictions <- array(NA, c(length(forest$Trees),
+                               coeffDims, NROW(Xdata)))
+
     if (method == "oob") {
       indices <- forest$oob_indices
     }
@@ -42,16 +46,13 @@ predict_coeffs_RF = function(forest, method = "oob", testdata=NULL) {
     if (method == "itb") {
       indices <- forest$index
     }
-  }
-
 
   for (tree in 1:length(forest$Trees)) {
     preds <- array(NA, c(coeffDims, NROW(Xdata)))
     test_indices <- indices[[tree]]
-    if (is.null(testdata)) {
-      testset <- Xdata[test_indices, ]
-    }
-    else { testset <- testdata }
+
+    testset <- Xdata[test_indices, ]
+
     preds[, test_indices] <- predict_coeffs_tree(forest$Trees[[tree]],
                                                  testset)
     predictions[tree, , ] <- preds
@@ -59,6 +60,26 @@ predict_coeffs_RF = function(forest, method = "oob", testdata=NULL) {
   actualpredictions <- data.frame(apply(predictions,
                                         c(2, 3), mean, na.rm = TRUE))
   names(actualpredictions) <- Xdata[[idvar]]
+  actualpredictions
+  }
+  ### If testdata is not null and you actually want to predict on a new dataset.
+  ### In this case, no "oob/itb" distinction because every datapoint is out of bag
+  ### Use every tree for every datapoint.
+  else {
+
+    predictions <- array(NA, c(length(forest$Trees),
+                               coeffDims, NROW(testdata)))
+
+    for (tree in 1:length(forest$Trees)) {
+      preds <- array(NA, c(coeffDims, NROW(testdata)))
+      predictions[tree, , ] <- predict_coeffs_tree(forest$Trees[[tree]],
+                                                   testdata)
+    }
+
+  actualpredictions <- data.frame(apply(predictions,
+                                        c(2, 3), mean, na.rm = TRUE))
+  names(actualpredictions) <- testdata[[idvar]]
+  }
   actualpredictions
 }
 
@@ -125,11 +146,32 @@ predict_y_RF <- function(forest, method = "oob", testdata=NULL) {
     }
   }
 
+  else {
+
+    coeffPreds <- t(predict_coeffs_RF(forest, method, testdata))
+    preds <- rep(NA, NROW(testdata))
+
+    for (i in 1:NROW(testdata)) {
+      coeffs <- coeffPreds[i,]
+
+      ### Assumes that forest includes intercept.
+      basisMat <- cbind(1, bs(testdata[i,][[tvar]],
+                              knots = innerKnots, Boundary.knots = boundaryKnots,
+                              degree = degree))
+
+      try1 <- try({
+        pred <- basisMat %*% t(as.matrix(coeffs))
+      }, silent = TRUE)
+      if (class(try1) == "try-error") {
+        try2 <- try({
+          pred <- basisMat %*% as.matrix(coeffs)
+        }, silent = TRUE)
+      }
+      preds[i] <- pred
+    }
 
 
-  #else {
-
-  #}
+  }
 
 
   preds
