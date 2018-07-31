@@ -33,8 +33,8 @@ test_that("Forest Projections", {
   expect_true(forest_Y_R2(sample_intercept_forest, method="itb")>0)
   expect_true(forest_Y_R2(sample_intercept_forest, method="oob")>0)
   expect_true(forest_Y_R2(sample_intercept_forest, method="all")>0)
-  #Yimp = varImp_Y_RF(sample_intercept_forest, method="oob")
-  #plot_varimp(Yimp[,3])
+  Yimp = varImp_Y_RF(sample_intercept_forest, method="itb")
+  plot_varimp(Yimp[,3])
   ### Variable importance for coeffs
   Cimp = varImp_coeff_RF(sample_forest, method="oob")
   plot_varimp(Cimp[,3])
