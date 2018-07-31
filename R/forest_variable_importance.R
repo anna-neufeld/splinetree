@@ -15,79 +15,68 @@ varImp_Y_RF = function(forest, method = "oob") {
     trees = forest$Trees
     yvar = forest$yvar
     idvar = forest$idvar
-    tvar = forest$tvar
-    innerKnots = forest$innerKnots
-    boundaryKnots = forest$boundaryKnots
-    degree = forest$degree
     data = forest$data
 
-
-    difs = rep(0, length(vars))
-    names(difs) = vars
     varDifs = list()
     percDifs = list()
     for (v in vars) {
-        varDifs[[v]] = c()
-        percDifs[[v]] = c()
+        varDifs[[v]] = rep(0, length(trees))
+        percDifs[[v]] = rep(0, length(trees))
     }
 
+    if (method == "all") {
+      indices = c(1:NROW(forest$Xdata))
+    }
+    if (method == "oob") {
+      indices = forest$oob_indices
+    }
+    if (method == "itb") {
+      indices = forest$index
+    }
+
+    full_basis_Mat <- cbind(1, bs(data[[forest$tvar]],
+                            knots = forest$innerKnots, Boundary.knots = forest$boundaryKnots,
+                            degree = forest$degree))
+
+
+    print("Working on tree: ")
     for (i in 1:length(trees)) {
-        print("working on tree")
         print(i)
         tree = trees[[i]]
-        if (method == "oob") {
-            indices = forest$oob_indices[[i]]
-        }
-        if (method == "all") {
-            indices = c(1:NROW(forest$Xdata))
-        }
-        if (method == "itb") {
-            indices = forest$index[[i]]
-        }
-        IDS = forest$Xdata[indices, ][[idvar]]
-        testset = data[data[[idvar]] %in% IDS,]
 
-        basisMat = cbind(1, bs(testset[[tvar]],
-                               knots = innerKnots, Boundary.knots = boundaryKnots,
-                               degree = degree))
+        IDS = forest$Xdata[indices[[i]], ][[idvar]]
 
+        ID_indices = which(data[[idvar]] %in% IDS)
+        testset = data[ID_indices,]
+        basisMat <- full_basis_Mat[ID_indices,]
 
-        #### Figure out this function and the arguements
-        #### it is supposed to have!!!
-        preds = predict_Y_helper(tree, testset,
-            basisMat)
+        #### Get the unpermuted predictions.
+        wheres <- treeClust::rpart.predict.leaves(tree, testset)
+        preds <- apply(array(1:NROW(testset)), 1, function(x) tree$frame[wheres[x], ]$yval2%*%basisMat[x,])
 
-        MSE_real = sum((testset[[yvar]] - preds)^2)/NROW(testset)
+        MSE_real <- sum((testset[[yvar]] - preds)^2)/NROW(testset)
 
         for (var in vars) {
-            permutedOOB = testset
-            permutedOOB[[var]] = shuffle(permutedOOB[[var]])
-            perm_preds = predict_Y_helper(tree = tree,
-                testset = permutedOOB, basisMat)
-            MSE_permuted = sum((permutedOOB[[yvar]] -
-                perm_preds)^2)/NROW(permutedOOB)
+            permuted <- testset
+            permuted[[var]] <- shuffle(permuted[[var]])
 
-            dif = MSE_permuted - MSE_real
-            perc_dif = (MSE_permuted - MSE_real)/MSE_real
-            varDifs[[var]] = c(varDifs[[var]],
-                dif)
-            percDifs[[var]] = c(percDifs[[var]],
-                perc_dif)
+
+            ### Get the permuted predictions.
+            perm_wheres <- treeClust::rpart.predict.leaves(tree, permuted)
+            perm_preds <- apply(array(1:NROW(permuted)), 1, function(x) tree$frame[perm_wheres[x], ]$yval2%*%basisMat[x,])
+
+
+            MSE_permuted <- sum((permuted[[yvar]] -
+                perm_preds)^2)/NROW(permuted)
+
+            varDifs[[var]][i] <- MSE_permuted - MSE_real
+            percDifs[[var]][i] <- (MSE_permuted - MSE_real)/MSE_real
         }
     }
 
-    absolute_importance = rep(0, length(vars))
-    names(absolute_importance) = vars
-    percent_importance = rep(0, length(vars))
-    names(percent_importance) = vars
-    standardized_importance = rep(0, length(vars))
-    names(standardized_importance) = vars
-    for (var in vars) {
-        absolute_importance[[var]] = mean(varDifs[[var]])
-        percent_importance[[var]] = mean(percDifs[[var]])
-        standardized_importance[[var]] = mean(varDifs[[var]])/sd(varDifs[[var]])
-    }
-
+    absolute_importance = t(data.frame(lapply(varDifs, mean)))
+    percent_importance = t(data.frame(lapply(percDifs, mean)))
+    standardized_importance = t(data.frame(lapply(varDifs, function(x) mean(x)/sd(x))))
     imp = cbind(absolute_importance, percent_importance,
         standardized_importance)
     imp
@@ -97,13 +86,11 @@ varImp_Y_RF = function(forest, method = "oob") {
 #'
 #' Returns the random forest variable importance based on the permutation accruacy measure, which is calculated as the difference in mean squared error between the original data and from randomly permutating the values of a variable.
 #'
-
 #'
 #' @param forest a random forest, generated from splineForest()
 #' @param removeIntercept a boolean value, TRUE if you want to exclude the intercept in the calculations, FALSE otherwise.
 #' @param method the method to be used. This must be one of "oob" (out of bag), "all", "itb" (in the bag).
 #' @return
-#' @importFrom mosaic shuffle
 #' @importFrom mosaic shuffle
 varImp_coeff_RF <- function(forest, removeIntercept = TRUE,
     method = "oob") {
@@ -129,69 +116,69 @@ varImp_coeff_RF <- function(forest, removeIntercept = TRUE,
     varDifs = list()
     percDifs = list()
     for (v in vars) {
-        varDifs[[v]] = c(0)
-        percDifs[[v]] = c(0)
+        varDifs[[v]] = rep(0, length(trees))
+        percDifs[[v]] = rep(0, length(trees))
     }
 
+    cols = 1:NCOL(beta)
     if (intercept == TRUE & removeIntercept ==
         TRUE) {
+        cols = 2:NCOL(beta)
         beta = beta[, -1]
     }
 
+    if (method == "oob") {
+      indices = forest$oob_indices
+    }
+    if (method == "all") {
+      indices = c(1:NROW(forest$Xdata))
+    }
+    if (method == "itb") {
+      indices = forest$index
+    }
+
+    print("working on tree")
     for (i in 1:length(trees)) {
-        print("working on tree")
         print(i)
-        tree = trees[[i]]
+        tree <- trees[[i]]
 
-        if (method == "oob") {
-            oobIndices = forest$oob_indices[[i]]
-        }
-        if (method == "all") {
-            oobIndices = c(1:NROW(forest$Xdata))
-        }
-        if (method == "itb") {
-            oobIndices = forest$index[[i]]
-        }
+        IDS <- forest$Xdata[indices[[i]], ][[idvar]]
+        testset <- Xdata[Xdata[[idvar]] %in% IDS,]
 
-        oobIDS = forest$Xdata[oobIndices, ][[idvar]]
-        testset = Xdata[Xdata[[idvar]] %in% oobIDS,
-            ]
+        wheres <- treeClust::rpart.predict.leaves(tree, testset)
+        preds_coeffs <- t(sapply(1:NROW(testset), function(i) tree$frame[wheres[i], ]$yval2))
 
+        real_coeffs <- testset$Ydata
 
-        preds_coeffs = t(predict_COEFF_helper(tree = tree, testset = testset))
-        real_coeffs = testset$Ydata
+        ### Deal with removing intercept if necessary
+        preds_coeffs = preds_coeffs[,cols]
+        real_coeffs = real_coeffs[,cols]
 
-        if (intercept == TRUE & removeIntercept ==
-            TRUE) {
-            preds_coeffs = preds_coeffs[, -1]
-            real_coeffs = real_coeffs[, -1]
-        }
         mean_coeffs = apply(real_coeffs, 2, mean)
 
-        SSE_tree = 0
-        SSE_total = 0
-        for (i in 1:NROW(preds_coeffs)) {
-            resid = preds_coeffs[i, ] - real_coeffs[i,
-                ]
-            SSE_tree = SSE_tree + t(resid) %*%
+        SSE_tree <- 0
+        SSE_total <- 0
+        for (j in 1:NROW(preds_coeffs)) {
+            resid <- preds_coeffs[j, ] - real_coeffs[j,]
+            SSE_tree <- SSE_tree + t(resid) %*%
                 t(beta) %*% beta %*% resid
         }
 
-        MSE_real = SSE_tree/NROW(preds_coeffs)
+        MSE_real <- SSE_tree/NROW(preds_coeffs)
 
         for (var in vars) {
-            permutedOOB = testset
-            permutedOOB[[var]] = shuffle(permutedOOB[[var]])
-            perm_preds = t(predict_COEFF_helper(tree = tree,
-                testset = permutedOOB))
-            if (intercept == TRUE & removeIntercept ==
-                TRUE) {
-                perm_preds = perm_preds[, -1]
-            }
+            permuted <- testset
+            permuted[[var]] <- shuffle(permuted[[var]])
+
+            wheres <- treeClust::rpart.predict.leaves(tree, permuted)
+            perm_preds <- t(sapply(1:NROW(permuted), function(x) tree$frame[wheres[x], ]$yval2))
+
+
+            perm_preds <- perm_preds[, cols]
             ### COMPUTE SSE USING PERM_PRDS COEFFS.
             MAHALA_perm = 0
-            for (i in 1:NROW(perm_preds)) {
-                resid = perm_preds[i, ] - real_coeffs[i,
+            for (j in 1:NROW(perm_preds)) {
+                resid = perm_preds[j, ] - real_coeffs[j,
                   ]
                 MAHALA_perm = MAHALA_perm + t(resid) %*%
                   t(beta) %*% beta %*% resid
@@ -201,65 +188,15 @@ varImp_coeff_RF <- function(forest, removeIntercept = TRUE,
 
             dif = MSE_perm - MSE_real
             perc_dif = (MSE_perm - MSE_real)/MSE_real
-            varDifs[[var]] = c(varDifs[[var]],
-                dif)
-            percDifs[[var]] = c(percDifs[[var]],
-                perc_dif)
+            varDifs[[var]][i] = dif
+            percDifs[[var]][i] = perc_dif
         }
     }
 
-    absolute_importance = rep(0, length(vars))
-    names(absolute_importance) = vars
-    percent_importance = rep(0, length(vars))
-    names(percent_importance) = vars
-    standardized_importance = rep(0, length(vars))
-    names(standardized_importance) = vars
-    for (var in vars) {
-        absolute_importance[[var]] = mean(varDifs[[var]][-1])
-        percent_importance[[var]] = mean(percDifs[[var]][-1])
-        standardized_importance[[var]] = mean(varDifs[[var]][-1])/sd(varDifs[[var]][-1])
-    }
-
+    absolute_importance = t(data.frame(lapply(varDifs, mean)))
+    percent_importance = t(data.frame(lapply(percDifs, mean)))
+    standardized_importance = t(data.frame(lapply(varDifs, function(x) mean(x)/sd(x))))
     imp = cbind(absolute_importance, percent_importance,
-        standardized_importance)
+                standardized_importance)
     imp
 }
-
-
-
-
-
-#### If I can make this faster by flattening data, could go a long way.
-#### Only to be used when there is an intercept.
-predict_Y_helper <- function(tree, testset, basisMat) {
-
-    wheres <- treeClust::rpart.predict.leaves(tree, testset)
-    #preds <- rep(NA, NROW(testset))
-    #basisMat = cbind(1, bs(testset[[tvar]],
-                           #knots = innerKnots, Boundary.knots = boundaryKnots,
-                           #degree = degree))
-
-    preds <- apply(array(1:NROW(testset)), 1, function(x) sum(tree$frame[wheres[x], ]$yval2*basisMat[x,]))
-
-    #for (i in 1:NROW(testset)) {
-     #   coeffs = tree$frame[wheres[i], ]$yval2
-      #  basis = basisMat[i,]
-       # preds[i] = sum(coeffs*basis)
-    #}
-    preds
-}
-
-
-predict_COEFF_helper <- function(tree, testset) {
-    wheres <- treeClust::rpart.predict.leaves(tree, testset)
-
-    if (is.null(tree$frame$yval2)) {
-        tree$frame$yval2 = tree$frame$yval
-    }
-
-    preds <- sapply(1:NROW(testset), function(i) tree$frame[wheres[i], ]$yval2)
-    preds
-}
-
-
-
