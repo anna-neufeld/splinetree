@@ -13,6 +13,9 @@ varImp_coeff_RF(forest, removeIntercept = TRUE, method = "oob")
 
 \item{method}{the method to be used. This must be one of "oob" (out of bag), "all", "itb" (in the bag).}
 }
+\value{
+a matrix of variable importance metrics.
+}
 \description{
 Returns the random forest variable importance based on the permutation accruacy measure, which is calculated as the difference in mean squared error between the original data and from randomly permutating the values of a variable.
 }

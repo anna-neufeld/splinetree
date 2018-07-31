@@ -27,7 +27,7 @@ forest_projection_R2 <- function(forest, method = "oob", removeIntercept = TRUE)
     # First, get the predicted spline coefficients for every datapoint using the desired method.
     forest_pred_coeffs <- t(predict_coeffs_RF(forest, method))
     # Goal will be to compare these to the true spline coefficients for every datapoint.
-    true_coeffs <- forest$Xdata$Ydata ### Note to self- change this to flat_data to be consistent with tree.
+    true_coeffs <- forest$flat_data$Ydata ### Note to self- change this to flat_data to be consistent with tree.
 
     ### Goal is to see how closely the forest_pred_coeffs approximate the true_coeffs.
     ### To measure this, we use the projected sum of squares.
@@ -94,14 +94,14 @@ forest_Y_R2 <- function(forest, method = "oob") {
     SST <- 0
     SSE <- 0
     ### Loop through each person in dataset.
-    for (i in 1:NROW(forest$Xdata)) {
+    for (i in 1:NROW(forest$flat_data)) {
 
         ### Compute each person's predicted Y values. This requires getting their predicted coefficients
         ### And the appropriate time points for this individual.
         predCoeffs <- as.matrix(forest_pred_coeffs)[i, ]
 
         ### Get all data associated with this person's ID
-        ID <- forest$Xdata[i, ][[forest$idvar]]
+        ID <- forest$flat_data[i, ][[forest$idvar]]
         personDat <- dat[dat[[forest$idvar]] == ID, ]
 
         ### Build basis matrix using same parameters as the common forest-wide basis matrix, but tailored

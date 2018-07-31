@@ -1,11 +1,11 @@
 #### Test that forest is working.
 context("Forest testing")
-#sample_forest <- splineForest(BMI~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs+Lib+News+Mag, BMI~AGE, "ID", nlsySample, degree=1, df=2, intercept=FALSE, cp=0.001, ntree=20)
-#sample_intercept_forest <- splineForest(BMI~HISP+WHITE+BLACK+HGC_FATHER+Num_sibs+HGC_MOTHER+SEX+News+Mag+Lib, BMI~AGE, "ID", nlsySample, degree=1, df=3, intercept=TRUE, cp=0.001, ntree=20)
-#save(sample_forest, file="sample_forest.RData")
-#save(sample_intercept_forest, file="sample_intercept_forest.RData")
+
+
 
 test_that("Building Forests", {
+  sample_forest <- splineForest(BMI~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs+Lib+News+Mag, BMI~AGE, "ID", nlsySample, degree=1, df=2, intercept=FALSE, cp=0.001, ntree=20)
+  sample_intercept_forest <- splineForest(BMI~HISP+WHITE+BLACK+HGC_FATHER+Num_sibs+HGC_MOTHER+SEX+News+Mag+Lib, BMI~AGE, "ID", nlsySample, degree=1, df=3, intercept=TRUE, cp=0.001, ntree=20)
   new_forest <- splineForest(BMI~HISP+WHITE+BLACK+HGC_MOTHER+SEX, BMI~AGE, "ID", nlsySample, degree=1, intercept=TRUE, cp=0.001, ntree=5, diceProb=2/3)
   expect_is(new_forest, "list")
   preds_coeffs = predict_coeffs_RF(new_forest, method="all")
@@ -33,7 +33,7 @@ test_that("Forest Projections", {
   expect_true(forest_Y_R2(sample_intercept_forest, method="itb")>0)
   expect_true(forest_Y_R2(sample_intercept_forest, method="oob")>0)
   expect_true(forest_Y_R2(sample_intercept_forest, method="all")>0)
-  e#Yimp = varImp_Y_RF(sample_intercept_forest, method="oob")
+  #Yimp = varImp_Y_RF(sample_intercept_forest, method="oob")
   #plot_varimp(Yimp[,3])
   ### Variable importance for coeffs
   Cimp = varImp_coeff_RF(sample_forest, method="oob")

@@ -8,6 +8,7 @@
 #' @param forest a random forest, generated from splineForest()
 #' @param method the method to be used. This must be one of "oob" (out of bag), "all", "itb" (in the bag).
 #' @return a matrix storing variable importance metrics.
+#' @export
 #' @importFrom mosaic shuffle
 varImp_Y_RF = function(forest, method = "oob") {
 
@@ -25,11 +26,17 @@ varImp_Y_RF = function(forest, method = "oob") {
     }
 
     if (method == "all") {
-      indices = c(1:NROW(forest$Xdata))
+      indices <- list()
+      for (tree in 1:length(forest$Trees)) {
+        indices[[tree]] <- 1:NROW(forest$flat_data)
+      }
+
     }
+
     if (method == "oob") {
       indices = forest$oob_indices
     }
+
     if (method == "itb") {
       indices = forest$index
     }
@@ -44,7 +51,7 @@ varImp_Y_RF = function(forest, method = "oob") {
         print(i)
         tree = trees[[i]]
 
-        IDS = forest$Xdata[indices[[i]], ][[idvar]]
+        IDS = forest$flat_data[indices[[i]], ][[idvar]]
 
         ID_indices = which(data[[idvar]] %in% IDS)
         testset = data[ID_indices,]
@@ -90,7 +97,8 @@ varImp_Y_RF = function(forest, method = "oob") {
 #' @param forest a random forest, generated from splineForest()
 #' @param removeIntercept a boolean value, TRUE if you want to exclude the intercept in the calculations, FALSE otherwise.
 #' @param method the method to be used. This must be one of "oob" (out of bag), "all", "itb" (in the bag).
-#' @return
+#' @return a matrix of variable importance metrics.
+#' @export
 #' @importFrom mosaic shuffle
 varImp_coeff_RF <- function(forest, removeIntercept = TRUE,
     method = "oob") {
@@ -102,14 +110,14 @@ varImp_coeff_RF <- function(forest, removeIntercept = TRUE,
     idvar = forest$idvar
     tvar = forest$tvar
 
-    beta = forest$Trees[[1]]$parms[[1]]
+    beta = trees[[1]]$parms[[1]]
 
     innerKnots = forest$innerKnots
     boundaryKnots = forest$boundaryKnots
     degree = forest$degree
     intercept = forest$intercept
 
-    Xdata = forest$Xdata
+    flat_data = forest$flat_data
     difs = rep(0, length(vars))
 
     names(difs) = vars
@@ -130,9 +138,15 @@ varImp_coeff_RF <- function(forest, removeIntercept = TRUE,
     if (method == "oob") {
       indices = forest$oob_indices
     }
+
     if (method == "all") {
-      indices = c(1:NROW(forest$Xdata))
+      indices <- list()
+      for (tree in 1:length(forest$Trees)) {
+        indices[[tree]] <- 1:NROW(forest$flat_data)
+      }
+
     }
+
     if (method == "itb") {
       indices = forest$index
     }
@@ -142,8 +156,8 @@ varImp_coeff_RF <- function(forest, removeIntercept = TRUE,
         print(i)
         tree <- trees[[i]]
 
-        IDS <- forest$Xdata[indices[[i]], ][[idvar]]
-        testset <- Xdata[Xdata[[idvar]] %in% IDS,]
+        IDS <- forest$flat_data[indices[[i]], ][[idvar]]
+        testset <- flat_data[flat_data[[idvar]] %in% IDS,]
 
         wheres <- treeClust::rpart.predict.leaves(tree, testset)
         preds_coeffs <- t(sapply(1:NROW(testset), function(i) tree$frame[wheres[i], ]$yval2))

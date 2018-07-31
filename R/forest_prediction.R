@@ -21,7 +21,7 @@ predict_coeffs_RF = function(forest, method = "oob", testdata=NULL) {
   boundaryKnots <- forest$boundaryKnots
   degree <- forest$degree
   intercept <- forest$intercept
-  Xdata <- forest$Xdata
+  flat_data <- forest$flat_data
 
   t <- forest$Trees[[1]]
   coeffDims = NCOL(t$frame$yval2)
@@ -30,7 +30,7 @@ predict_coeffs_RF = function(forest, method = "oob", testdata=NULL) {
   if (is.null(testdata)) {
 
     predictions <- array(NA, c(length(forest$Trees),
-                               coeffDims, NROW(Xdata)))
+                               coeffDims, NROW(flat_data)))
 
     if (method == "oob") {
       indices <- forest$oob_indices
@@ -39,7 +39,7 @@ predict_coeffs_RF = function(forest, method = "oob", testdata=NULL) {
     if (method == "all") {
       indices <- list()
       for (tree in 1:length(forest$Trees)) {
-        indices[[tree]] <- 1:NROW(forest$Xdata)
+        indices[[tree]] <- 1:NROW(forest$flat_data)
       }
     }
 
@@ -48,10 +48,10 @@ predict_coeffs_RF = function(forest, method = "oob", testdata=NULL) {
     }
 
   for (tree in 1:length(forest$Trees)) {
-    preds <- array(NA, c(coeffDims, NROW(Xdata)))
+    preds <- array(NA, c(coeffDims, NROW(flat_data)))
     test_indices <- indices[[tree]]
 
-    testset <- Xdata[test_indices, ]
+    testset <- flat_data[test_indices, ]
 
     preds[, test_indices] <- predict_coeffs_tree(forest$Trees[[tree]],
                                                  testset)
@@ -59,7 +59,7 @@ predict_coeffs_RF = function(forest, method = "oob", testdata=NULL) {
   }
   actualpredictions <- data.frame(apply(predictions,
                                         c(2, 3), mean, na.rm = TRUE))
-  names(actualpredictions) <- Xdata[[idvar]]
+  names(actualpredictions) <- flat_data[[idvar]]
   actualpredictions
   }
   ### If testdata is not null and you actually want to predict on a new dataset.
@@ -109,7 +109,7 @@ predict_y_RF <- function(forest, method = "oob", testdata=NULL) {
 
   innerKnots <- forest$innerKnots
   boundaryKnots <- forest$boundaryKnots
-  Xdata <- forest$Xdata
+  flat_data <- forest$flat_data
   degree <- forest$degree
   tvar <- forest$tvar
   idvar <- forest$idvar
@@ -119,14 +119,9 @@ predict_y_RF <- function(forest, method = "oob", testdata=NULL) {
     coeffPreds <- t(predict_coeffs_RF(forest, method))
     preds <- rep(NA, NROW(forest$data))
 
-    for (i in 1:NROW(forest$Xdata)) {
-      ID <- Xdata[i, ][[idvar]]
+    for (i in 1:NROW(forest$flat_data)) {
+      ID <- flat_data[i, ][[idvar]]
       personDat = dat[dat[[idvar]] == ID, ]
-
-      personBasis <- cbind(1, bs(personDat[[tvar]],
-                                   knots =  innerKnots, Boundary.knots = boundaryKnots,
-                                   degree = degree))
-
       coeffs <- coeffPreds[i,]
 
       ### Assumes that forest includes intercept.

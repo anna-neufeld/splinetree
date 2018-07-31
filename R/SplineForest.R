@@ -128,6 +128,9 @@ splineForest <- function(splitFormula, tformula,
             maxcompete = 0, parms = list(basisMatrix,
                 diceProb))
 
+        if (is.null(fit$frame$yval2)) {
+          fit$frame$yval2 <- fit$frame$yval
+        }
         ### Save information from this iteration to forest.
         itbIndices[[j]] = unique(indices)
         myForest[[j]] = fit
@@ -140,7 +143,7 @@ splineForest <- function(splitFormula, tformula,
         intercept, Ydata, df, boundaryKnots, innerKnots,
         idvar, yvar, tvar)
     names(results) = c("Trees", "index", "splits",
-        "data", "Xdata", "formula", "oob_indices",
+        "data", "flat_data", "formula", "oob_indices",
         "degree", "intercept", "Ydata", "df", "boundaryKnots",
         "innerKnots", "idvar", "yvar", "tvar")
     results
