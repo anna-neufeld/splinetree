@@ -44,7 +44,7 @@
 splineForest <- function(splitFormula, tformula,
     idvar, data, knots = NULL, df = NULL, degree = 3,
     intercept = FALSE, nGrid = 7, ntree = 50, diceProb = 0.3,
-    cp = 0.001) {
+    cp = 0.001, minNodeSize=1) {
     #### Once per forest, need to do all of the
     #### preprocessing spline steps.
     yvar <- attr(terms(getResponseFormula(splitFormula)),

@@ -1,18 +1,141 @@
 #' Returns number of terminal nodes in a tree.
 #' @param model A splinetree object, or any rpart object
 #' @return Number of terminal nodes in tree
+#' @export
+#' @examples
+#' splitForm <-BMI~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs
+#' model1 <- splineTree(splitForm, BMI~AGE, 'ID', nlsySample, degree=1, intercept=FALSE, cp=0.005)
+#' treeSize(model1)
 treeSize <- function(model) {
     NROW(unique(model$where))
 }
 
+
 #' Prints the tree frame.
 #'
 #' @param model A splinetree object.
+#' @example
+#' splitForm <-BMI~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs
+#' model1 <- splineTree(splitForm, BMI~AGE, 'ID', nlsySample, degree=1, intercept=FALSE, cp=0.005)
+#' treeSummary(model1)
+#' @export
 treeSummary <- function(model) {
     frame <- model$frame
-    frame$coeffs = frame$yval2
     summary <- data.frame(cbind(data.frame(frame$var),
-        frame$n, frame$dev, frame$coeffs))
-    names(summary) = cbind("var", "n", "dev", "coeffs")
+        frame$n, frame$dev))
+    names(summary) <- cbind("var", "n", "dev")
+    summary$coeffs <- frame$yval2
+    row.names(summary) <- row.names(frame)
     summary
+}
+
+
+#' Returns a printed summary of the paths to the terminal nodes in the tree.
+#'
+#' Importantly, provides the node numbers for each node that are found in the 'where'
+#' attribute of the tree. Note that these nubmers differ from those shown in the rpart
+#' printout of the tree.
+#'
+#' @param tree a splinetree object
+#' @return a list, indexed by terminal node numbers, where each
+#' element of the list holds the path to the terminal node.
+#' @export
+#' @example
+#' splitForm <-BMI~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs
+#' model1 <- splineTree(splitForm, BMI~AGE, 'ID', nlsySample, degree=1, intercept=FALSE, cp=0.005)
+#' terminalNodeSummary(model1)
+terminalNodeSummary <- function(tree) {
+  for (i in 1:nrow(tree$frame)) {
+    if (tree$frame[i,]$var == "<leaf>") {
+      cat(paste("\n N:", tree$frame[i,]$n))
+      coeffs  <- paste(tree$frame[i,]$yval2, collapse=',')
+      cat(paste("\n Coefficients:",coeffs))
+      path.rpart(tree, row.names(tree$frame)[i])
+      cat('\n----------')
+    }
+  }
+}
+
+
+#' Returns the portion of the data found at a given terminal node
+#'
+#' Given a terminal node number, this function returns the dataset found at this terminal node.
+#' If the dataType arguement is 'all', then all rows of data (with original response values) that
+#' fall in this node are returned.  Otherwise, the flattened data is returned (one row of data per
+#' person/unit, original responses replaced by spline coefficients).
+#'
+#' @param tree a splinetree object
+#' @param node The number of the node that you want the data for.
+#' Node numbers for your model can be seen using print.splinetree(tree)
+#' or treeSummary(tree). Note that this node number should correspond to
+#' a terminal node.
+#' @param dataType If "all", the data returned is the original data (one row per individual observation
+#' with original response values). If "flat", the data returned is the flattened data (one row per person/unit),
+#' with spline coefficients instead of response values.
+#' @return A dataframe which holds all the data that falls into this node of the tree.
+#' @export
+#' @example
+#' splitForm <-BMI~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs
+#' model1 <- splineTree(splitForm, BMI~AGE, 'ID', nlsySample, degree=1, intercept=FALSE, cp=0.005)
+#' node8data <- getNodeData(model1, 8, dataType = 'all)
+#' plot(BMI~AGE, data=node8data)
+getNodeData <- function(tree, node, dataType = 'all') {
+  nodeIndex <- which(row.names(tree$frame)==node)
+  if (tree$frame[nodeIndex,]$var != "<leaf>") stop("This node number does not correspond to a terminal node.
+                                                   Please look at the numbers provided in the
+                                                   print.splinetree() printout printed tree and try again.")
+
+  flat_node_data = tree$parms$flat_data[tree$where==nodeIndex,]
+  if (dataType=="flat") {
+    flat_node_data
+  }
+  else {
+    tree$parms$data[tree$parms$data[[tree$parms$idvar]] %in% flat_node_data[[tree$parms$idvar]],]
+  }
+}
+
+
+#' Plot the predicted trajectory for a single node
+#'
+#' Make a simple plot to view the trajectory predicted at a given node. Option to include or not include
+#' the individual trajectories of people in the node as well.
+#'
+#' @importFrom ggplot2 ggplot xlab ylab
+#' @export
+#' @param tree a splinetree object
+#' @param node a node number that must correspond to a terminal node
+#' @param includeData would you like to see the data from the node
+#' plotted along with the predicted trajectory?
+#' @example
+#' splitForm <-BMI~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs
+#' model1 <- splineTree(splitForm, BMI~AGE, 'ID', nlsySample, degree=1, intercept=FALSE, cp=0.005)
+#' plotNodeTraj(model1, 4, includeData=TRUE)
+plotNodeTraj <-  function(tree, node, includeData = FALSE) {
+  nodeIndex <- which(row.names(tree$frame)==node)
+  nodeCoeffs <- tree$frame[nodeIndex,]$yval2
+  if (tree$frame[nodeIndex,]$var != "<leaf>") stop("This node number does not correspond to a terminal node.
+                                                   Please look at the numbers provided in the
+                                                   print.splinetree() printout printed tree and try again.")
+
+  flat_node_data = tree$parms$flat_data[tree$where==nodeIndex,]
+  data = tree$parms$data[tree$parms$data[[tree$parms$idvar]] %in% flat_node_data[[tree$parms$idvar]],]
+
+  xRange = range(data[[tree$parms$tvar]])
+  xGrid = seq(xRange[1], xRange[2], length.out=20)
+  if (tree$parms$intercept) {
+    newxmat <- cbind(1, bs(xGrid, knots = tree$parms$innerKnots,
+                           Boundary.knots = tree$parms$boundaryKnots,
+                           degree = tree$parms$degree))
+    preds <- newxmat %*% t(nodeCoeffs)
+  } else {
+    newxmat <- bs(xGrid, knots = tree$parms$innerKnots,
+                           Boundary.knots = tree$parms$boundaryKnots,
+                           degree = tree$parms$degree)
+    mean_int = mean(tree$parms$data[(tree$parms$data[[tree$parms$tvar]] -
+                                  min(tree$parms$data[[tree$parms$tvar]])) < 1, ][[tree$parms$yvar]])
+    preds <- newxmat %*% t(nodeCoeffs) + mean_int
+  }
+
+    ggplot() + geom_line(aes(x=xGrid, y=preds, color="red"))+geom_line(data=data, mapping = aes_string(x = tree$parms$tvar, y = tree$parms$yvar,
+                                    group = tree$parms$idvar))+theme(legend.position="none")+xlab(tree$parms$tvar)+ylab(tree$parms$yvar)
 }

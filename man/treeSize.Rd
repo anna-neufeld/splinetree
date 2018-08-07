@@ -15,3 +15,8 @@ Number of terminal nodes in tree
 \description{
 Returns number of terminal nodes in a tree.
 }
+\examples{
+splitForm <-BMI~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs
+model1 <- splineTree(splitForm, BMI~AGE, 'ID', nlsySample, degree=1, intercept=FALSE, cp=0.005)
+treeSize(model1)
+}
