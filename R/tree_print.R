@@ -14,9 +14,9 @@
 #' @example
 #' splitForm <-BMI~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs
 #' model1 <- splineTree(splitForm, BMI~AGE, 'ID', nlsySample, degree=1, intercept=FALSE, cp=0.005)
-#' printST(model1)
+#' stPrint(model1)
 #' @export
-printST <- function(x, cp, digits = getOption("digits"), ...)
+stPrint <- function(x, cp, digits = getOption("digits"), ...)
 {
   minlength = 0L
   spaces = 2L

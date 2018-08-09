@@ -1,0 +1,86 @@
+---
+title: "Splinetree Quickstart"
+author: "Brianna Heggeseth and Anna Neufeld"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This guide is meant for users who are familiar with regression trees and the spline projection method but who are unfamiliar with the ``splinetree`` package specifics. The guide walks through examples of building a tree, plotting a tree, evaluating a tree, and building a forest. The data used for these examples comes from the National Longitudinal Survey of Youth (1979). 
+
+# Building a Tree 
+
+Before building a tree, the user must select many different parameters. The first several parameters require understanding the dataset and the variables of interest. The next several parameters involve specifying the basis matrix that will be used for evaluating the projection sum of squares split criteria. The remaining parameters deal with controlling the recursive partitioning process.
+
+### Dataset and formulas
+
+To start, ensure that your data is in long format. Then identify the following variables of interest:
+
+1. Response variable: The longitudinal response variable. 
+2. Time variable: We care about the trajectory of the response variable over the time variable. 
+3. ID variable: The variable used to identify individual observations that belong to the same trajectory / individual. 
+4. Split variables: The variables that the tree will make splits on. These variables should be *time constant*- for a given individual (ID), each split variable should only take on one value. These are variables that we think might influence the trajectory of the reponse over time. 
+
+The code below shows a subset of the NLSY sample. In this example, our ID variable is ``ID``, our time variable is ``AGE``, and our response variable is ``BMI``. In selecting split variables, we are able to use ``HGC_MOTHER`` (highest grade completed by mother), ``HGC_FATHER`` (highest grade completed by father), ``Num_sibs``, and ``RACE``, because each of these are baseline variables that were recorded once at the first subject interview regarding the subject's childhood and did not change over time. However, ``HGC`` (highest grade completed by survey participant) cannot be used as a split variable because as individuals completed more schooling, the responses for a given individual could change year to year. If we really wanted to include ``HGC`` as a split variable, we could find the maximum ``HGC`` obtained by each individual and create a new, time-constant varaible to capture this information. For our example, we will not do this. We will only choose time-constant split variables. 
+
+```{r, echo=FALSE}
+library(splinetree)
+head(nlsySample_large[,c(1,26,31, 12,14,17,24,27)], n=20)
+```
+
+Taking into account the additional time-constant variables in ``nlsySample_large``, we are ready to specify our first several parameters for our call to ``splineTree()``. 
+
+```{r}
+splitFormula <-split_formula <- BMI ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc + Num_sibs + 
+  HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14 + 
+  Mother_14 + Father_14 + STABLE_RESIDENCE + URBAN_14 + South_Birth
+tformula <- BMI~AGE
+idvar <- "ID"
+data <- nlsySample_large
+```
+
+Now that we have these values, we are able to build a tree. All remaining parameters have default parameters, so this is all we *need*. Let's try a first tree.
+
+```{r}
+library(splinetree)
+first_tree <- splineTree(splitFormula, tformula, idvar, data)
+```
+
+We can view our tree either through a printout or a plot.
+
+```{r}
+stPrint(first_tree)
+stPlot(first_tree)
+```
+
+We notice that our tree is very small. This is due to the default value of the *complexity parameter* (``cp``). The *complexity parameter* is passed by ``splinetree`` into the call to ``rpart`` and specifies a minimum improvement in ndoe purity that must occur in order for the tree to make a split. The default value of 0.01 is typically good because it helps protect against overfitting, but in the NLSY sample the relationships are quite weak, and so in order to create useful examples we want to let our tree make more split. For these examples, we will reduce the cp to 0.001. We also notice that in this first tree, one of our terminal nodes has only 16 people in it, as it only includes individuals with 12 or more siblings. So our tree is basically showing us the population average trajectory, and then it is showing us that individuals with 12 or more siblings tend to gain weight more rapidly than individuals with less than 12 siblings. While this is interesting, it applies to a very small subset of the population. We might want to only let our tree build terminal nodes with say, at least 20 people in them. We can do this with the ``minNodeSize`` parameter. Let's modify our tree:
+
+```{r}
+second_tree <- splineTree(splitFormula, tformula, idvar, data, minNodeSize=20, cp=0.001)
+stPrint(second_tree)
+stPlot(second_tree)
+```
+
+
+
+### Choosing the basis matrix and the projection grid
+
+As the splitting process is based on a spline projection process, we must specify the spline basis that we want to use. We also must specify the grid that we wish to evaluate the projection sum of squares on. We must pick the following quantities:
+
+5. ``degree``: choosing the degree of the spline basis may depend on prior knowledge of the expected shape of the trajectories
+6. ``knots`` or ``df`` 
+7. ``intercept``: 
+8. ``nGrid``
+
+Although choosing a higher degree and more internal knots or degrees of freedom will allow each projected trajectory to more truly capture the real trajectory, allowing the basis matrix to have too many dimensions can cause problems. If an individual has less observations than the specified degrees of freedom, 
+
+In our example, we will fit a few different trees with different values of these parameters for the sake of comparison. Previous research has found that, on average, adult BMIs tend to increase steadily throughout early adulthood and then flatten out in later adulthood (Clarke et al. 2008). This type of trajectory could be modeled either with a quadratic trajectory of a piecewise linear trajectory, so we will consider both a quadratic basis with no internal knots and a linear basis with one internal knot. We will also consider trees both with and without an intercept, as the contrast between these trees will yield insights into which variables may effect the level of BMI but not the shape of the trajectory. 
+
+

@@ -9,9 +9,9 @@
 #' @examples
 #' form <- BMI~HISP+WHITE+BLACK+HGC_MOTHER+SEX
 #' model <- splineTree(form, BMI~AGE, 'ID', nlsySample, degree=1, intercept=FALSE, cp=0.007)
-#' stPlots(model)
+#' stPlot(model)
 #' @export
-stPlots <- function(model, colors = NULL) {
+stPlot <- function(model, colors = NULL) {
     #dev.off()
     if (is.null(colors)) {
         colors = rainbow(dim(model$frame)[1], v = 0.9)
@@ -175,17 +175,20 @@ nodePlot <- function(model, colors = NULL) {
             newxmat <- cbind(1, bs(newx, knots = innerKnots,
                 Boundary.knots = boundaryKnots,
                 degree = degree))
+            mean_int = 0
         } else {
             newxmat <- bs(newx, knots = innerKnots,
                 Boundary.knots = boundaryKnots,
                 degree = degree)
+            mean_int = mean(personData[(personData[[tvar]] -
+                                          min(personData[[tvar]])) < 1, ][[yvar]])
         }
 
         realcoeffs = model$frame[leaves[i], ]$yval2
         preds2 <- newxmat %*% t(realcoeffs)
 
         xplotList[[i]] = newx
-        plotList2[[i]] = preds2
+        plotList2[[i]] = preds2 + mean_int
     }
 
     f = model$frame

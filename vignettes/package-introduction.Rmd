@@ -16,6 +16,8 @@ knitr::opts_chunk$set(
 )
 ```
 
+This paper is meant to serve as a thorough introduction to the ``splinetree`` package. For a more concise quick-start guide, see the quickstart vignette. 
+
 # Motivation
 
 Longitudinal studies, where an outcome of interest is measured in the same subjects over time, play a key role in research across a variety of disciplines, from medicine and epidemiology to the social and behavioral sciences. In these studies, it is often useful to understand whether different groups of the population display distinct trajectory patterns. This can be done through clustering the trajectories of different observational units into homogeneous groups. We propose using longitudinal regression trees, specifically ``splinetree``, to uncover subgroups of homogeneous trajectories where each subgroup is labeled by common covariate values. Then, to obtain more stable measures of variable importance, we propose using longitudinal random forests. 
@@ -28,28 +30,49 @@ where $f_i(t) = \sum_{k = 1}^q\beta_{ik} X_k(t)$ for a set of basis functions, $
 
 This framework allows for the modeling of complex, non-linear trajectories with internal knots. By ignoring the coefficient corresponding to the intercept in the splitting process, the splitting methodology can take into account only change over time while ignoring level. Once the dimesnion of the response is reduced to a set of coefficient vectors, the tree-splitting process essentially follows CART (Brieman, 1984) with a modified split function, which means thatit can be implemented using the custom function functionality of the widely used package rpart. 
 
-This paper is intended as a straightforward guide to using our package to create longitudinal regression trees and longitudinal random forests using the ``splinetree'' package. For more information on the methodology or the implementation, see our paper (cite here when it gets written). 
+This vignette is intended as a straightforward guide to using our package to create longitudinal regression trees and longitudinal random forests using the ``splinetree'' package. 
 
-Moosstraße, 5020 Salzburg# Building and Understanding a Spline Tree
+# Building and Understanding a Spline Tree
 
 In this section, we will walk through the process of building a tree, from choosing a dataset to visualizing and evaluating the model. For our examples, we will use data from the National Longitudinal Survey of Youth, 1979 (NLSY). Specifically, we choose body mass index (BMI) as our response variable, and numerous variables related to baseline soioeconomic status and family background as our covariates. We randomly sample 1,000 individuals from the NLSY who have non-missing BMI data at at least 10 timepoints spread out over at least 20 years. 
 
-## Preparing your data
+## Preparing and Understanding your data
 
-- Make sure it is long format
+- Know which variables are ``response``, ``ID``, ``time``, and ``split``. 
 
-- No time varying covariates (if you wanted, you could turn these into an average or a summary, but you would need to reformat your data to make sure they are included correctly). 
 
+
+To begin, the longitudinal dataset should be in long format. This means that for each observational unit (in this example, each person) there are many different rows of data corresponding to individual measurements taken at different values of the "time" variable (in our example, at different ages). Different rows of data that belong to the same individual are linked together by a common ID variable- the name of this variable will be passed to the ``splineTree()`` function as ``idvar``. 
+
+At this time, the ``splinetree`` package does not support time-varying split covariates. This means that the variables of interest other than the response and the "time" variable should be constant for a given individual. So, if there are 10 rows of data corresponding to the person with ID 372, 
+
+If some variables of interest are time-varying, a workaround is to summarize the variable in some way, and then including a time constant summary in the tree. For example, a time-varying covariate could be turned into a time-constant covariate by taking an average, or the time-varying covariate could be regressed against time and the slope coefficient could be used as the new covariate. 
+
+```{r}
+#### Example- picked certain columns in certain order just for ease of printing. 
+library(splinetree)
+head(nlsySample_large[,c(1,26,31, 12,14,17,24,27)], n=20)
+```
+ 
 ## Choosing model parmaters
 
-- Intercept or no intercept
+After identifying the variables of interest in the dataset, we must pick how we want to project out data onto a spline basis, and we also must pick some parameters that determine tree size. 
 
-- Pick a basis and pick notes- be aware of unstable spline coefficients if you don't have data on both side of knots, be aware that if you have more degrees of freedom than datapoints you will have NA coefficients and these people will be thrown out. 
+The first important choice is if we want our tree to be built with or without an intercept. If the tree is built with an intercept, the splitting process takes into account both level and shape of response. If the tree is built without an intercept, the splitting process takes into account only the shape of the trajectory while ignoring the level of the response. If the intercept is excluded, the splits of the tree will inform us about which variables impact the shape of a trajectory, but the downside is that the terminal nodes of the tree cannot be used for prediction. This choice goes into the ``splineTree`` function using the parameter ``intercept``. 
 
-- Tree size parameters
+In specifying the spline basis, you must provide the parameters ``degree``, ``df``, ``knots``. All of these parameters have reasonable default values and so can be ommitted, but undertsanding their purpose will help to understand the tree output better. Degree is an integer that specifies the degree of the polynomial to be used in the spline basis. Also-- it depends on the data and prior knowledge. Try a few different choices. In our case, previous research has suggested piecewise linear for adult trajectories. 
+
+Finally, we must choose nGrid (or supply our own grid). 
+
+Caution should be exercised while picking a spline basis. While it may seem tempting to use a quartic spline with 10 internal knots to capture very precise summaries of the true trajectories, doing so will likely lead to error messages. If the degrees of freedom exceeds the number of observations for an individual in the dataset, then this individual will be thrown out during the tree building process. So, for example, with 10 degrees of freedom, all individuals with less than 10 measurements will be thrown out, which may reduce the size of the dataset significantly. We recommend around 4 degrees of freedom to avoid throwing out data.
+
+Another issue that can arise deals with the location of internal knots. If one individual in the dataset has plenty of observations, but happens to have no observations on one side of an internal knot, then this individual may be assigned very inpredictable spline coefficients, which can impact the entire splitting proceess. Our package does not automatically throw these individuals out- but if you see any very strange predicted trajectories in your tree or on your plots, we reccommend you go check if one individual has datapoints that are not evenly spread out over the time frame. 
+
+- Tree size parameters. 
 
 ## Fitting the model
 
+After that long discussion of parameters, we are ready to build a model. We pretty much learned what all the parameters were above. Suppose we cannot decide if we would rather use a linear basis with an internal knot or a quadratic basis. Either might be reasonable based on previous research. 
 - Example code of building a spline tree. Show some stuff about how to print a summary. 
 - Explain that the model is just an rpart object which is nice. Has extra info stored in parms in case you forget.
 - Show a few with different types of coefficients. 
