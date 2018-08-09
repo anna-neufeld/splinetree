@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-This guide is meant for users who are familiar with regression trees, random forests, and the spline projection method but who are unfamiliar with the ``splinetree`` package specifics. The guide walks through examples of building and evaluating forests. This guide builds off of the ``splinetree quickstart 1`` guide. The data used for these examples comes from the National Longitudinal Survey of Youth (1979). In the example, we are studying body mass index (BMI) trajectories measured at different ages. We are wondering if various baseline socioeconomic variables drive heterogeneity in BMI trajectory.
+This guide is meant for users who are familiar with regression trees, random forests, and the spline projection method but who are unfamiliar with the ``splinetree`` package specifics. The guide walks through examples of building and evaluating forests. This guide builds off of the ``Introduction` guide. The data used for these examples comes from the National Longitudinal Survey of Youth (1979). In the example, we are studying body mass index (BMI) trajectories measured at different ages. We are wondering if various baseline socioeconomic variables drive heterogeneity in BMI trajectory.
 
 # Building a Forest
 
