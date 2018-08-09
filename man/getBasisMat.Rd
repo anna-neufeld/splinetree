@@ -5,7 +5,7 @@
 \title{Get the basis matrix to be used for this spline tree}
 \usage{
 getBasisMat(yvar, tvar, idvar, data, knots = NULL, df, degree, intercept,
-  nGrid = 7)
+  gridPoints, nGrid = 7)
 }
 \arguments{
 \item{yvar}{Name of response variable (string)}

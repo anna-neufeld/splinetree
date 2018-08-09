@@ -13,22 +13,20 @@ vignette: >
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-This guide is meant for users who are familiar with regression trees and the spline projection method but who are unfamiliar with the ``splinetree`` package specifics. The guide walks through examples of building a tree, plotting a tree, evaluating a tree, and building a forest. The data used for these examples comes from the National Longitudinal Survey of Youth (1979). 
+This guide is meant for users who are familiar with regression trees and the spline projection method but who are unfamiliar with the ``splinetree`` package specifics. The guide walks through examples of building a tree, plotting a tree, evaluating a tree, and building a forest. The data used for these examples comes from the National Longitudinal Survey of Youth (1979). In the example, we are studying body mass index (BMI) trajectories measured at different ages. We are wondering if various baseline socioeconomic variables drive heterogeneity in BMI trajectory. 
 
 # Building a Tree 
 
-Before building a tree, the user must select many different parameters. The first several parameters require understanding the dataset and the variables of interest. The next several parameters involve specifying the basis matrix that will be used for evaluating the projection sum of squares split criteria. The remaining parameters deal with controlling the recursive partitioning process.
+To begin building a tree, all that is needed is a longitudinal dataset (should be in long format) and the specification of four different types of variables. After establishing the dataset and specifying the variables, there are numerous ways to customize the tree so as to best fit the data. 
 
-### Dataset and formulas
+Once you have ensured that your data is in long format, identify the following variables from the dataset: 
 
-To start, ensure that your data is in long format. Then identify the following variables of interest:
+1. **Response variable**: The longitudinal response variable. In our example, this is ``BMI``. 
+2. **Time variable**: Together with the response variable, the time variable allows us to specify the ``tformula`` parameter. The ``tformula`` parameter defines the trajectory we are interested in. In our case, the time variable is ``AGE`` and the ``tformula`` is ``BMI~AGE``. 
+3. ID variable: The variable used to identify individual observations that belong to the same trajectory / individual. In our example, this is ``ID``. This gets provided to the ``splineTree()`` function as a string. 
+4. ***Split variables**: The variables that the tree will make splits on. These variables should be *time constant*- for a given individual (ID), each split variable should only take on one value. These are variables that we think might influence the trajectory of the reponse over time. In our example, these are the baseline socioeconomic variables selected from the NLSY. Together with the response variable, the split variables are used to specify the ``splitformula`` parameter. 
 
-1. Response variable: The longitudinal response variable. 
-2. Time variable: We care about the trajectory of the response variable over the time variable. 
-3. ID variable: The variable used to identify individual observations that belong to the same trajectory / individual. 
-4. Split variables: The variables that the tree will make splits on. These variables should be *time constant*- for a given individual (ID), each split variable should only take on one value. These are variables that we think might influence the trajectory of the reponse over time. 
-
-The code below shows a subset of the NLSY sample. In this example, our ID variable is ``ID``, our time variable is ``AGE``, and our response variable is ``BMI``. In selecting split variables, we are able to use ``HGC_MOTHER`` (highest grade completed by mother), ``HGC_FATHER`` (highest grade completed by father), ``Num_sibs``, and ``RACE``, because each of these are baseline variables that were recorded once at the first subject interview regarding the subject's childhood and did not change over time. However, ``HGC`` (highest grade completed by survey participant) cannot be used as a split variable because as individuals completed more schooling, the responses for a given individual could change year to year. If we really wanted to include ``HGC`` as a split variable, we could find the maximum ``HGC`` obtained by each individual and create a new, time-constant varaible to capture this information. For our example, we will not do this. We will only choose time-constant split variables. 
+The code below shows a subset of the NLSY sample. In selecting split variables, we are able to use ``HGC_MOTHER`` (highest grade completed by mother), ``HGC_FATHER`` (highest grade completed by father), ``Num_sibs``, and ``RACE``, because each of these are baseline variables that were recorded once at the first subject interview regarding the subject's childhood and did not change over time. However, ``HGC`` (highest grade completed by survey participant) cannot be used as a split variable because as individuals completed more schooling, the responses for a given individual could change year to year. If we really wanted to include ``HGC`` as a split variable, we could find the maximum ``HGC`` obtained by each individual and create a new, time-constant varaible to capture this information. For our example, we will not do this, and we will instead choose time-constant split variables. 
 
 ```{r, echo=FALSE}
 library(splinetree)
@@ -53,20 +51,32 @@ library(splinetree)
 first_tree <- splineTree(splitFormula, tformula, idvar, data)
 ```
 
-We can view our tree either through a printout or a plot.
+We can view our tree either through printing or plotting. 
 
 ```{r}
 stPrint(first_tree)
 stPlot(first_tree)
 ```
 
-We notice that our tree is very small. This is due to the default value of the *complexity parameter* (``cp``). The *complexity parameter* is passed by ``splinetree`` into the call to ``rpart`` and specifies a minimum improvement in ndoe purity that must occur in order for the tree to make a split. The default value of 0.01 is typically good because it helps protect against overfitting, but in the NLSY sample the relationships are quite weak, and so in order to create useful examples we want to let our tree make more split. For these examples, we will reduce the cp to 0.001. We also notice that in this first tree, one of our terminal nodes has only 16 people in it, as it only includes individuals with 12 or more siblings. So our tree is basically showing us the population average trajectory, and then it is showing us that individuals with 12 or more siblings tend to gain weight more rapidly than individuals with less than 12 siblings. While this is interesting, it applies to a very small subset of the population. We might want to only let our tree build terminal nodes with say, at least 20 people in them. We can do this with the ``minNodeSize`` parameter. Let's modify our tree:
+We notice that our tree is very small. This is due to the default value of the *complexity parameter* (``cp``). The *complexity parameter* is passed by ``splinetree`` into the call to ``rpart`` and specifies a minimum improvement in ndoe purity that must occur in order for the tree to make a split. The default cp value of 0.01 typically helps prevent overly large trees, but in the NLSY example the relationships are quite weak, and so in order to build a tree that will be interesting to plot we might want to lower the cp. We also notice that in this first tree, one of our terminal nodes has only 16 people in it, as it only includes individuals with 12 or more siblings. So our tree is basically showing us the population average trajectory, and then it is showing us that individuals with 12 or more siblings tend to gain weight more rapidly than individuals with less than 12 siblings. While this is interesting, it applies to a very small subset of the population. We might want to only let our tree build terminal nodes with say, at least 20 people in them. We can do this with the ``minNodeSize`` parameter. Let's modify our tree:
 
 ```{r}
 second_tree <- splineTree(splitFormula, tformula, idvar, data, minNodeSize=20, cp=0.001)
-stPrint(second_tree)
-stPlot(second_tree)
+treeSize(second_tree)
 ```
+
+When we lower the ``cp`` to 0.001, the tree has 25 terminal nodes. This tree will be difficult to plot or analyze. Let's try an in-between ``cp`` of 0.005. 
+
+```{r}
+third_tree <- splineTree(splitFormula, tformula, idvar, data, minNodeSize=20, cp=0.005)
+treeSize(third_tree)  
+stPrint(third_tree)
+stPlot(third_tree)
+```
+
+5 terminal nodes seems like a reaosnable tree size for this example. The tree is small enough to plot and understand, but large enough to be interesting. 
+
+Now that we have a starting tree, we can start to consider more interesting
 
 
 

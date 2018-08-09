@@ -5,8 +5,8 @@
 \title{Build a splinetree object}
 \usage{
 splineTree(splitFormula, tformula, idvar, data, knots = NULL, df = NULL,
-  degree = 3, intercept = FALSE, nGrid = 7, minNodeSize = 10,
-  cp = 0.01)
+  degree = 3, intercept = FALSE, nGrid = 7, gridPoints = NULL,
+  minNodeSize = 10, cp = 0.01)
 }
 \arguments{
 \item{splitFormula}{Formula specifying the longitudinal response variable and the time-constant variables that will be used for splitting in the tree.}
@@ -27,8 +27,12 @@ will be added at quantiles of the training data. If both df and knots are unspec
 \item{intercept}{Specifies whether or not the splitting process will consider the intercept coefficient of the spline projections.
 Defaults to FALSE, which means that the tree will split based on trajectory shape, ignoring response level.}
 
-\item{nGrid}{Number of grid points to evaluate projection sum of squares at. The default is 7, which corresponds to evaluating projections
-at the endpoints and quintiles of the time variable.}
+\item{nGrid}{Number of grid points to evaluate projection sum of squares at. If gridPoints
+is not supploed, this arguement will be used and the projection sum of squares will be evaluated
+at quantiles of the time variable.}
+
+\item{gridPoints}{Optional. A vector of numbers that will be used as the grid on which to evaluate the
+projection sum of squares. Should fall roughly within the range of the time variable.}
 
 \item{minNodeSize}{Minimum number of observational units that can be in a terminal node. Controls tree size and helps avoid overfitting.}
 
