@@ -1,0 +1,43 @@
+---
+title: "Introduction to Forest Building with splinetree"
+author: "Anna Neufeld"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This guide is meant for users who are familiar with regression trees, random forests, and the spline projection method but who are unfamiliar with the ``splinetree`` package specifics. The guide walks through examples of building and evaluating forests. This guide builds off of the *Introduction to Tree Building with splinetree* guide. The data used for these examples comes from the National Longitudinal Survey of Youth (1979). In the example, we are studying body mass index (BMI) trajectories measured at different ages. We are wondering if various baseline socioeconomic variables drive heterogeneity in BMI trajectory.
+
+# Building a Forest
+
+If you are already familiar with building trees in ``splinetree`` (see "Introduction to Tree Building with splinetree if not"), then building a forest is straightforward. The majority of the parameters needed to use the ``splineForest`` function are identical to those used in the ``splineTree`` function.
+
+- prob
+- nTree
+
+# Working with a Forest
+ 
+- components of a forest object
+- Prediction
+
+# Evaluating a Forest
+
+- R2
+
+# Variable Importance
+- Show how to use function
+- Compare to single tree
+- Show plot
+- Explain why better
+
+

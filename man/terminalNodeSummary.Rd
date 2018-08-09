@@ -4,7 +4,7 @@
 \alias{terminalNodeSummary}
 \title{Returns a printed summary of the paths to the terminal nodes in the tree.}
 \usage{
-terminalNodeSummary(tree)
+terminalNodeSummary(tree, node = NULL)
 }
 \arguments{
 \item{tree}{a splinetree object}

@@ -10,7 +10,7 @@ getNodeData(tree, node, dataType = "all")
 \item{tree}{a splinetree object}
 
 \item{node}{The number of the node that you want the data for.
-Node numbers for your model can be seen using print.splinetree(tree)
+Node numbers for your model can be seen using stPrint(tree)
 or treeSummary(tree). Note that this node number should correspond to
 a terminal node.}
 

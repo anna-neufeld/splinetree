@@ -2,15 +2,15 @@
 #'
 #' Builds an ensemble of regression trees for longitudinal or functional data using the spline projection method. The resulting object
 #' is a list of splinetree objects along with some additional information. All parameters are used in the same way that they are used in the splineTree
-#' function. The additional parameter ntree specifies how many trees should be in the ensemble, and diceProb controls the
+#' function. The additional parameter ntree specifies how many trees should be in the ensemble, and prob controls the
 #' probability of selecting a given variable for split consideration at a node.
 #'
 #' The ensemble method is highly similar to the random forest methodology of Brieman (2001). Each tree in the ensemble is fit to a bootstrap sample
 #' of the data. At each node of each tree, only a subset of the split variables are considered candidates for the split. In our methodology,
-#' the subset of variables considered at each node is determined by a random process. The diceProb parameter specifies the probability that a given variable
+#' the subset of variables considered at each node is determined by a random process. The prob parameter specifies the probability that a given variable
 #' will be selected at a certain node. Because the method is based on probability, the same number of variables are not considered for splitting at each node
-#' (as in the randomForest package). Note that if diceProb is small and the number of variables in the splitFormula is also small, there is a high probability that
-#' no variables will be considered for splitting at a certain node, which is problematic. The fewer total variables there are, the larger diceProb should be to
+#' (as in the randomForest package). Note that if prob is small and the number of variables in the splitFormula is also small, there is a high probability that
+#' no variables will be considered for splitting at a certain node, which is problematic. The fewer total variables there are, the larger prob should be to
 #' ensure good results.
 #'
 #' @param splitFormula Formula specifying the longitudinal response variable and the time-constant variables that will be used for splitting in the tree.
@@ -28,7 +28,7 @@
 #' @param minNodeSize Minimum number of observational units that can be in a terminal node. Controls tree size and helps avoid overfitting.
 #' @param cp Complexity parameter passed to the rpart building process.
 #' @param ntree Number of trees in the forest
-#' @param diceProb Probability of selecting a variable to included as a candidate for each split.
+#' @param prob Probability of selecting a variable to included as a candidate for each split.
 #' @return A splineforest object, which stores a list of splinetree objects (in model$Trees), along with information about the
 #' spline basis used (model$intercept, model$innerKnots, model$boundaryKnots, etc.), and information about which datapoints were
 #' used to build each tree (model$oob_indices and model$index).
@@ -43,7 +43,7 @@
 #' model1 <- splineForest(splitForm, BMI~AGE, 'ID', nlsySample, degree=1, intercept=FALSE, cp=0.005, ntree=30)
 splineForest <- function(splitFormula, tformula,
     idvar, data, knots = NULL, df = NULL, degree = 3,
-    intercept = FALSE, nGrid = 7, ntree = 50, diceProb = 0.3,
+    intercept = FALSE, nGrid = 7, ntree = 50, prob = 0.3,
     cp = 0.001, minNodeSize=1) {
     #### Once per forest, need to do all of the
     #### preprocessing spline steps.
@@ -52,7 +52,7 @@ splineForest <- function(splitFormula, tformula,
     tvar <- attr(terms(tformula), "term.labels")
     splitvars <- attr(terms(splitFormula), "term.labels")
 
-    #Add an error if (1-diceProb)^(length(splitvars)) < .01 or so - Increase the diceProb
+    #Add an error if (1-prob)^(length(splitvars)) < .01 or so - Increase the prob
 
     ### Check for time-varying covariates in
     ### splitvars
@@ -126,7 +126,7 @@ splineForest <- function(splitFormula, tformula,
         fit <- rpart(form, data = bootstrap_sample,
             method = ulist, control = control,
             maxcompete = 0, parms = list(basisMatrix,
-                diceProb))
+                prob))
 
         if (is.null(fit$frame$yval2)) {
           fit$frame$yval2 <- fit$frame$yval

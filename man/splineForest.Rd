@@ -5,8 +5,8 @@
 \title{Build a splinetree random forest}
 \usage{
 splineForest(splitFormula, tformula, idvar, data, knots = NULL, df = NULL,
-  degree = 3, intercept = FALSE, nGrid = 7, ntree = 50,
-  diceProb = 0.3, cp = 0.001, minNodeSize = 1)
+  degree = 3, intercept = FALSE, nGrid = 7, ntree = 50, prob = 0.3,
+  cp = 0.001, minNodeSize = 1)
 }
 \arguments{
 \item{splitFormula}{Formula specifying the longitudinal response variable and the time-constant variables that will be used for splitting in the tree.}
@@ -32,7 +32,7 @@ at the endpoints and quintiles of the time variable.}
 
 \item{ntree}{Number of trees in the forest}
 
-\item{diceProb}{Probability of selecting a variable to included as a candidate for each split.}
+\item{prob}{Probability of selecting a variable to included as a candidate for each split.}
 
 \item{cp}{Complexity parameter passed to the rpart building process.}
 
@@ -46,16 +46,16 @@ used to build each tree (model$oob_indices and model$index).
 \description{
 Builds an ensemble of regression trees for longitudinal or functional data using the spline projection method. The resulting object
 is a list of splinetree objects along with some additional information. All parameters are used in the same way that they are used in the splineTree
-function. The additional parameter ntree specifies how many trees should be in the ensemble, and diceProb controls the
+function. The additional parameter ntree specifies how many trees should be in the ensemble, and prob controls the
 probability of selecting a given variable for split consideration at a node.
 }
 \details{
 The ensemble method is highly similar to the random forest methodology of Brieman (2001). Each tree in the ensemble is fit to a bootstrap sample
 of the data. At each node of each tree, only a subset of the split variables are considered candidates for the split. In our methodology,
-the subset of variables considered at each node is determined by a random process. The diceProb parameter specifies the probability that a given variable
+the subset of variables considered at each node is determined by a random process. The prob parameter specifies the probability that a given variable
 will be selected at a certain node. Because the method is based on probability, the same number of variables are not considered for splitting at each node
-(as in the randomForest package). Note that if diceProb is small and the number of variables in the splitFormula is also small, there is a high probability that
-no variables will be considered for splitting at a certain node, which is problematic. The fewer total variables there are, the larger diceProb should be to
+(as in the randomForest package). Note that if prob is small and the number of variables in the splitFormula is also small, there is a high probability that
+no variables will be considered for splitting at a certain node, which is problematic. The fewer total variables there are, the larger prob should be to
 ensure good results.
 }
 \examples{
