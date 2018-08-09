@@ -1,6 +1,6 @@
 ---
-title: "Splinetree Quickstart"
-author: "Brianna Heggeseth and Anna Neufeld"
+title: "Introduction to Tree Building with splinetree"
+author: "Anna Neufeld"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -13,7 +13,7 @@ vignette: >
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-This guide is meant for users who are familiar with regression trees and the spline projection method but who are unfamiliar with the ``splinetree`` package specifics. The guide walks through examples of building a tree, plotting a tree, evaluating a tree, and building a forest. The data used for these examples comes from the National Longitudinal Survey of Youth (1979). In the example, we are studying body mass index (BMI) trajectories measured at different ages. We are wondering if various baseline socioeconomic variables drive heterogeneity in BMI trajectory. 
+This guide is meant for users who are familiar with regression trees and the spline projection method but who are unfamiliar with the ``splinetree`` package specifics. The guide walks through examples of building a tree, plotting a tree, and evaluating a tree. For building and evaluating forests, see "Introduction to Forest Building with splinetree".  The data used for these examples comes from the National Longitudinal Survey of Youth (1979). In the example, we are studying body mass index (BMI) trajectories measured at different ages. We are wondering if various baseline socioeconomic variables drive heterogeneity in BMI trajectory. 
 
 # Building and Visualizing Trees 
 
@@ -207,13 +207,7 @@ IMPORTANT NOTE- big tree much better at projections, but not that much better at
 
 The nice thing about R2_projected is that, while not perfect, it can be used for intercept or no intercept trees alike. 
 
-
-
-Well that's a great question. But before we get to it let's just just quickly talk about the last few parameters that we haven't touched on.
-1) nGrid and gridPoints
-2) knots
-3)
-
+So now we should basically understand how to build, visualize and evaluate single trees. To learn more details about the package algorithm, see the longer package Introduction vignette. If you would like to move on to Package quickstart 2- for forests. 
 
 
 

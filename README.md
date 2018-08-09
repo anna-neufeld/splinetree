@@ -9,8 +9,8 @@ Example
 
 ```{r}
 library(splinetree)
-tree1 <- splineTree(BMI ~ HISP + WHITE + BLACK + HGC_MOTHER + SEX, BMI ~ AGE, "ID", nlsySample, degree = 1, intercept = FALSE, cp = 0.005)
+tree <- splineTree(BMI ~ HISP + WHITE + BLACK + HGC_MOTHER + SEX, BMI ~ AGE, "ID", nlsySample, degree = 1, intercept = FALSE, cp = 0.005)
 R2 = R2_projected(tree1)
 stPlot(tree1)
-treeSummary(tree1)
+stPrint(tree1)
 ```

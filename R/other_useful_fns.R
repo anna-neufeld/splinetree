@@ -44,15 +44,24 @@ treeSummary <- function(model) {
 #' splitForm <-BMI~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs
 #' model1 <- splineTree(splitForm, BMI~AGE, 'ID', nlsySample, degree=1, intercept=FALSE, cp=0.005)
 #' terminalNodeSummary(model1)
-terminalNodeSummary <- function(tree) {
-  for (i in 1:nrow(tree$frame)) {
-    if (tree$frame[i,]$var == "<leaf>") {
-      cat(paste("\n N:", tree$frame[i,]$n))
-      coeffs  <- paste(tree$frame[i,]$yval2, collapse=',')
-      cat(paste("\n Coefficients:",coeffs))
-      path.rpart(tree, row.names(tree$frame)[i])
-      cat('\n----------')
+terminalNodeSummary <- function(tree, node=NULL) {
+  if (is.null(node)) {
+    for (i in 1:nrow(tree$frame)) {
+      if (tree$frame[i,]$var == "<leaf>") {
+        path.rpart(tree, row.names(tree$frame)[i])
+        cat(paste("\n N:", tree$frame[i,]$n))
+        coeffs  <- paste(tree$frame[i,]$yval2, collapse=',')
+        cat(paste("\n Coefficients:",coeffs))
+        cat('\n----------\n')
+      }
     }
+  }
+  else {
+    path.rpart(tree, node)
+    nodeIndex = which(row.names(tree$frame)==toString(node))
+    cat(paste("\n N:", tree$frame[nodeIndex,]$n))
+    coeffs  <- paste(tree$frame[nodeIndex,]$yval2, collapse=',')
+    cat(paste("\n Coefficients:",coeffs))
   }
 }
 
@@ -66,7 +75,7 @@ terminalNodeSummary <- function(tree) {
 #'
 #' @param tree a splinetree object
 #' @param node The number of the node that you want the data for.
-#' Node numbers for your model can be seen using print.splinetree(tree)
+#' Node numbers for your model can be seen using stPrint(tree)
 #' or treeSummary(tree). Note that this node number should correspond to
 #' a terminal node.
 #' @param dataType If "all", the data returned is the original data (one row per individual observation
@@ -83,7 +92,7 @@ getNodeData <- function(tree, node, dataType = 'all') {
   nodeIndex <- which(row.names(tree$frame)==node)
   if (tree$frame[nodeIndex,]$var != "<leaf>") stop("This node number does not correspond to a terminal node.
                                                    Please look at the numbers provided in the
-                                                   print.splinetree() printout printed tree and try again.")
+                                                   stPrint() printout printed tree and try again.")
 
   flat_node_data = tree$parms$flat_data[tree$where==nodeIndex,]
   if (dataType=="flat") {
@@ -111,11 +120,11 @@ getNodeData <- function(tree, node, dataType = 'all') {
 #' model1 <- splineTree(splitForm, BMI~AGE, 'ID', nlsySample, degree=1, intercept=FALSE, cp=0.005)
 #' plotNodeTraj(model1, 4, includeData=TRUE)
 plotNodeTraj <-  function(tree, node, includeData = FALSE) {
-  nodeIndex <- which(row.names(tree$frame)==node)
+  nodeIndex <- which(row.names(tree$frame)==toString(node))
   nodeCoeffs <- tree$frame[nodeIndex,]$yval2
   if (tree$frame[nodeIndex,]$var != "<leaf>") stop("This node number does not correspond to a terminal node.
                                                    Please look at the numbers provided in the
-                                                   print.splinetree() printout printed tree and try again.")
+                                                   stPrint() printout printed tree and try again.")
 
   flat_node_data = tree$parms$flat_data[tree$where==nodeIndex,]
   data = tree$parms$data[tree$parms$data[[tree$parms$idvar]] %in% flat_node_data[[tree$parms$idvar]],]
@@ -136,6 +145,6 @@ plotNodeTraj <-  function(tree, node, includeData = FALSE) {
     preds <- newxmat %*% t(nodeCoeffs) + mean_int
   }
 
-    ggplot() + geom_line(aes(x=xGrid, y=preds, color="red"))+geom_line(data=data, mapping = aes_string(x = tree$parms$tvar, y = tree$parms$yvar,
-                                    group = tree$parms$idvar))+theme(legend.position="none")+xlab(tree$parms$tvar)+ylab(tree$parms$yvar)
+    ggplot() +geom_line(data=data, mapping = aes_string(x = tree$parms$tvar, y = tree$parms$yvar,
+                                    group = tree$parms$idvar))+theme(legend.position="none")+xlab(tree$parms$tvar)+ylab(tree$parms$yvar)+ geom_line(aes(x=xGrid, y=preds, color="red", size=2))
 }
