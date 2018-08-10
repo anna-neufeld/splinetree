@@ -5,7 +5,8 @@
 #' Longitudinal Survey of Youth 1979 (NLSY), a freely available longitudinal dataset.
 #' The 1000 individuals were drawn randomly from among all NLSY respondents with at least 10
 #' non-missing height/weight responses spread out over at least 20 years.
-#' This dataset is used in the package vignettes and code examples.
+#' This dataset is used in the package vignettes and code examples. Only a small
+#' subset of the variables available from the NLSY are included here- see https://www.bls.gov/nls/nlsy79.htm for more
 #'
 #' @format A data frame with 16126 rows and 34 columns.
 #' \describe{
@@ -40,45 +41,13 @@
 #'   \item{Mother_on_record}{Did the respondent have a mother listed in the survey record at first interview?}
 #'   \item{STABLE_RESIDENCE}{Did the respondent live in the same house from birth to age 14?}
 #'   \item{URBAN_14}{Did the respondent live in an urban area at age 14? 1 denotes town or city, 2 denotes country not farm, 3 denotes farm}
+#'   \item{RACE}{Race, as recorded by NLSY. 1 denotes Hispanic, 2 denotes Black, 3 denotes White.}
+#'   \item{South_birth}{Indicator for whether or not respondent was born in the south (south as defined
+#'    by NLSY).}
 #'   \item{HOUSEHOLD_14}{Household identifier for survey respondent}
 #' }
 #' @source \url{https://www.bls.gov/nls/nlsy79.htm}
-"nlsySample_large"
-
-
-
-#' Additional socioeconomic information and BMIs of 1000 individuals.
-#'
-#' See the description for the nlsySample data. This is an extended version of that dataset
-#' with 1000 individuals drawn from the same population of survey respondents. There are also
-#' covariates in this dataset that were excluded from the smaller version of the dataset.
-#'
-#'
-#' @format A data frame with 8083 rows and 18 columns.
-#' \describe{
-#'   \item{ID}{jj}
-#'   \item{News}{gj}
-#'   \item{SEX}{gnegne}
-#'   \item{AGE}{aa}
-#'   \item{BLACK}{aa}
-#'   \item{BMI}{aa}
-#'   \item{Father_14}{aa}
-#'   \item{HEIGHTIN}{aa}
-#'   \item{HGC_FATHER}{aa}
-#'   \item{HGC_MOTHER}{aa}
-#'   \item{HISP}{aa}
-#'   \item{Lib}{aa}
-#'   \item{Mag}{aa}
-#'   \item{Mother_14}{aa}
-#'   \item{Num_sibs}{aa}
-#'   \item{Two_Adults_14}{aa}
-#'   \item{WEIGHT}{aa}
-#'   \item{WHITE}{aa}
-#' }
-#' @source \url{https://www.bls.gov/nls/nlsy79.htm}
 "nlsySample"
-
-
 
 
 #' A pre-built random forest (with no intercet) with 20 trees, built to the NLSY sample.

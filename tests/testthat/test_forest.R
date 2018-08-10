@@ -1,9 +1,11 @@
 #### Test that forest is working.
 context("Forest testing")
 
-
-
 test_that("Building Forests", {
+  set.seed(123)
+
+  ### Just to have forest tests run a little faster, reducing dataset size
+  nlsySample_small <- nlsySample_large[nlsySample_large$ID %in% sample(nlsySample_large$ID, 500),]
   sample_forest <- splineForest(BMI~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs+Lib+News+Mag, BMI~AGE, "ID", nlsySample, degree=1, df=2, intercept=FALSE, cp=0.001, ntree=20)
   sample_intercept_forest <- splineForest(BMI~HISP+WHITE+BLACK+HGC_FATHER+Num_sibs+HGC_MOTHER+SEX+News+Mag+Lib, BMI~AGE, "ID", nlsySample, degree=1, df=3, intercept=TRUE, cp=0.001, ntree=20)
   new_forest <- splineForest(BMI~HISP+WHITE+BLACK+HGC_MOTHER+SEX, BMI~AGE, "ID", nlsySample, degree=1, intercept=TRUE, cp=0.001, ntree=5, prob=2/3)

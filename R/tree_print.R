@@ -12,9 +12,15 @@
 #' predicted spline coefficients for each node.
 #' @importFrom stats naprint
 #' @example
-#' splitForm <-BMI~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs
-#' model1 <- splineTree(splitForm, BMI~AGE, 'ID', nlsySample, degree=1, intercept=FALSE, cp=0.005)
-#' stPrint(model1)
+#' \dontrun{
+#' split_formula <- BMI ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
+#'   + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
+#'   + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14
+#'   + Mother_14 + Father_14 + STABLE_RESIDENCE + URBAN_14 + South_Birth
+#'  tree <- splineTree(split_formula, BMI~AGE, 'ID', nlsySample, degree=1,
+#'    df=3, intercept=TRUE, cp=0.006, minNodeSize=20)
+#' }
+#' stPrint(tree)
 #' @export
 stPrint <- function(x, cp, digits = getOption("digits"))
 {
@@ -60,3 +66,28 @@ stPrint <- function(x, cp, digits = getOption("digits"))
   cat(z, sep = "\n")
   invisible(x)
 }
+
+#' Prints the tree frame.
+#'
+#' @param model A splinetree object.
+#' @example
+#' \dontrun{
+#' split_formula <- BMI ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
+#'   + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
+#'   + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14
+#'   + Mother_14 + Father_14 + STABLE_RESIDENCE + URBAN_14 + South_Birth
+#' tree <- splineTree(split_formula, BMI~AGE, 'ID', nlsySample, degree=1,
+#'   df=3, intercept=TRUE, cp=0.006, minNodeSize=20)
+#' }
+#' treeSummary(tree)
+#' @export
+treeSummary <- function(model) {
+  frame <- model$frame
+  summary <- data.frame(cbind(data.frame(frame$var),
+                              frame$n, frame$dev))
+  names(summary) <- cbind("var", "n", "dev")
+  summary$coeffs <- frame$yval2
+  row.names(summary) <- row.names(frame)
+  summary
+}
+

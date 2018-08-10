@@ -52,7 +52,7 @@ library(splinetree)
 ```
 
 ```{echo=FALSE}
-head(nlsySample_large[,c(1,26,31, 12,14,27)], n=20)
+head(nlsySample[,c(1,26,31, 12,14,27)], n=20)
 ```
 
 If we were interested in including time-varying covariates as split variables because we believed that they were related to heterogeneity in trajectory, we could summarize the variable in some way and use this summary as a new, time-constant split variable. For example, we could define a new variable, HGC_MAX, that would record the maximum value of HGC for each individual. This would allow us to associate a single BMI trajectory with the highest grade that an individual eventually completes. In other cases, a time-varying covariate could be summarized with an average, or the the time-varying covariate could be regressed against time and the slope coefficient could be used as the new covariate. In our example, we will not do this at all, and will instead use time-constant split variables.

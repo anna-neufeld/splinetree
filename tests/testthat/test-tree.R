@@ -2,7 +2,7 @@ context("Tree testing")
 
 test_that("One coefficient tree", {
   tree1 <- splineTree(BMI~HISP+WHITE+BLACK+HGC_MOTHER+SEX, BMI~AGE, "ID",
-                      nlsySample, degree=1, intercept=FALSE, cp=0.005)
+                      nlsySample_large, degree=1, intercept=FALSE, cp=0.005)
   expect_is(tree1, "rpart")
   R2 = R2_projected(tree1)
   expect_true(R2<1)
@@ -14,7 +14,7 @@ test_that("One coefficient tree", {
 
 test_that("Two coefficient tree", {
   tree1k <- splineTree(BMI~HISP+WHITE+BLACK+HGC_MOTHER+SEX, BMI~AGE, "ID",
-                       nlsySample, degree=1, df=2, intercept=FALSE, cp=0.005)
+                       nlsySample_large, degree=1, df=2, intercept=FALSE, cp=0.005)
   expect_is(tree1k, "rpart")
   tree1k$frame
   stPlot(tree1k)
@@ -25,7 +25,7 @@ test_that("Two coefficient tree", {
 
 test_that("More Complex Trees", {
   tree2 <- splineTree(BMI~HISP+WHITE+BLACK+HGC_MOTHER+SEX, BMI~AGE, "ID",
-                    nlsySample, degree=2, intercept=TRUE, cp=0.005)
+                    nlsySample_large, degree=2, intercept=TRUE, cp=0.005)
   tree2$frame
   stPlot(tree2)
   expect_is(tree2, "rpart")

@@ -16,7 +16,13 @@ Uses ggplot to create a paneled spaghetti plot of the data, where each panel cor
 Allows users to visualize homogeneity of trajectories within the terminal nodes of the tree.
 }
 \examples{
-tree <- splineTree(BMI~HISP+WHITE+BLACK+HGC_MOTHER+SEX, BMI~AGE, "ID", nlsySample,
-degree=2, intercept=TRUE, cp=0.005)
+\dontrun{
+split_formula <- BMI ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
+  + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
+  + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14
+  + Mother_14 + Father_14 + STABLE_RESIDENCE + URBAN_14 + South_Birth
+tree <- splineTree(split_formula, BMI~AGE, 'ID', nlsySample, degree=1,
+  df=3, intercept=TRUE, cp=0.006, minNodeSize=20)
+}
 spaghettiPlot(tree)
 }

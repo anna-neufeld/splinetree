@@ -21,13 +21,13 @@ To begin building a tree, all that is needed is a longitudinal dataset (should b
 
 ## Specifying variables and building default tree
 
-We are working with the ``nlsySample_large`` dataset, which is already in long format. Building a ``splinetree`` object requires a call to the ``splineTree`` function. The ``splineTree`` function has four parameters that do not have default values. These are ``tformula``, ``splitformula``, ``idvar``, and ``data``. We must identify the following variables in the dataset.
+We are working with the ``nlsySample`` dataset, which is already in long format. Building a ``splinetree`` object requires a call to the ``splineTree`` function. The ``splineTree`` function has four parameters that do not have default values. These are ``tformula``, ``splitformula``, ``idvar``, and ``data``. We must identify the following variables in the dataset.
 1. **Response variable**: The longitudinal response variable. In our example, this is ``BMI``. 
 2. **Time variable**: Together with the response variable, the time variable allows us to specify the ``tformula`` parameter. The ``tformula`` parameter defines the trajectory we are interested in. In our case, the time variable is ``AGE`` and the ``tformula`` is ``BMI~AGE``. 
 3. ***Split variables**: The variables that the tree will make splits on. These variables should be *time constant*- for a given individual (ID), each split variable should only take on one value. These are variables that we think might influence the trajectory of the reponse over time. In our example, these are the baseline socioeconomic variables selected from the NLSY. Together with the response variable, the split variables are used to specify the ``splitformula`` parameter. 
 4. **ID variable**: The variable used to identify individual observations that belong to the same trajectory individual. In our example, this is ``ID``. The name of this variable gets provided to the ``splineTree()`` function as a string. 
 
-The code below shows a subset of rows and columns of ``nlsySample_large``. 
+The code below shows a subset of rows and columns of ``nlsySample``. 
 
 
 In selecting split variables, we are able to use ``HGC_MOTHER`` (highest grade completed by mother), ``HGC_FATHER`` (highest grade completed by father), ``Num_sibs``, and ``RACE``, because each of these are baseline variables that were recorded once at the first subject interview  and did not change over time. However, ``HGC`` (highest grade completed by survey participant) cannot be used as a split variable because the responses for a given individual change as individuals complete more schooling. If we wished to include the highest grade completed by an individual as a split variable, we would need to summarize the variable in some way to create a new, time constant variable. For example, for each ID, we could find the maximum value that HGC takes on, and form a new variable with this maximum. In other instances, we could summarize a time-varying covariate using a mean or through regression over the time variable in order to capture some information about the time-varying covariate in the splitting process. In our example, we will not do this. 
@@ -37,10 +37,10 @@ library(splinetree)
 ```
 
 ```{r, echo=FALSE}
-head(nlsySample_large[,c(1,26,31, 12,14,17,24,27)], n=20)
+head(nlsySample[,c(1,26,31, 12,14,17,24,27)], n=20)
 ```
 
-Taking into account the additional time-constant variables in ``nlsySample_large``, we are ready to specify our first several parameters for our call to ``splineTree()``. 
+Taking into account the additional time-constant variables in ``nlsySample``, we are ready to specify our first several parameters for our call to ``splineTree()``. 
 
 ```{r}
 split_formula <- BMI ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc + Num_sibs + 
@@ -48,7 +48,7 @@ split_formula <- BMI ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work + Mom_Full_Wor
   Mother_14 + Father_14 + STABLE_RESIDENCE + URBAN_14 + South_Birth
 tformula <- BMI~AGE
 idvar <- "ID"
-data <- nlsySample_large
+data <-nlsySample
 ```
 
 Since all remaining parameters have default parameters, we are ready to  to build our first tree. 

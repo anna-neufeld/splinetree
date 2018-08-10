@@ -8,39 +8,13 @@
 #'   + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
 #'   + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14
 #'   + Mother_14 + Father_14 + STABLE_RESIDENCE + URBAN_14 + South_Birth
-#' tree <- splineTree(split_formula, BMI~AGE, 'ID', nlsySample_large, degree=1,
+#' tree <- splineTree(split_formula, BMI~AGE, 'ID', nlsySample, degree=1,
 #'   df=3, intercept=TRUE, cp=0.006, minNodeSize=20)
 #' }
 #' treeSize(tree)
 treeSize <- function(model) {
     NROW(unique(model$where))
 }
-
-
-#' Prints the tree frame.
-#'
-#' @param model A splinetree object.
-#' @example
-#' \dontrun{
-#' split_formula <- BMI ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
-#'   + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
-#'   + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14
-#'   + Mother_14 + Father_14 + STABLE_RESIDENCE + URBAN_14 + South_Birth
-#' tree <- splineTree(split_formula, BMI~AGE, 'ID', nlsySample_large, degree=1,
-#'   df=3, intercept=TRUE, cp=0.006, minNodeSize=20)
-#' }
-#' treeSummary(tree)
-#' @export
-treeSummary <- function(model) {
-    frame <- model$frame
-    summary <- data.frame(cbind(data.frame(frame$var),
-        frame$n, frame$dev))
-    names(summary) <- cbind("var", "n", "dev")
-    summary$coeffs <- frame$yval2
-    row.names(summary) <- row.names(frame)
-    summary
-}
-
 
 #' Prints a summary of a terminal node in a tree
 #'
@@ -57,7 +31,7 @@ treeSummary <- function(model) {
 #'   + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
 #'   + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14
 #'   + Mother_14 + Father_14 + STABLE_RESIDENCE + URBAN_14 + South_Birth
-#' tree <- splineTree(split_formula, BMI~AGE, 'ID', nlsySample_large, degree=1,
+#' tree <- splineTree(split_formula, BMI~AGE, 'ID', nlsySample, degree=1,
 #'   df=3, intercept=TRUE, cp=0.006, minNodeSize=20)
 #' }
 #' terminalNodeSummary(tree)
@@ -106,7 +80,7 @@ terminalNodeSummary <- function(tree, node=NULL) {
 #'   + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
 #'   + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14
 #'   + Mother_14 + Father_14 + STABLE_RESIDENCE + URBAN_14 + South_Birth
-#' tree <- splineTree(split_formula, BMI~AGE, 'ID', nlsySample_large, degree=1,
+#' tree <- splineTree(split_formula, BMI~AGE, 'ID', nlsySample, degree=1,
 #'   df=3, intercept=TRUE, cp=0.006, minNodeSize=20)
 #' }
 #' node10data <- getNodeData(model1, 10, dataType = 'all)
@@ -144,7 +118,7 @@ getNodeData <- function(tree, node, dataType = 'all') {
 #'   + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
 #'   + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14
 #'   + Mother_14 + Father_14 + STABLE_RESIDENCE + URBAN_14 + South_Birth
-#' tree <- splineTree(split_formula, BMI~AGE, 'ID', nlsySample_large, degree=1,
+#' tree <- splineTree(split_formula, BMI~AGE, 'ID', nlsySample, degree=1,
 #'   df=3, intercept=TRUE, cp=0.006, minNodeSize=20)
 #' }
 #' plotNodeTraj(tree, 10, includeData=TRUE)

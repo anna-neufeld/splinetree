@@ -9,8 +9,14 @@
 #' responses, and SST is sum of squared errors of true responses around population mean. Note that if the tree passed in was built
 #' without an intercept, this function will return NULL.
 #' @examples
-#' splitForm <- BMI~HISP+WHITE+BLACK+HGC_MOTHER+SEX
-#' tree <- splineTree(splitForm, BMI~AGE, "ID", nlsySample, degree=1, intercept=FALSE, cp=0.005)
+#' \dontrun{
+#' split_formula <- BMI ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
+#'   + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
+#'   + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14
+#'   + Mother_14 + Father_14 + STABLE_RESIDENCE + URBAN_14 + South_Birth
+#'  tree <- splineTree(split_formula, BMI~AGE, 'ID', nlsySample, degree=1,
+#'   df=3, intercept=TRUE, cp=0.006, minNodeSize=20)
+#' }
 #' R2_y(tree)
 R2_y <- function(model) {
     if (model$parms$intercept) {
@@ -38,8 +44,14 @@ R2_y <- function(model) {
 #' @importFrom treeClust rpart.predict.leaves
 #' @export
 #' @examples
-#' splitForm <- BMI~HISP+WHITE+BLACK+HGC_MOTHER+SEX
-#' tree <- splineTree(splitForm, BMI~AGE, "ID", nlsySample, degree=1, intercept=FALSE, cp=0.005)
+#' \dontrun{
+#' split_formula <- BMI ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
+#'   + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
+#'   + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14
+#'   + Mother_14 + Father_14 + STABLE_RESIDENCE + URBAN_14 + South_Birth
+#' tree <- splineTree(split_formula, BMI~AGE, 'ID', nlsySample, degree=1,
+#'   df=3, intercept=TRUE, cp=0.006, minNodeSize=20)
+#' }
 #' plot(predict_y(tree), tree$parms$data[[tree$parms$yvar]])
 predict_y <- function(model, testData = NULL) {
 
@@ -141,8 +153,14 @@ R2_projected <- function(model, includeIntercept = FALSE) {
 #' @export
 #' @return A matrix of spline coefficients. Dimension is number of units in test set by degrees of freedom of the spline.
 #' @examples
-#' splitForm <- BMI~HISP+WHITE+BLACK+HGC_MOTHER+SEX
-#' tree <- splineTree(splitForm, BMI~AGE, "ID", nlsySample, degree=1, intercept=FALSE, cp=0.005)
+#' \dontrun{
+#' split_formula <- BMI ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
+#'   + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
+#'   + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14
+#'   + Mother_14 + Father_14 + STABLE_RESIDENCE + URBAN_14 + South_Birth
+#' tree <- splineTree(split_formula, BMI~AGE, 'ID', nlsySample, degree=1,
+#'   df=3, intercept=TRUE, cp=0.006, minNodeSize=20)
+#' }
 #' predict_spline_coeffs(tree)
 predict_spline_coeffs <- function(tree, testset = tree$parms$flat_data) {
     ## Holds assigned node for every row of testset.
