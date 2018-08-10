@@ -48,12 +48,12 @@ in the spline basis used for splitting. The parameters minNodeSize and cp allow 
 }
 \examples{
 splitForm <-BMI~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs
-model1 <- splineTree(splitForm, BMI~AGE, 'ID', nlsySample, degree=1, intercept=FALSE, cp=0.005)
-model2 <- splineTree(splitForm, BMI~AGE, 'ID', nlsySample, degree=3, intercept=TRUE, cp=0.005)
-stPrint(model1)
-treeSummary(model1)
-stPlot(model1)
-stPlot(model2)
-R2_projected(model1)
-R2_projected(model2)
+tree1 <- splineTree(splitForm, BMI~AGE, 'ID', nlsySample, degree=1, intercept=FALSE, cp=0.005)
+tree2 <- splineTree(splitForm, BMI~AGE, 'ID', nlsySample, degree=3, intercept=TRUE, cp=0.005)
+stPrint(tree1)
+treeSummary(tree1)
+stPlot(tree1)
+stPlot(tree2)
+R2_projected(tree1)
+R2_projected(tree2)
 }

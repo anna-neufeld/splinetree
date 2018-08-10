@@ -8,8 +8,10 @@
 #' @return An R^2 goodness measure. 1-SSE/SST where SSE is the sum of squared errors between predicted responses and true
 #' responses, and SST is sum of squared errors of true responses around population mean. Note that if the tree passed in was built
 #' without an intercept, this function will return NULL.
-#' @examples tree1 <- splineTree(BMI~HISP+WHITE+BLACK+HGC_MOTHER+SEX, BMI~AGE, "ID", nlsySample, degree=1, intercept=FALSE, cp=0.005)
-#' R2_y(tree1)
+#' @examples
+#' splitForm <- BMI~HISP+WHITE+BLACK+HGC_MOTHER+SEX
+#' tree <- splineTree(splitForm, BMI~AGE, "ID", nlsySample, degree=1, intercept=FALSE, cp=0.005)
+#' R2_y(tree)
 R2_y <- function(model) {
     if (model$parms$intercept) {
     yvar <- model$parms$yvar
@@ -35,8 +37,10 @@ R2_y <- function(model) {
 #' @return A vector of predictions with rows corresponding to the testdata.
 #' @importFrom treeClust rpart.predict.leaves
 #' @export
-#' @examples tree1 <- splineTree(BMI~HISP+WHITE+BLACK+HGC_MOTHER+SEX, BMI~AGE, "ID", nlsySample, degree=1, intercept=FALSE, cp=0.005)
-#' plot(predict_y(tree1), tree1$parms$data[[tree1$parms$yvar]])
+#' @examples
+#' splitForm <- BMI~HISP+WHITE+BLACK+HGC_MOTHER+SEX
+#' tree <- splineTree(splitForm, BMI~AGE, "ID", nlsySample, degree=1, intercept=FALSE, cp=0.005)
+#' plot(predict_y(tree), tree$parms$data[[tree$parms$yvar]])
 predict_y <- function(model, testData = NULL) {
 
     ### Calls a different version of the function that returns predicted Ys for training dataset
@@ -136,8 +140,10 @@ R2_projected <- function(model, includeIntercept = FALSE) {
 #' @param testset The dataset to predict coefficients for. Default is the dataset used to make the tree.
 #' @export
 #' @return A matrix of spline coefficients. Dimension is number of units in test set by degrees of freedom of the spline.
-#' @examples tree1 <- splineTree(BMI~HISP+WHITE+BLACK+HGC_MOTHER+SEX, BMI~AGE, "ID", nlsySample, degree=1, intercept=FALSE, cp=0.005)
-#' predict_spline_coeffs(tree1)
+#' @examples
+#' splitForm <- BMI~HISP+WHITE+BLACK+HGC_MOTHER+SEX
+#' tree <- splineTree(splitForm, BMI~AGE, "ID", nlsySample, degree=1, intercept=FALSE, cp=0.005)
+#' predict_spline_coeffs(tree)
 predict_spline_coeffs <- function(tree, testset = tree$parms$flat_data) {
     ## Holds assigned node for every row of testset.
     wheres <- treeClust::rpart.predict.leaves(tree, newdata=tree$parms$flat_data)

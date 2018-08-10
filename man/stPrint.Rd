@@ -4,7 +4,7 @@
 \alias{stPrint}
 \title{Print a spline tree object}
 \usage{
-stPrint(x, cp, digits = getOption("digits"), ...)
+stPrint(x, cp, digits = getOption("digits"))
 }
 \arguments{
 \item{x}{The splinetree object}

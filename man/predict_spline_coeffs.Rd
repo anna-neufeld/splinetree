@@ -22,6 +22,7 @@ returns predicted coefficients for the individuals in the dataset used to build 
 importFrom treeClust rpart.predict.leaves
 }
 \examples{
-tree1 <- splineTree(BMI~HISP+WHITE+BLACK+HGC_MOTHER+SEX, BMI~AGE, "ID", nlsySample, degree=1, intercept=FALSE, cp=0.005)
-predict_spline_coeffs(tree1)
+splitForm <- BMI~HISP+WHITE+BLACK+HGC_MOTHER+SEX
+tree <- splineTree(splitForm, BMI~AGE, "ID", nlsySample, degree=1, intercept=FALSE, cp=0.005)
+predict_spline_coeffs(tree)
 }

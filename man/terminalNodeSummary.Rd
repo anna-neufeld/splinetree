@@ -2,19 +2,17 @@
 % Please edit documentation in R/other_useful_fns.R
 \name{terminalNodeSummary}
 \alias{terminalNodeSummary}
-\title{Returns a printed summary of the paths to the terminal nodes in the tree.}
+\title{Prints a summary of a terminal node in a tree}
 \usage{
 terminalNodeSummary(tree, node = NULL)
 }
 \arguments{
-\item{tree}{a splinetree object}
-}
-\value{
-a list, indexed by terminal node numbers, where each
-element of the list holds the path to the terminal node.
+\item{tree}{A splinetree object}
+
+\item{node}{The number of the node that you want summarized. To see which nodes correspond to
+which numbers, see stPrint(tree).}
 }
 \description{
-Importantly, provides the node numbers for each node that are found in the 'where'
-attribute of the tree. Note that these nubmers differ from those shown in the rpart
-printout of the tree.
+If no arguement is provided for the parameter \code{node}, summaries are printed for every
+terminal node. Otherwise, the summary of just the requested node is printed.
 }

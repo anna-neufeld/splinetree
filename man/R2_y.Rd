@@ -19,6 +19,7 @@ Computes an R^2 measure for the spline tree with respect to prediction. Note tha
 If the tree includes an intercept, the measure will be between 0 and 1.
 }
 \examples{
-tree1 <- splineTree(BMI~HISP+WHITE+BLACK+HGC_MOTHER+SEX, BMI~AGE, "ID", nlsySample, degree=1, intercept=FALSE, cp=0.005)
-R2_y(tree1)
+splitForm <- BMI~HISP+WHITE+BLACK+HGC_MOTHER+SEX
+tree <- splineTree(splitForm, BMI~AGE, "ID", nlsySample, degree=1, intercept=FALSE, cp=0.005)
+R2_y(tree)
 }

@@ -16,7 +16,13 @@ rainbow color scheme.}
 Creates a two paneled plot of a SplineTree object that shows both the tree and the trajectories side by side.
 }
 \examples{
-form <- BMI~HISP+WHITE+BLACK+HGC_MOTHER+SEX
-model <- splineTree(form, BMI~AGE, 'ID', nlsySample, degree=1, intercept=FALSE, cp=0.007)
-stPlot(model)
+\dontrun{
+split_formula <- BMI ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
+  + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
+  + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14
+  + Mother_14 + Father_14 + STABLE_RESIDENCE + URBAN_14 + South_Birth
+tree <- splineTree(split_formula, BMI~AGE, 'ID', nlsySample_large, degree=1,
+  df=3, intercept=TRUE, cp=0.006, minNodeSize=20)
+}
+stPlot(tree, colors = c("red", "orange", "green", "blue", "cyan", "magenta"))
 }

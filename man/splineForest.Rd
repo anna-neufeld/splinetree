@@ -59,6 +59,8 @@ no variables will be considered for splitting at a certain node, which is proble
 ensure good results.
 }
 \examples{
+\donttest{
 splitForm <-BMI~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs
-model1 <- splineForest(splitForm, BMI~AGE, 'ID', nlsySample, degree=1, intercept=FALSE, cp=0.005, ntree=30)
+forest <- splineForest(splitForm, BMI~AGE, 'ID', nlsySample, degree=1, cp=0.005, ntree=30)
+}
 }

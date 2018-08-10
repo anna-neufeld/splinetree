@@ -65,6 +65,8 @@ flatten_predictors <- function(idvar, data) {
 #' @param df Degrees of freedom arguement specified by user
 #' @param intercept Whether or not to use an intercept
 #' @param nGrid Number of grid points to evaluate split function at.
+#' @param gridPoints Optional. A vector of numbers that will be used as the grid on which to evaluate the
+#' projection sum of squares. Should fall roughly within the range of the time variable.
 #' @param degree The degree of the spline polynomial
 #' @return The basis matrix to be used for the tree building process
 getBasisMat <- function(yvar, tvar, idvar, data,
@@ -159,14 +161,14 @@ getBasisMat <- function(yvar, tvar, idvar, data,
 #' @importFrom stats complete.cases formula lm quantile runif sd terms time
 #' @examples
 #' splitForm <-BMI~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs
-#' model1 <- splineTree(splitForm, BMI~AGE, 'ID', nlsySample, degree=1, intercept=FALSE, cp=0.005)
-#' model2 <- splineTree(splitForm, BMI~AGE, 'ID', nlsySample, degree=3, intercept=TRUE, cp=0.005)
-#' stPrint(model1)
-#' treeSummary(model1)
-#' stPlot(model1)
-#' stPlot(model2)
-#' R2_projected(model1)
-#' R2_projected(model2)
+#' tree1 <- splineTree(splitForm, BMI~AGE, 'ID', nlsySample, degree=1, intercept=FALSE, cp=0.005)
+#' tree2 <- splineTree(splitForm, BMI~AGE, 'ID', nlsySample, degree=3, intercept=TRUE, cp=0.005)
+#' stPrint(tree1)
+#' treeSummary(tree1)
+#' stPlot(tree1)
+#' stPlot(tree2)
+#' R2_projected(tree1)
+#' R2_projected(tree2)
 splineTree <- function(splitFormula, tformula,
     idvar, data, knots = NULL, df = NULL, degree = 3,
     intercept = FALSE, nGrid = 7, gridPoints = NULL, minNodeSize = 10,

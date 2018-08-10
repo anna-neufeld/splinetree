@@ -3,7 +3,7 @@
 \docType{data}
 \name{nlsySample}
 \alias{nlsySample}
-\title{Baseline socioeconomic information and BMIs of 500 individuals.}
+\title{Additional socioeconomic information and BMIs of 1000 individuals.}
 \format{A data frame with 8083 rows and 18 columns.
 \describe{
   \item{ID}{jj}
@@ -24,8 +24,6 @@
   \item{Two_Adults_14}{aa}
   \item{WEIGHT}{aa}
   \item{WHITE}{aa}
-
-  ...
 }}
 \source{
 \url{https://www.bls.gov/nls/nlsy79.htm}
@@ -34,11 +32,8 @@
 nlsySample
 }
 \description{
-A dataset containing the body mass index (BMI) and baseline
-socioeconomic information of 500 individuals from the National
-Longitudinal Survey of Youth 1979 (NLSY), a freely available longitudinal dataset.
-The 500 individuals were drawn randomly from among all NLSY respondents with at least 10
-non-missing height/weight responses spread out over at least 20 years.
-This dataset is used for many of our code examples.
+See the description for the nlsySample data. This is an extended version of that dataset
+with 1000 individuals drawn from the same population of survey respondents. There are also
+covariates in this dataset that were excluded from the smaller version of the dataset.
 }
 \keyword{datasets}

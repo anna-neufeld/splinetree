@@ -7,16 +7,16 @@
 #' @param digits Specifies how many digits of each coefficient should be printed
 #' @param cp Optional- if provided, a pruned version of the tree will be printed. The tree will be
 #' pruned using the provided cp as the complexity parameter.
-#'
 #' @return A printout of the tree. The printout provides numbered labels for the terminal nodes,
 #' a description of the split at each node, the number of observations found at each node, and the
 #' predicted spline coefficients for each node.
+#' @importFrom stats naprint
 #' @example
 #' splitForm <-BMI~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs
 #' model1 <- splineTree(splitForm, BMI~AGE, 'ID', nlsySample, degree=1, intercept=FALSE, cp=0.005)
 #' stPrint(model1)
 #' @export
-stPrint <- function(x, cp, digits = getOption("digits"), ...)
+stPrint <- function(x, cp, digits = getOption("digits"))
 {
   minlength = 0L
   spaces = 2L
@@ -44,7 +44,7 @@ stPrint <- function(x, cp, digits = getOption("digits"), ...)
   }
   term <- rep(" ", length(depth))
   term[frame$var == "<leaf>"] <- "*"
-  z <- labels(x, digits = digits, minlength = minlength, ...)
+  z <- labels(x, digits = digits, minlength = minlength)
   n <-paste(frame$n, ", ", sep='')
   z <- paste(indent, ' ', z, ", ", n, " (", yval, ")", term, sep='')
 

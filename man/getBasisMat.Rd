@@ -24,6 +24,9 @@ getBasisMat(yvar, tvar, idvar, data, knots = NULL, df, degree, intercept,
 
 \item{intercept}{Whether or not to use an intercept}
 
+\item{gridPoints}{Optional. A vector of numbers that will be used as the grid on which to evaluate the
+projection sum of squares. Should fall roughly within the range of the time variable.}
+
 \item{nGrid}{Number of grid points to evaluate split function at.}
 }
 \value{

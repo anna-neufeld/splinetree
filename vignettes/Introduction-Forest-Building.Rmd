@@ -20,9 +20,12 @@ This guide is meant for users who are familiar with regression trees, random for
 
 # Building a Forest
 
-If you are already familiar with building trees in ``splinetree`` (see "Introduction to Tree Building with splinetree if not"), then building a forest is straightforward. The majority of the parameters needed to use the ``splineForest`` function are identical to those used in the ``splineTree`` function.
+If you are already familiar with building trees in ``splinetree`` (see "Introduction to Tree Building with splinetree if not"), then building a forest is straightforward. The majority of the parameters needed to use the ``splineForest`` function are identical to those used in the ``splineTree`` function. There are just two additional parameters for the ``splineForest`` function, and both have default values. These are:
 
-- prob
+1. The ``nTree`` parameter 
+The ``prob`` parameter specifies the 
+
+
 - nTree
 
 # Working with a Forest

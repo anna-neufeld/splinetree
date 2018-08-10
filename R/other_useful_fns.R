@@ -3,9 +3,15 @@
 #' @return Number of terminal nodes in tree
 #' @export
 #' @examples
-#' splitForm <-BMI~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs
-#' model1 <- splineTree(splitForm, BMI~AGE, 'ID', nlsySample, degree=1, intercept=FALSE, cp=0.005)
-#' treeSize(model1)
+#' \dontrun{
+#' split_formula <- BMI ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
+#'   + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
+#'   + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14
+#'   + Mother_14 + Father_14 + STABLE_RESIDENCE + URBAN_14 + South_Birth
+#' tree <- splineTree(split_formula, BMI~AGE, 'ID', nlsySample_large, degree=1,
+#'   df=3, intercept=TRUE, cp=0.006, minNodeSize=20)
+#' }
+#' treeSize(tree)
 treeSize <- function(model) {
     NROW(unique(model$where))
 }
@@ -15,9 +21,15 @@ treeSize <- function(model) {
 #'
 #' @param model A splinetree object.
 #' @example
-#' splitForm <-BMI~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs
-#' model1 <- splineTree(splitForm, BMI~AGE, 'ID', nlsySample, degree=1, intercept=FALSE, cp=0.005)
-#' treeSummary(model1)
+#' \dontrun{
+#' split_formula <- BMI ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
+#'   + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
+#'   + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14
+#'   + Mother_14 + Father_14 + STABLE_RESIDENCE + URBAN_14 + South_Birth
+#' tree <- splineTree(split_formula, BMI~AGE, 'ID', nlsySample_large, degree=1,
+#'   df=3, intercept=TRUE, cp=0.006, minNodeSize=20)
+#' }
+#' treeSummary(tree)
 #' @export
 treeSummary <- function(model) {
     frame <- model$frame
@@ -30,20 +42,25 @@ treeSummary <- function(model) {
 }
 
 
-#' Returns a printed summary of the paths to the terminal nodes in the tree.
+#' Prints a summary of a terminal node in a tree
 #'
-#' Importantly, provides the node numbers for each node that are found in the 'where'
-#' attribute of the tree. Note that these nubmers differ from those shown in the rpart
-#' printout of the tree.
+#' If no arguement is provided for the parameter \code{node}, summaries are printed for every
+#' terminal node. Otherwise, the summary of just the requested node is printed.
 #'
-#' @param tree a splinetree object
-#' @return a list, indexed by terminal node numbers, where each
-#' element of the list holds the path to the terminal node.
+#' @param tree A splinetree object
+#' @param node The number of the node that you want summarized. To see which nodes correspond to
+#' which numbers, see stPrint(tree).
 #' @export
 #' @example
-#' splitForm <-BMI~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs
-#' model1 <- splineTree(splitForm, BMI~AGE, 'ID', nlsySample, degree=1, intercept=FALSE, cp=0.005)
-#' terminalNodeSummary(model1)
+#' \dontrun{
+#' split_formula <- BMI ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
+#'   + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
+#'   + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14
+#'   + Mother_14 + Father_14 + STABLE_RESIDENCE + URBAN_14 + South_Birth
+#' tree <- splineTree(split_formula, BMI~AGE, 'ID', nlsySample_large, degree=1,
+#'   df=3, intercept=TRUE, cp=0.006, minNodeSize=20)
+#' }
+#' terminalNodeSummary(tree)
 terminalNodeSummary <- function(tree, node=NULL) {
   if (is.null(node)) {
     for (i in 1:nrow(tree$frame)) {
@@ -84,10 +101,16 @@ terminalNodeSummary <- function(tree, node=NULL) {
 #' @return A dataframe which holds all the data that falls into this node of the tree.
 #' @export
 #' @example
-#' splitForm <-BMI~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs
-#' model1 <- splineTree(splitForm, BMI~AGE, 'ID', nlsySample, degree=1, intercept=FALSE, cp=0.005)
-#' node8data <- getNodeData(model1, 8, dataType = 'all)
-#' plot(BMI~AGE, data=node8data)
+#' \dontrun{
+#' split_formula <- BMI ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
+#'   + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
+#'   + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14
+#'   + Mother_14 + Father_14 + STABLE_RESIDENCE + URBAN_14 + South_Birth
+#' tree <- splineTree(split_formula, BMI~AGE, 'ID', nlsySample_large, degree=1,
+#'   df=3, intercept=TRUE, cp=0.006, minNodeSize=20)
+#' }
+#' node10data <- getNodeData(model1, 10, dataType = 'all)
+#' plot(BMI~AGE, data=node10data)
 getNodeData <- function(tree, node, dataType = 'all') {
   nodeIndex <- which(row.names(tree$frame)==node)
   if (tree$frame[nodeIndex,]$var != "<leaf>") stop("This node number does not correspond to a terminal node.
@@ -116,9 +139,15 @@ getNodeData <- function(tree, node, dataType = 'all') {
 #' @param includeData would you like to see the data from the node
 #' plotted along with the predicted trajectory?
 #' @example
-#' splitForm <-BMI~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs
-#' model1 <- splineTree(splitForm, BMI~AGE, 'ID', nlsySample, degree=1, intercept=FALSE, cp=0.005)
-#' plotNodeTraj(model1, 4, includeData=TRUE)
+#' \dontrun{
+#' split_formula <- BMI ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
+#'   + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
+#'   + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14
+#'   + Mother_14 + Father_14 + STABLE_RESIDENCE + URBAN_14 + South_Birth
+#' tree <- splineTree(split_formula, BMI~AGE, 'ID', nlsySample_large, degree=1,
+#'   df=3, intercept=TRUE, cp=0.006, minNodeSize=20)
+#' }
+#' plotNodeTraj(tree, 10, includeData=TRUE)
 plotNodeTraj <-  function(tree, node, includeData = FALSE) {
   nodeIndex <- which(row.names(tree$frame)==toString(node))
   nodeCoeffs <- tree$frame[nodeIndex,]$yval2

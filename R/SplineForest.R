@@ -39,8 +39,10 @@
 #' @importFrom graphics barplot layout par plot points rect text
 #' @importFrom stats complete.cases formula lm quantile runif sd terms time
 #' @examples
+#' \donttest{
 #' splitForm <-BMI~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs
-#' model1 <- splineForest(splitForm, BMI~AGE, 'ID', nlsySample, degree=1, intercept=FALSE, cp=0.005, ntree=30)
+#' forest <- splineForest(splitForm, BMI~AGE, 'ID', nlsySample, degree=1, cp=0.005, ntree=30)
+#' }
 splineForest <- function(splitFormula, tformula,
     idvar, data, knots = NULL, df = NULL, degree = 3,
     intercept = FALSE, nGrid = 7, ntree = 50, prob = 0.3,

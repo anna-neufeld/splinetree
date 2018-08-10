@@ -197,9 +197,6 @@ let's start with the intercept trees. Intercept is special because we can actual
 ```{r}
 R2_y(linear_tree_intercept)
 R2_y(quadratic_tree_intercept)
-#library(mclust)
-#adjustedRandIndex(linear_tree_intercept$where, quadratic_tree_intercept$where)
-
 ```
 
 

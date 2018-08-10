@@ -1,37 +1,49 @@
-#' Baseline socioeconomic information and BMIs of 500 individuals.
+#' Baseline socioeconomic information and BMI of 100 individuals.
 #'
 #' A dataset containing the body mass index (BMI) and baseline
 #' socioeconomic information of 500 individuals from the National
 #' Longitudinal Survey of Youth 1979 (NLSY), a freely available longitudinal dataset.
-#' The 500 individuals were drawn randomly from among all NLSY respondents with at least 10
+#' The 1000 individuals were drawn randomly from among all NLSY respondents with at least 10
 #' non-missing height/weight responses spread out over at least 20 years.
-#' This dataset is used for many of our code examples.
+#' This dataset is used in the package vignettes and code examples.
 #'
-#' @format A data frame with 8083 rows and 18 columns.
+#' @format A data frame with 16126 rows and 34 columns.
 #' \describe{
-#'   \item{ID}{jj}
-#'   \item{News}{gj}
-#'   \item{SEX}{gnegne}
-#'   \item{AGE}{aa}
-#'   \item{BLACK}{aa}
-#'   \item{BMI}{aa}
-#'   \item{Father_14}{aa}
-#'   \item{HEIGHTIN}{aa}
-#'   \item{HGC_FATHER}{aa}
-#'   \item{HGC_MOTHER}{aa}
-#'   \item{HISP}{aa}
-#'   \item{Lib}{aa}
-#'   \item{Mag}{aa}
-#'   \item{Mother_14}{aa}
-#'   \item{Num_sibs}{aa}
-#'   \item{Two_Adults_14}{aa}
-#'   \item{WEIGHT}{aa}
-#'   \item{WHITE}{aa}
-#'
-#'   ...
+#'   \item{ID}{Unique identifier for each NLSY respondent}
+#'   \item{News}{Did anyone in respondent's family subscribe to a newspaper when respondent was 14?}
+#'   \item{SEX}{Respondent's sex. 1 denotes male, 2 denotes female.}
+#'   \item{AGE}{Respondent's age}
+#'   \item{BLACK}{Indicator for whether or not respondent's identified as Black}
+#'   \item{BMI}{Respondent's body mass index - calculated from reported height and weight}
+#'   \item{Father_14}{Was the respondent's father present when respondednt was 14}
+#'   \item{HEIGHTIN}{Respondent's height}
+#'   \item{HGC_FATHER}{Highest grade completed by respondent's father}
+#'   \item{HGC_MOTHER}{Highest grade completed by respondent's mother}
+#'   \item{HISP}{Indicator for whether or not respondent's race identified as Hispanic}
+#'   \item{Lib}{Did anyone in respondent's family have a library card when respondent was 14?}
+#'   \item{Mag}{Did anyone in respondent's family subscribe to a magazine when respondent was 14?}
+#'   \item{Mother_14}{Was respondent's mother present when respondent was 14?}
+#'   \item{Num_sibs}{Number of siblings of respondent}
+#'   \item{Two_Adults_14}{Were two adults present in respondent's household at age 14?}
+#'   \item{WEIGHT}{Respondent's weight}
+#'   \item{WHITE}{Indicator for whether or not respondent identified as white.}
+#'   \item{HGC}{Highest grade completed by respondent}
+#'   \item{POVSTAT}{Indicator denoting whether or not respondent is in poverty}
+#'   \item{Dad_Full_Work}{Did respondent's father work full time (>35 hours) at time of first interview? NA if father not on record. }
+#'   \item{Mom_Full_Work}{Did respondent's mother work full time (>35 hours) at time of first interview? NA if mother not on record.}
+#'   \item{Age_first_weed}{Age that respondent reported first using marijuana. If they reported never using marijuana, recorded as 100.}
+#'   \item{Age_first_smoke}{Age that respondent reported first using tobacco. If they reported never using tobacco, recorded as 100.}
+#'   \item{Live_with_parents}{Did respondent report living in same household as the parents on record? }
+#'   \item{Age_first_alc}{Age that respondent reported first drinking alcohol. If they reported never drinking alcohol, recorded as 100.}
+#'   \item{Mom_dad_household}{Did the respondent's mother and father live in same household at first interview?}
+#'   \item{Father_on_record}{Did the respondent have a father listed in the survey record at first interview?}
+#'   \item{Mother_on_record}{Did the respondent have a mother listed in the survey record at first interview?}
+#'   \item{STABLE_RESIDENCE}{Did the respondent live in the same house from birth to age 14?}
+#'   \item{URBAN_14}{Did the respondent live in an urban area at age 14? 1 denotes town or city, 2 denotes country not farm, 3 denotes farm}
+#'   \item{HOUSEHOLD_14}{Household identifier for survey respondent}
 #' }
 #' @source \url{https://www.bls.gov/nls/nlsy79.htm}
-"nlsySample"
+"nlsySample_large"
 
 
 
@@ -57,30 +69,14 @@
 #'   \item{HISP}{aa}
 #'   \item{Lib}{aa}
 #'   \item{Mag}{aa}
-#'   \item{HGC}
 #'   \item{Mother_14}{aa}
 #'   \item{Num_sibs}{aa}
 #'   \item{Two_Adults_14}{aa}
 #'   \item{WEIGHT}{aa}
 #'   \item{WHITE}{aa}
-#'   \item{Dad_Full_Work}{}
-#'   \item{Mom_Full_Work}{}
-#'   \item{Age_first_alc}{}
-#'   \item{POVSTAT}{}
-#'   \item{Age_first_smoke}{}
-#'   \item{STABLE_RESIDENCE}{}
-#'   \item{Live_with_parents}{}
-#'   \item{Age_first_weed}{}
-#'   \item{Mother_on_record}{}
-#'   \item{Father_on_record}{}
-#'   \item{Mom_dad_household}{}
-#'   \item{South_Birth}{}
-#'   \item{URBAN_14}{}
-#'   \item{HOUSEHOLD_14}{}
-#'   \item{RACE}{}
 #' }
 #' @source \url{https://www.bls.gov/nls/nlsy79.htm}
-"nlsySample_large"
+"nlsySample"
 
 
 
@@ -96,4 +92,8 @@
 #' The purpose of this pre-built forest is to demonstrate the forest evaluation functions without
 #' needing to rebuild a forest (slow) every time. This forest uses an intercept.
 "sample_intercept_forest"
+
+
+#' Sample tree used in examples
+"tree"
 

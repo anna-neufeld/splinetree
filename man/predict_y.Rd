@@ -18,6 +18,7 @@ A vector of predictions with rows corresponding to the testdata.
 Returns predicted responses. Note that this function is most meaningful when used on spline tree objects that have an intercept.
 }
 \examples{
-tree1 <- splineTree(BMI~HISP+WHITE+BLACK+HGC_MOTHER+SEX, BMI~AGE, "ID", nlsySample, degree=1, intercept=FALSE, cp=0.005)
-plot(predict_y(tree1), tree1$parms$data[[tree1$parms$yvar]])
+splitForm <- BMI~HISP+WHITE+BLACK+HGC_MOTHER+SEX
+tree <- splineTree(splitForm, BMI~AGE, "ID", nlsySample, degree=1, intercept=FALSE, cp=0.005)
+plot(predict_y(tree), tree$parms$data[[tree$parms$yvar]])
 }
