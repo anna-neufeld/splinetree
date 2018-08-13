@@ -37,6 +37,9 @@
   \item{Mother_on_record}{Did the respondent have a mother listed in the survey record at first interview?}
   \item{STABLE_RESIDENCE}{Did the respondent live in the same house from birth to age 14?}
   \item{URBAN_14}{Did the respondent live in an urban area at age 14? 1 denotes town or city, 2 denotes country not farm, 3 denotes farm}
+  \item{RACE}{Race, as recorded by NLSY. 1 denotes Hispanic, 2 denotes Black, 3 denotes White.}
+  \item{South_Birth}{Indicator for whether or not respondent was born in the south (south as defined
+   by NLSY).}
   \item{HOUSEHOLD_14}{Household identifier for survey respondent}
 }}
 \source{
@@ -54,4 +57,4 @@ non-missing height/weight responses spread out over at least 20 years.
 This dataset is used in the package vignettes and code examples. Only a small
 subset of the variables available from the NLSY are included here- see https://www.bls.gov/nls/nlsy79.htm for more
 }
-\keyword{datasets}
+\keyword{internal}

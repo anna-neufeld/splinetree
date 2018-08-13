@@ -11,4 +11,4 @@ tree
 \description{
 Sample tree used in examples
 }
-\keyword{datasets}
+\keyword{internal}

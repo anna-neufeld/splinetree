@@ -6,10 +6,12 @@
 #'
 #' @param y Response data, which will be estimated spline coefficients
 #' @param  offset Required by rpart, but never used by splinetree, so its value will always be NULL
-#' @param parms rpart's custom split functionality allows optional parameters to be passed through the splitting functions.
-#' In the splinetree package, the parms parameter is used to hold a list of length 1 or 2 containing either just a spline basis matrix (for a tree), or
-#' a spline basis matrix and the probability that a variable will be selected at a split (for a random forest).
+#' @param parms rpart's custom split functionality allows optional parameters to be passed through the
+#' splitting functions. In the splinetree package, the parms parameter is used to hold a list of length
+#' 1 or 2 containing a spline basis matrix and the probability that a variable will be selected at a split.
+#' The probability is only used in splineforests. For splinetrees, only the basis matrix is needed.
 #' @param wt Used to weight observations differently. Required by rpart, but not supported by splinetree, so its value will always be NULL.
+#' @keywords internal
 #' @return A list of information for this node that is used internally by rpart.
 spline_init <- function(y, offset = NULL, parms = NULL, wt = NULL) {
   y <- as.data.frame(y)
@@ -46,6 +48,7 @@ spline_init <- function(y, offset = NULL, parms = NULL, wt = NULL) {
 #' @param parms rpart's custom split functionality allows optional parameters to be passed through the splitting functions.
 #' In the splinetree package, the parms parameter is used to hold a list of length 1 or 2 containing either just a spline basis matrix (for a tree), or
 #' a spline basis matrix and the probability that a variable will be selected at a split (for a random forest).
+#' @keywords internal
 #' @return A description for the node. This description includes the label, which is the mean response at the node,
 #' and the deviance, which in this case is the total projected sum of squares.
 spline_eval <- function(y, wt = NULL, parms = NULL) {
@@ -93,12 +96,18 @@ spline_eval <- function(y, wt = NULL, parms = NULL) {
 #' The goodness component holds the utility of the split (projected sum of squares) for each possible split.
 #' If the continuous parameter is TRUE, goodness and direction each have length n-1, here n is the length of x.
 #' The ith value of goodness describes utility of splitting observations 1 to i from i + 1 to n.
-#' The values of direction will be -1 and +1, where -1 suggests that values with y < cutpoint be sent to the left side of the tree, and a value of +1 that values with y
-#' cutpoint be sent to the right. This is not really an important choice, it only matters for tree reading conventions.
-#' If the continuous parameter is FALSE, then the predictor variable x is categorical with k classes and there are potentially 2k−1 − 1 different ways to split the node.
-#' When invoking custom split functions, rpart assumes that a reasonable approximation can be computed by first ordering the groups by their first principal component of the average y vector and then using the
+#' The values of direction will be \eqn{-1} and \eqn{+1}, where \eqn{-1} suggests that values with y < cutpoint be sent to the left side of the tree,
+#' and a value of +1 that values with y cutpoint be sent to the right. This is not really an important choice,
+#' it only matters for tree reading conventions.
+#' If the continuous parameter is FALSE, then the predictor variable x is categorical with
+#' k classes and there are potentially almost 2k different ways to split the node.
+#' When invoking custom split functions, rpart assumes that a reasonable approximation can be
+#' computed by first ordering the groups by their
+#' first principal component of the average y vector and then using the
 #' usual splitting rule on this ordered variable.
-#' In this case, the direction vector has k values giving the ordering of the groups, and the goodness vector k − 1 values giving the utility of the splits.
+#' In this case, the direction vector has k values giving the ordering of the groups, and the goodness vector
+#' has k-1 values giving the utility of the splits.
+#' @keywords internal
 spline_split <- function(y, wt, x, parms = NULL, continuous) {
   goodness <- vector()
   direction <- vector()

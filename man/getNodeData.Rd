@@ -11,7 +11,7 @@ getNodeData(tree, node, dataType = "all")
 
 \item{node}{The number of the node that you want the data for.
 Node numbers for your model can be seen using stPrint(tree)
-or treeSummary(tree). Note that this node number should correspond to
+or treeSummary(tree). This node number should correspond to
 a terminal node.}
 
 \item{dataType}{If "all", the data returned is the original data (one row per individual observation

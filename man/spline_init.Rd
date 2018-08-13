@@ -11,9 +11,10 @@ spline_init(y, offset = NULL, parms = NULL, wt = NULL)
 
 \item{offset}{Required by rpart, but never used by splinetree, so its value will always be NULL}
 
-\item{parms}{rpart's custom split functionality allows optional parameters to be passed through the splitting functions.
-In the splinetree package, the parms parameter is used to hold a list of length 1 or 2 containing either just a spline basis matrix (for a tree), or
-a spline basis matrix and the probability that a variable will be selected at a split (for a random forest).}
+\item{parms}{rpart's custom split functionality allows optional parameters to be passed through the
+splitting functions. In the splinetree package, the parms parameter is used to hold a list of length
+1 or 2 containing a spline basis matrix and the probability that a variable will be selected at a split.
+The probability is only used in splineforests. For splinetrees, only the basis matrix is needed.}
 
 \item{wt}{Used to weight observations differently. Required by rpart, but not supported by splinetree, so its value will always be NULL.}
 }
@@ -25,3 +26,4 @@ The init function is required for custom rpart functionality. This function init
 that will be used by rpart's summary function if you call summary() on this tree object. The init function also passes forward its arguments and tells rpart
 the dimension of the response variable. This function is called internally by rpart; the details are not important for the end user.
 }
+\keyword{internal}

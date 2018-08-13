@@ -101,10 +101,10 @@ stPrint(third_tree)
 stPlot(third_tree)
 ```
 
-6 terminal nodes seems like a reaosnable tree size for this example. The tree is small enough to plot and understand, but large enough to be interesting. If we want, we can zoom in on different nodes in our plot using the ``plotNodeTraj`` function. For example, suppose we want more detail on the node labeled as node 8 in our tree prinout. 
+6 terminal nodes seems like a reaosnable tree size for this example. The tree is small enough to plot and understand, but large enough to be interesting. If we want, we can zoom in on different nodes in our plot using the ``plotNode`` function. For example, suppose we want more detail on the node labeled as node 8 in our tree prinout. 
 
 ```{r}
-plotNodeTraj(third_tree, 8)
+plotNode(third_tree, 8)
 ```
 
 If we want all of the data associated with node 4, we can use:

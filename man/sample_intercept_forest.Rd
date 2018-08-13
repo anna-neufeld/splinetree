@@ -12,4 +12,4 @@ sample_intercept_forest
 The purpose of this pre-built forest is to demonstrate the forest evaluation functions without
 needing to rebuild a forest (slow) every time. This forest uses an intercept.
 }
-\keyword{datasets}
+\keyword{internal}

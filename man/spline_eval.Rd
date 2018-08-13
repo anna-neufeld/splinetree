@@ -24,3 +24,4 @@ The eval function is required for custom rpart functionality. The split criterio
 Note that this is the node purity measure introduced by Yu and Lambert, 1999.
 The calling of this function is always handled internally by rpart; the user will never directly call this function.
 }
+\keyword{internal}

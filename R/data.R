@@ -42,11 +42,12 @@
 #'   \item{STABLE_RESIDENCE}{Did the respondent live in the same house from birth to age 14?}
 #'   \item{URBAN_14}{Did the respondent live in an urban area at age 14? 1 denotes town or city, 2 denotes country not farm, 3 denotes farm}
 #'   \item{RACE}{Race, as recorded by NLSY. 1 denotes Hispanic, 2 denotes Black, 3 denotes White.}
-#'   \item{South_birth}{Indicator for whether or not respondent was born in the south (south as defined
+#'   \item{South_Birth}{Indicator for whether or not respondent was born in the south (south as defined
 #'    by NLSY).}
 #'   \item{HOUSEHOLD_14}{Household identifier for survey respondent}
 #' }
 #' @source \url{https://www.bls.gov/nls/nlsy79.htm}
+#' @keywords internal
 "nlsySample"
 
 
@@ -54,15 +55,18 @@
 #'
 #' The purpose of this pre-built forest is to demonstrate the forest evaluation functions without
 #' needing to rebuild a forest (slow) every time. This forest does not use an intercept.
+#' @keywords internal
 "sample_forest"
 
 #' A pre-built random forest (with intercept) with 20 trees, built to the NLSY sample.
 #'
 #' The purpose of this pre-built forest is to demonstrate the forest evaluation functions without
 #' needing to rebuild a forest (slow) every time. This forest uses an intercept.
+#' @keywords internal
 "sample_intercept_forest"
 
 
 #' Sample tree used in examples
+#' @keywords internal
 "tree"
 

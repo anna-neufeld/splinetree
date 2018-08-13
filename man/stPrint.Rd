@@ -4,10 +4,10 @@
 \alias{stPrint}
 \title{Print a spline tree object}
 \usage{
-stPrint(x, cp, digits = getOption("digits"))
+stPrint(tree, cp, digits = getOption("digits"))
 }
 \arguments{
-\item{x}{The splinetree object}
+\item{tree}{A splinetree object}
 
 \item{cp}{Optional- if provided, a pruned version of the tree will be printed. The tree will be
 pruned using the provided cp as the complexity parameter.}
@@ -22,4 +22,15 @@ predicted spline coefficients for each node.
 \description{
 Code adapted only slightly from the rpart base code for print.rpart to support the printing of
 all coefficients.
+}
+\examples{
+\dontrun{
+split_formula <- BMI ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
+  + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
+  + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14
+  + Mother_14 + Father_14 + STABLE_RESIDENCE + URBAN_14 + South_Birth
+ tree <- splineTree(split_formula, BMI~AGE, 'ID', nlsySample, degree=1,
+   df=3, intercept=TRUE, cp=0.006, minNodeSize=20)
+}
+stPrint(tree)
 }
