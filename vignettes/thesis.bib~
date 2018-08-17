@@ -1,0 +1,855 @@
+@article{sela2012re,
+  title={RE-EM trees: a data mining approach for longitudinal and clustered data},
+  author={Sela, Rebecca J and Simonoff, Jeffrey S},
+  journal={Machine learning},
+  volume={86},
+  number={2},
+  pages={169--207},
+  year={2012},
+  publisher={Springer}
+}
+
+@article{strobl2007bias,
+  title={Bias in random forest variable importance measures: Illustrations, sources and a solution},
+  author={Strobl, Carolin and Boulesteix, Anne-Laure and Zeileis, Achim and Hothorn, Torsten},
+  journal={BMC bioinformatics},
+  volume={8},
+  number={1},
+  pages={25},
+  year={2007},
+  publisher={BioMed Central}
+}
+
+@Manual{R,
+    title = {R: A Language and Environment for Statistical Computing},
+    author = {{R Core Team}},
+    organization = {R Foundation for Statistical Computing},
+    address = {Vienna, Austria},
+    year = {2013},
+    url = {http://www.R-project.org/},
+  }
+  
+ @Manual{reem2011,
+    title = {REEMtree: Regression Trees with Random Effects},
+    author = {Rebecca J. Sela and Jeffrey S. Simonoff},
+    year = {2011},
+    note = {R package version 0.90.3},
+  }
+  
+    @Manual{melt2012,
+    title = {melt: Mixed-Effects Longitudinal Trees},
+    author = {Soo-Heang Eo and HyungJun Cho},
+    year = {2012},
+    note = {R package version 0.7-14},
+  }
+
+@TechReport{glmer2015,
+    title = {Detecting Treatment-Subgroup Interactions in Clustered Data with Generalized Linear Mixed-Effects Model Trees},
+    author = {Marjolein Fokkema and Niels Smits and Achim Zeileis and Torsten Hothorn and Henk Kelderman},
+    institution = {Working Papers in Economics and Statistics, Research Platform Empirical
+  ional ortance using Decision Trees},
+  author={Kazemitabar, Jalil and Amini, Arash and Bloniarz, Adam and Talwalkar, Ameet S},
+  booktitle={Advances in Neural Information Processing Systems},
+  pages={425--434},
+  year={2017}
+}
+
+@book{mclachlan2004finite,
+  title={Finite mixture models},
+  author={McLachlan, Geoffrey and Peel, David},
+  year={2004},
+  publisher={John Wiley \& Sons}
+}
+
+@article{cole2010sitar,
+  title={SITAR—a useful instrument for growth curve analysis},
+  author={Cole, Tim J and Donaldson, Malcolm DC and Ben-Shlomo, Yoav},
+  journal={International journal of epidemiology},
+  volume={39},
+  number={6},
+  pages={1558--1566},
+  year={2010},
+  publisher={Oxford University Press}
+}
+
+@article{harding2015relationship,
+  title={The relationship between maternal education and children's academic outcomes: A theoretical framework},
+  author={Harding, Jessica F and Morris, Pamela A and Hughes, Diane},
+  journal={Journal of Marriage and Family},
+  volume={77},
+  number={1},
+  pages={60--76},
+  year={2015},
+  publisher={Wiley Online Library}
+}
+
+@article{ball2005whose,
+  title={Whose socioeconomic status influences a woman's obesity risk: her mother's, her father's, or her own?},
+  author={Ball, Kylie and Mishra, Gita D},
+  journal={International journal of epidemiology},
+  volume={35},
+  number={1},
+  pages={131--138},
+  year={2005},
+  publisher={Oxford University Press}
+}
+
+@article{yeung2001details,
+  title={Details of the adjusted rand index and clustering algorithms, supplement to the paper an empirical study on principal component analysis for clustering gene expression data},
+  author={Yeung, Ka Yee and Ruzzo, Walter L},
+  journal={Bioinformatics},
+  volume={17},
+  number={9},
+  pages={763--774},
+  year={2001}
+}
+
+@article{gupta2007impact,
+  title={The impact of poverty on the current and future health status of children},
+  author={Gupta, Rita Paul-Sen and de Wit, Margaret L and McKeown, David},
+  journal={Paediatrics \& child health},
+  volume={12},
+  number={8},
+  pages={667--672},
+  year={2007},
+  publisher={Oxford University Press}
+}
+
+@article{li2008child,
+  title={Child-to-adult body mass index and height trajectories: a comparison of 2 British birth cohorts},
+  author={Li, Leah and Hardy, Rebecca and Kuh, Diana and Lo Conte, Rossella and Power, Chris},
+  journal={American Journal of Epidemiology},
+  volume={168},
+  number={9},
+  pages={1008--1015},
+  year={2008},
+  publisher={Oxford University Press}
+}
+
+@article{kundu2013regression,
+  title={Regression trees for longitudinal data},
+  author={Kundu, Madan Gopal and Harezlak, Jaroslaw},
+  journal={arXiv preprint arXiv:1309.7733},
+  year={2013}
+}
+
+@article{zeileis2008model,
+  title={Model-based recursive partitioning},
+  author={Zeileis, Achim and Hothorn, Torsten and Hornik, Kurt},
+  journal={Journal of Computational and Graphical Statistics},
+  volume={17},
+  number={2},
+  pages={492--514},
+  year={2008},
+  publisher={Taylor \& Francis}
+}
+
+@techreport{fokkema2015detecting,
+  title={Detecting treatment-subgroup interactions in clustered data with generalized linear mixed-effects model trees},
+  author={Fokkema, Marjolein and Smits, Niels and Zeileis, Achim and Hothorn, Torsten and Kelderman, Henk},
+  year={2015},
+  institution={Working Papers in Economics and Statistics}
+}
+
+
+
+
+@article{mortimer2008air,
+  title={Air pollution and pulmonary function in asthmatic children: effects of prenatal and lifetime exposures},
+  author={Mortimer, Kathleen and Neugebauer, Romain and Lurmann, Frederick and Alcorn, Siana and Balmes, John and Tager, Ira},
+  journal={Epidemiology},
+  volume={19},
+  number={4},
+  pages={550--557},
+  year={2008},
+  publisher={LWW}
+}
+
+@article{loh2002regression,
+  title={Regression tress with unbiased variable selection and interaction detection},
+  author={Loh, Wei-Yin},
+  journal={Statistica Sinica},
+  pages={361--386},
+  year={2002},
+  publisher={JSTOR}
+}
+
+@article{chaudhuri1994piecewise,
+  title={Piecewise-polynomial regression trees},
+  author={Chaudhuri, Probal and Huang, Min-Ching and Loh, Wei-Yin and Yao, Ruji},
+  journal={Statistica Sinica},
+  pages={143--167},
+  year={1994},
+  publisher={JSTOR}
+}
+
+@article{peneau2017growth,
+  title={Growth trajectories of body mass index during childhood: associated factors and health outcome at adulthood},
+  author={P{\'e}neau, Sandrine and Giudici, Kelly Virecoulon and Gusto, Ga{\"e}lle and Goxe, Didier and Lantieri, Olivier and Hercberg, Serge and Rolland-Cachera, Marie-Fran{\c{c}}oise},
+  journal={The Journal of Pediatrics},
+  year={2017},
+  publisher={Elsevier}
+}
+
+@article{woo2017fast,
+  title={Fast, Slow, High, and Low: Infant and Childhood Growth as Predictors of Cardiometabolic Outcomes},
+  author={Woo, Jessica G},
+  journal={The Journal of pediatrics},
+  volume={186},
+  pages={14--16},
+  year={2017},
+  publisher={Elsevier}
+}
+
+@article{dominici2008model,
+  title={Model selection and health effect estimation in environmental epidemiology},
+  author={Dominici, Francesca and Wang, Chi and Crainiceanu, Ciprian and Parmigiani, Giovanni},
+  journal={Epidemiology},
+  volume={19},
+  number={4},
+  pages={558--560},
+  year={2008},
+  publisher={LWW}
+}
+
+@article{fu2015unbiased,
+  title={Unbiased regression trees for longitudinal and clustered data},
+  author={Fu, Wei and Simonoff, Jeffrey S},
+  journal={Computational Statistics \& Data Analysis},
+  volume={88},
+  pages={53--74},
+  year={2015},
+  publisher={Elsevier}
+}
+
+@article{strobl2008conditional,
+  title={Conditional variable importance for random forests},
+  author={Strobl, Carolin and Boulesteix, Anne-Laure and Kneib, Thomas and Augustin, Thomas and Zeileis, Achim},
+  journal={BMC bioinformatics},
+  volume={9},
+  number={1},
+  pages={307},
+  year={2008},
+  publisher={BioMed Central}
+}
+
+@article{harley_prenatal_2013,
+  title = {Prenatal and Postnatal Bisphenol {{A}} Exposure and Body Mass Index in Childhood in the {{CHAMACOS}} Cohort},
+  volume = {121},
+  timestamp = {2017-01-13T14:24:08Z},
+  number = {4},
+  journal = {Environmental Health Perspectives},
+  author = {Harley, Kim G. and Schall, Raul Aguilar and Chevrier, Jonathan and Tyler, Kristin and Aguirre, Helen and Bradman, Asa and Holland, Nina T. and Lustig, Robert H. and Calafat, Antonia M. and Eskenazi, Brenda},
+  year = {2013},
+  pages = {514--520},
+  groups = {Dissertation}
+}
+
+@article{waternaux_methods_1989,
+  title = {Methods for Analysis of Longitudinal Data: Blood-Lead Concentrations and Cognitive Development},
+  volume = {84},
+  issn = {0162-1459},
+  shorttitle = {Methods for {{Analysis}} of {{Longitudinal Data}}},
+  doi = {10.2307/2289844},
+  abstract = {This article reports results from a longitudinal study investigating the effects of low-to-moderate prenatal and postnatal lead exposure on the cognitive development of children during the first 18 months of life. Study hypotheses are expressed as a sequence of linear models for the outcome variable adjusted score on the Bayley Scales of Mental Development (MDIA), as a function of cord blood-lead concentration, infant blood-lead concentration at semiannual examinations, and other characteristics of study participants. These models are fitted to MDIA measurements on three occasions for as many as 214 infants, first assuming an arbitrary multivariate covariance structure for the repeated measurements and then with covariance structure arising from a random-effects model for errors. Estimates of the effects of lead exposure are not sensitive to the assumed covariance structure. The article describes several approaches to residual analysis and outlier detection in the longitudinal setting. In particular, it shows how empirical Bayes residuals can be used to estimate the partial regression coefficient of covariates not included in the linear model. The major findings concerning the effect of lead exposure on cognitive development are (a) a clear association between cord blood-lead concentration and Bayley scores in the first 18 months of life, (b) no clear evidence of an effect of cumulative postnatal exposure, and (c) a tendency for children who had higher lead concentrations at 6 months of age to exhibit poorer performance at 18 months than children with low lead concentrations. These findings have implications for acceptable blood-lead concentrations in children and pregnant women.},
+  timestamp = {2017-03-23T14:23:31Z},
+  number = {405},
+  urldate = {2017-03-21},
+  journal = {Journal of the American Statistical Association},
+  author = {Waternaux, Christine and Laird, Nan M. and Ware, James H.},
+  year = {1989},
+  pages = {33--41},
+  groups = {Dissertation}
+}
+
+@article{valvi_prenatal_2015,
+  title = {Prenatal {{Phthalate Exposure}} and {{Childhood Growth}} and {{Blood Pressure}}: {{Evidence}} from the {{Spanish INMA}}-{{Sabadell Birth Cohort Study}}},
+  volume = {123},
+  issn = {1552-9924},
+  shorttitle = {Prenatal {{Phthalate Exposure}} and {{Childhood Growth}} and {{Blood Pressure}}},
+  doi = {10.1289/ehp.1408887},
+  abstract = {BACKGROUND: Human evidence on the effects of early life phthalate exposure on obesity and cardiovascular disease risks, reported by experimental studies, is limited to a few cross-sectional studies.
+OBJECTIVES: We evaluated the associations between prenatal phthalate exposure and childhood growth and blood pressure in a Spanish birth cohort study.
+METHODS: We assessed exposure using the average of two phthalate metabolite spot-urine concentrations collected from the mothers in the first and third pregnancy trimesters (creatinine-adjusted, n = 391). Study outcomes were the difference in age- and sex-specific z-scores for weight between birth and 6 months of age; and repeated age- and sex-specific z-scores for body mass index (BMI) at 1, 4, and 7 years; waist-to-height ratio at 4 and 7 years; and age- and height-specific z-scores for systolic and diastolic blood pressure at 4 and 7 years.
+RESULTS: The sum of five high-molecular-weight phthalate metabolites ($\Sigma$HMWPm) was associated with lower weight z-score difference between birth and 6 months ($\beta$ per doubling of exposure = -0.41; 95\% CI: -0.75, -0.06) and BMI z-scores at later ages in boys ($\beta$ = -0.28; 95\% CI: -0.60, 0.03) and with higher weight z-score difference ($\beta$ = 0.24; 95\% CI: -0.16, 0.65) and BMI z-scores in girls ($\beta$ = 0.30; 95\% CI: -0.04, 0.64) (p for sex interaction = 0.01 and 0.05, respectively). The sum of three low-molecular-weight phthalates ($\Sigma$LMWPm) was not significantly associated with any of the growth outcomes. $\Sigma$HMWPm and $\Sigma$LMWPm were associated with lower systolic blood pressure z-scores in girls but not in boys.
+CONCLUSIONS: This study suggests that prenatal phthalate exposure may be associated with postnatal growth and blood pressure in a sex-specific manner. Inconsistencies with previous cross-sectional findings highlight the necessity for evaluating phthalate health effects in prospective studies.},
+  language = {eng},
+  timestamp = {2017-03-20T15:56:12Z},
+  number = {10},
+  journal = {Environmental Health Perspectives},
+  author = {Valvi, Damaskini and Casas, Maribel and Romaguera, Dora and Monfort, Nuria and Ventura, Rosa and Martinez, David and Sunyer, Jordi and Vrijheid, Martine},
+  month = oct,
+  year = {2015},
+  keywords = {Adult,Blood Pressure,Body mass index,Child,Child; Preschool,Environmental Pollutants,Female,Humans,Infant,Infant; Newborn,Male,Phthalic Acids,Pregnancy,Prenatal Exposure Delayed Effects,Prospective Studies,Sex Factors,Spain,Waist-Height Ratio,Weight Gain},
+  pages = {1022--1029},
+  groups = {Dissertation},
+  pmid = {25850106},
+  pmcid = {PMC4590754}
+}
+
+
+@article{warner_prenatal_2014,
+  title = {Prenatal Exposure to Dichlorodiphenyltrichloroethane and Obesity at 9 Years of Age in the {{CHAMACOS}} Study Cohort},
+  volume = {179},
+  timestamp = {2017-01-13T14:24:08Z},
+  number = {11},
+  journal = {American Journal of Epidemiology},
+  author = {Warner, M. and Wesselink, A. and Harley, K. G. and Bradman, A. and Kogut, K. and Eskenazi, B.},
+  month = jun,
+  year = {2014},
+  pages = {1312--1322},
+  groups = {Dissertation}
+}
+
+@article{hu2008temperature,
+  title={Temperature, air pollution and total mortality during summers in Sydney, 1994--2004},
+  author={Hu, Wenbiao and Mengersen, Kerrie and McMichael, Anthony and Tong, Shilu},
+  journal={International journal of biometeorology},
+  volume={52},
+  number={7},
+  pages={689--696},
+  year={2008},
+  publisher={Springer}
+}
+
+@article{adler2012approximating,
+  title={Approximating optimal binary decision trees},
+  author={Adler, Micah and Heeringa, Brent},
+  journal={Algorithmica},
+  volume={62},
+  number={3-4},
+  pages={1112--1121},
+  year={2012},
+  publisher={Springer}
+}
+
+
+@incollection{galimberti2002regression,
+  title={Regression trees for longitudinal data with time-dependent covariates},
+  author={Galimberti, Giuliano and Montanari, Angela},
+  booktitle={Classification, Clustering, and Data Analysis},
+  pages={391--398},
+  year={2002},
+  publisher={Springer}
+}
+
+
+@inproceedings{sorokina2008detecting,
+  title={Detecting statistical interactions with additive groves of trees},
+  author={Sorokina, Daria and Caruana, Rich and Riedewald, Mirek and Fink, Daniel},
+  booktitle={Proceedings of the 25th international conference on Machine learning},
+  pages={1000--1007},
+  year={2008},
+  organization={ACM}
+}
+
+@article{friedman2008predictive,
+  title={Predictive learning via rule ensembles},
+  author={Friedman, Jerome H and Popescu, Bogdan E and others},
+  journal={The Annals of Applied Statistics},
+  volume={2},
+  number={3},
+  pages={916--954},
+  year={2008},
+  publisher={Institute of Mathematical Statistics}
+}
+
+@article{liaw2002classification,
+  title={Classification and regression by randomForest},
+  author={Liaw, Andy and Wiener, Matthew and others},
+  journal={R news},
+  volume={2},
+  number={3},
+  pages={18--22},
+  year={2002}
+}
+
+@article{breiman2001random,
+  title={Random forests},
+  author={Breiman, Leo},
+  journal={Machine learning},
+  volume={45},
+  number={1},
+  pages={5--32},
+  year={2001},
+  publisher={Springer}
+}
+
+@article{heindel2009role,
+  title={Role of nutrition and environmental endocrine disrupting chemicals during the perinatal period on the aetiology of obesity},
+  author={Heindel, Jerrold J and vom Saal, Frederick S},
+  journal={Molecular and cellular endocrinology},
+  volume={304},
+  number={1},
+  pages={90--96},
+  year={2009},
+  publisher={Elsevier}
+}
+
+@article{casals2011endocrine,
+  title={Endocrine disruptors: from endocrine to metabolic disruption},
+  author={Casals-Casas, Cristina and Desvergne, B{\'e}atrice},
+  journal={Annual review of physiology},
+  volume={73},
+  pages={135--162},
+  year={2011},
+  publisher={Annual Reviews}
+}
+
+@article{warner2013utero,
+  title={In utero DDT and DDE exposure and obesity status of 7-year-old Mexican-American children in the CHAMACOS cohort},
+  author={Warner, Marcella and Schall, Raul Aguilar and Harley, Kim G and Bradman, Asa and Barr, Dana and Eskenazi, Brenda},
+  journal={Environmental health perspectives},
+  volume={121},
+  number={5},
+  pages={631},
+  year={2013},
+  publisher={National Institute of Environmental Health Science}
+}
+
+@article{warner2014prenatal,
+  title={Prenatal exposure to dichlorodiphenyltrichloroethane and obesity at 9 years of age in the CHAMACOS study cohort},
+  author={Warner, Marcella and Wesselink, Amelia and Harley, Kim G and Bradman, Asa and Kogut, Katherine and Eskenazi, Brenda},
+  journal={American journal of epidemiology},
+  volume={179},
+  number={11},
+  pages={1312--1322},
+  year={2014},
+  publisher={Oxford University Press}
+}
+
+@article{morgan1963problems,
+  title={Problems in the analysis of survey data, and a proposal},
+  author={Morgan, James N and Sonquist, John A},
+  journal={Journal of the American statistical association},
+  volume={58},
+  number={302},
+  pages={415--434},
+  year={1963},
+  publisher={Taylor \& Francis Group}
+}
+
+@article{lampa2014identification,
+  title={The identification of complex interactions in epidemiology and toxicology: a simulation study of boosted regression trees},
+  author={Lampa, Erik and Lind, Lars and Lind, P Monica and Bornefalk-Hermansson, Anna},
+  journal={Environmental health},
+  volume={13},
+  number={1},
+  pages={57},
+  year={2014},
+  publisher={BioMed Central}
+}
+
+@article{henn2012associations,
+  title={Associations of early childhood manganese and lead coexposure with neurodevelopment},
+  author={Henn, Birgit Claus and Schnaas, Lourdes and Ettinger, Adrienne S and Schwartz, Joel and Lamadrid-Figueroa, H{\'e}ctor and Hern{\'a}ndez-Avila, Mauricio and Amarasiriwardena, Chitra and Hu, Howard and Bellinger, David C and Wright, Robert O and others},
+  journal={Environmental health perspectives},
+  volume={120},
+  number={1},
+  pages={126},
+  year={2012},
+  publisher={National Institute of Environmental Health Science}
+}
+
+@article{suh2011chemical,
+  title={Chemical properties of air pollutants and cause-specific hospital admissions among the elderly in Atlanta, Georgia},
+  author={Suh, Helen H and Zanobetti, Antonella and Schwartz, Joel and Coull, Brent A},
+  journal={Environmental health perspectives},
+  volume={119},
+  number={10},
+  pages={1421},
+  year={2011},
+  publisher={National Institute of Environmental Health Science}
+}
+
+@article{coker2016multi,
+  title={Multi-pollutant exposure profiles associated with term low birth weight in Los Angeles County},
+  author={Coker, Eric and Liverani, Silvia and Ghosh, Jo Kay and Jerrett, Michael and Beckerman, Bernardo and Li, Arthur and Ritz, Beate and Molitor, John},
+  journal={Environment international},
+  volume={91},
+  pages={1--13},
+  year={2016},
+  publisher={Elsevier}
+}
+
+@article{ritz2008ambient,
+  title={Ambient air pollution and adverse birth outcomes: methodologic issues in an emerging field},
+  author={Ritz, Beate and Wilhelm, Michelle},
+  journal={Basic \& clinical pharmacology \& toxicology},
+  volume={102},
+  number={2},
+  pages={182--190},
+  year={2008},
+  publisher={Wiley Online Library}
+}
+
+@article{roberts2006using,
+  title={Using supervised principal components analysis to assess multiple pollutant effects},
+  author={Roberts, Steven and Martin, Michael A},
+  journal={Environmental health perspectives},
+  volume={114},
+  number={12},
+  pages={1877},
+  year={2006},
+  publisher={National Institute of Environmental Health Science}
+}
+
+@article{arif2007association,
+  title={Association between personal exposure to volatile organic compounds and asthma among US adult population},
+  author={Arif, Ahmed A and Shah, Syed M},
+  journal={International archives of occupational and environmental health},
+  volume={80},
+  number={8},
+  pages={711--719},
+  year={2007},
+  publisher={Springer}
+}
+
+@article{hsiao2007splitting,
+  title={Splitting variable selection for multivariate regression trees},
+  author={Hsiao, Wei-Cheng and Shih, Yu-Shan},
+  journal={Statistics \& probability letters},
+  volume={77},
+  number={3},
+  pages={265--271},
+  year={2007},
+  publisher={Elsevier}
+}
+
+@article{gillo1974predictive,
+  title={Predictive modeling of multivariable and multivariate data},
+  author={Gillo, Martin W and Shelly, Maynard W},
+  journal={Journal of the American Statistical Association},
+  volume={69},
+  number={347},
+  pages={646--653},
+  year={1974},
+  publisher={Taylor \& Francis}
+}
+
+@inproceedings{strobl1993variable,
+  title={Variable selection bias in classification trees and ensemble methods},
+  author={Strobl, Carolin and Zeileis, Achim and Boulesteix, Anne-Laure and Hothorn, Torsten},
+  booktitle={Book of abstracts},
+  pages={159},
+  year={1993},
+  organization={Citeseer}
+}
+
+@article{jones2013early,
+  title={Early life growth trajectories and future risk for overweight},
+  author={Jones-Smith, JC and Neufeld, LM and Laraia, B and Ramakrishnan, U and Garcia-Guerra, A and Fernald, LCH},
+  journal={Nutrition \& diabetes},
+  volume={3},
+  number={2},
+  pages={e60},
+  year={2013},
+  publisher={Nature Publishing Group}
+}
+
+@article{frick2014split,
+  title={To Split or to Mix? Tree vs. Mixture Models for Detecting Subgroups},
+  author={Frick, Hannah and Strobl, Carolin and Zeileis, Achim},
+  journal={COMPSTAT 2014--Proceedings in Computational Statistics},
+  pages={379--386},
+  year={2014}
+}
+
+@article{loh2013regression,
+  title={Regression trees for longitudinal and multiresponse data},
+  author={Loh, Wei-Yin and Zheng, Wei and others},
+  journal={The Annals of Applied Statistics},
+  volume={7},
+  number={1},
+  pages={495--522},
+  year={2013},
+  publisher={Institute of Mathematical Statistics}
+}
+
+@article{qian2004using,
+  title={Using air pollution based community clusters to explore air pollution health effects in children},
+  author={Qian, Zhengmin and Chapman, Robert S and Hu, Wei and Wei, Fusheng and Korn, Leo R and Zhang, Junfeng Jim},
+  journal={Environment International},
+  volume={30},
+  number={5},
+  pages={611--620},
+  year={2004},
+  publisher={Elsevier}
+}
+
+@article{loh2011classification,
+  title={Classification and regression trees},
+  author={Loh, Wei-Yin},
+  journal={Wiley Interdisciplinary Reviews: Data Mining and Knowledge Discovery},
+  volume={1},
+  number={1},
+  pages={14--23},
+  year={2011},
+  publisher={Wiley Online Library}
+}
+
+@article{loh2014fifty,
+  title={Fifty years of classification and regression trees},
+  author={Loh, Wei-Yin},
+  journal={International Statistical Review},
+  volume={82},
+  number={3},
+  pages={329--348},
+  year={2014},
+  publisher={Wiley Online Library}
+}
+
+@article{segal1992tree,
+  title={Tree-structured methods for longitudinal data},
+  author={Segal, Mark Robert},
+  journal={Journal of the American Statistical Association},
+  volume={87},
+  number={418},
+  pages={407--418},
+  year={1992},
+  publisher={Taylor \& Francis Group}
+}
+
+@article{eo2014tree,
+  title={Tree-structured mixed-effects regression modeling for longitudinal data},
+  author={Eo, Soo-Heang and Cho, HyungJun},
+  journal={Journal of Computational and Graphical Statistics},
+  volume={23},
+  number={3},
+  pages={740--760},
+  year={2014},
+  publisher={Taylor \& Francis}
+}
+
+
+@article{hajjem2011mixed,
+  title={Mixed effects regression trees for clustered data},
+  author={Hajjem, Ahlem and Bellavance, Fran{\c{c}}ois and Larocque, Denis},
+  journal={Statistics \& probability letters},
+  volume={81},
+  number={4},
+  pages={451--459},
+  year={2011},
+  publisher={Elsevier}
+}
+
+@article{hajjem2014mixed,
+  title={Mixed-effects random forest for clustered data},
+  author={Hajjem, Ahlem and Bellavance, Fran{\c{c}}ois and Larocque, Denis},
+  journal={Journal of Statistical Computation and Simulation},
+  volume={84},
+  number={6},
+  pages={1313--1328},
+  year={2014},
+  publisher={Taylor \& Francis}
+}
+
+@article{yu1999fitting,
+  title={Fitting trees to functional data, with an application to time-of-day patterns},
+  author={Yu, Yan and Lambert, Diane},
+  journal={Journal of Computational and graphical Statistics},
+  volume={8},
+  number={4},
+  pages={749--762},
+  year={1999},
+  publisher={Taylor \& Francis Group}
+}
+
+@article{gass2014classification,
+  title={Classification and regression trees for epidemiologic research: an air pollution example},
+  author={Gass, Katherine and Klein, Mitch and Chang, Howard H and Flanders, W Dana and Strickland, Matthew J},
+  journal={Environmental Health},
+  volume={13},
+  number={1},
+  pages={17},
+  year={2014},
+  publisher={BioMed Central}
+}
+
+@article{abdolell2002binary,
+  title={Binary partitioning for continuous longitudinal data: categorizing a prognostic variable},
+  author={Abdolell, M and LeBlanc, M and Stephens, D and Harrison, RV},
+  journal={Statistics in medicine},
+  volume={21},
+  number={22},
+  pages={3395--3409},
+  year={2002},
+  publisher={Wiley Online Library}
+}
+
+@Article{eskenazi2005,
+   Author="Eskenazi, B.  and Gladstone, E. A.  and Berkowitz, G. S.  and Drew, C. H.  and Faustman, E. M.  and Holland, N. T.  and Lanphear, B.  and Meisel, S. J.  and Perera, F. P.  and Rauh, V. A.  and Sweeney, A.  and Whyatt, R. M.  and Yolton, K. ",
+   Title="{{M}ethodologic and logistic issues in conducting longitudinal birth cohort studies: Lessons learned from the {C}enters for {C}hildren's {E}nvironmental {H}ealth and {D}isease {P}revention {R}esearch}",
+   Journal="Environmental Health Perspectives",
+   Year="2005",
+   Volume="113",
+   Number="10",
+   Pages="1419--1429",
+}
+
+@article{eskenazi2003chamacos,
+  title={CHAMACOS, a longitudinal birth cohort study: lessons from the fields},
+  author={Eskenazi, Brenda and Bradman, Asa and Gladstone, Eleanor A and Jaramillo, Selene and Birch, Kelly and Holland, Nina},
+  journal={Journal of Children's Health},
+  volume={1},
+  number={1},
+  pages={3--27},
+  year={2003},
+  publisher={Taylor \& Francis}
+}
+
+article{hu2008temperature,
+  title={Temperature, air pollution and total mortality during summers in Sydney, 1994--2004},
+  author={Hu, Wenbiao and Mengersen, Kerrie and McMichael, Anthony and Tong, Shilu},
+  journal={International journal of biometeorology},
+  volume={52},
+  number={7},
+  pages={689--696},
+  year={2008},
+  publisher={Springer}
+}
+
+@article{brieman1984classification,
+  title={Classification and regression trees. Belmont (CA): Wadsworth},
+  author={Brieman, L and Friedman, J and Olshen, R and Stone, C},
+  journal={Google Scholar},
+  year={1984}
+}
+
+@book{sonquist1971searching,
+  title={Searching for structure},
+  author={Sonquist, John A and Baker, Elizabeth Lauh and Morgan, James N},
+  year={1971},
+  publisher={Survey Research Center, Inst. for Social Research, University of Michigan}
+}
+
+@article{ng2014global,
+  title={Global, regional, and national prevalence of overweight and obesity in children and adults during 1980--2013: a systematic analysis for the Global Burden of Disease Study 2013},
+  author={Ng, Marie and Fleming, Tom and Robinson, Margaret and Thomson, Blake and Graetz, Nicholas and Margono, Christopher and Mullany, Erin C and Biryukov, Stan and Abbafati, Cristiana and Abera, Semaw Ferede and others},
+  journal={The lancet},
+  volume={384},
+  number={9945},
+  pages={766--781},
+  year={2014},
+  publisher={Elsevier}
+}
+
+@article{wardle2008evidence,
+  title={Evidence for a strong genetic influence on childhood adiposity despite the force of the obesogenic environment},
+  author={Wardle, Jane and Carnell, Susan and Haworth, Claire MA and Plomin, Robert},
+  journal={The American journal of clinical nutrition},
+  volume={87},
+  number={2},
+  pages={398--404},
+  year={2008},
+  publisher={Am Soc Nutrition}
+}
+
+@article{baillie2002chemical,
+  title={Chemical toxins: a hypothesis to explain the global obesity epidemic},
+  author={Baillie-Hamilton, Paula F},
+  journal={The Journal of Alternative \& Complementary Medicine},
+  volume={8},
+  number={2},
+  pages={185--192},
+  year={2002},
+  publisher={Mary Ann Liebert, Inc.}
+}
+
+@article{valvi2012prenatal,
+  title={Prenatal concentrations of polychlorinated biphenyls, DDE, and DDT and overweight in children: a prospective birth cohort study},
+  author={Valvi, Damaskini and Mendez, Michelle A and Martinez, David and Grimalt, Joan O and Torrent, Maties and Sunyer, Jordi and Vrijheid, Martine},
+  journal={Environmental health perspectives},
+  volume={120},
+  number={3},
+  pages={451},
+  year={2012},
+  publisher={National Institute of Environmental Health Science}
+}
+
+@article{mendez2011prenatal,
+  title={Prenatal organochlorine compound exposure, rapid weight gain, and overweight in infancy},
+  author={Mendez, Michelle A and Garcia-Esteban, Raquel and Guxens, M{\'o}nica and Vrijheid, Martine and Kogevinas, Manolis and Go{\~n}i, Fernando and Fochs, Silvia and Sunyer, Jordi},
+  journal={Environmental health perspectives},
+  volume={119},
+  number={2},
+  pages={272},
+  year={2011},
+  publisher={National Institute of Environmental Health Science}
+}
+
+@article{pan2010lactational,
+  title={Lactational exposure to polychlorinated biphenyls, dichlorodiphenyltrichloroethane, and dichlorodiphenyldichloroethylene and infant growth: an analysis of the Pregnancy, Infection, and Nutrition Babies Study},
+  author={Pan, I-Jen and Daniels, Julie L and Herring, Amy H and Rogan, Walter J and Siega-Riz, Anna Maria and Goldman, Barbara D and Sj{\"o}din, Andreas},
+  journal={Paediatric and perinatal epidemiology},
+  volume={24},
+  number={3},
+  pages={262--271},
+  year={2010},
+  publisher={Wiley Online Library}
+}
+
+@article{heggeseth2015detecting,
+  title={Detecting associations between early-life ddt exposures and childhood growth patterns: a novel statistical approach},
+  author={Heggeseth, Brianna and Harley, Kim and Warner, Marcella and Jewell, Nicholas and Eskenazi, Brenda},
+  journal={PloS one},
+  volume={10},
+  number={6},
+  pages={e0131443},
+  year={2015},
+  publisher={Public Library of Science}
+}
+
+@article{lassiter2008exposure,
+  title={Exposure of neonatal rats to parathion elicits sex-selective reprogramming of metabolism and alters the response to a high-fat diet in adulthood},
+  author={Lassiter, T Leon and Ryde, Ian T and MacKillop, Emiko A and Brown, Kathleen K and Levin, Edward D and Seidler, Frederic J and Slotkin, Theodore A},
+  journal={Environmental health perspectives},
+  volume={116},
+  number={11},
+  pages={1456},
+  year={2008},
+  publisher={National Institute of Environmental Health Science}
+}
+
+@article{vedal2003air,
+  title={Air pollution and daily mortality in a city with low levels of pollution.},
+  author={Vedal, Sverre and Brauer, Michael and White, Richard and Petkau, John},
+  journal={Environmental health perspectives},
+  volume={111},
+  number={1},
+  pages={45},
+  year={2003},
+  publisher={National Institute of Environmental Health Science}
+}
+
+@article{billionnet2012estimating,
+  title={Estimating the health effects of exposure to multi-pollutant mixture},
+  author={Billionnet, C{\'e}cile and Sherrill, Duane and Annesi-Maesano, Isabella and others},
+  journal={Annals of epidemiology},
+  volume={22},
+  number={2},
+  pages={126--141},
+  year={2012},
+  publisher={Elsevier}
+}
+
+@misc{therneau2018user,
+  title={User written splitting functions for rpart},
+  author={Therneau, Terry M},
+  year={2018},
+  publisher={Mayo Clinic URL https://cran.r-project.org/web/packages/rpart/vignettes/usercode.pdf}
+}
+
+@article{mauderly2010air,
+  title={Is the air pollution health research community prepared to support a multipollutant air quality management framework?},
+  author={Mauderly, Joe L and Burnett, Richard T and Castillejos, Margarita and {\"O}zkaynak, Hal{\^u}k and Samet, Jonathan M and Stieb, David M and Vedal, Sverre and Wyzga, Ronald E},
+  journal={Inhalation toxicology},
+  volume={22},
+  number={sup1},
+  pages={1--19},
+  year={2010},
+  publisher={Taylor \& Francis}
+}
+
+
+

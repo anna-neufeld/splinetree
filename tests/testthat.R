@@ -1,4 +1,4 @@
 library(testthat)
 library(splinetree)
 
-#test_check("splinetree")
+test_check("splinetree")

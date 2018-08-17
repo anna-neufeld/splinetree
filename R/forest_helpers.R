@@ -7,9 +7,8 @@
 #' @return avergae number of terminal nodes
 #' @export
 #' @examples
-#' data(sample_forest)
-#' av_size(sample_forest)
-av_size <- function(forest) {
+#' avSize(sample_forest)
+avSize <- function(forest) {
     print(mean(as.numeric(as.matrix(lapply(forest$Trees,
         function(x) NROW(unique(x$where)))))))
 }
@@ -20,12 +19,11 @@ av_size <- function(forest) {
 #' @param forest A spline forest object
 #' @param cp The complexity parameter that will be used to prune each tree (see rpart package documentation for detailed description of complexity parameter)
 #' @examples
-#' data(sample_forest)
-#' print(av_size(sample_forest))
-#' print(av_size(prune_forest(sample_forest, cp=0.007)))
-#' print(av_size(prune_forest(sample_forest, cp=0.01)))
+#' print(avSize(sample_forest))
+#' print(avSize(pruneForest(sample_forest, cp=0.007)))
+#' print(avSize(pruneForest(sample_forest, cp=0.01)))
 #' @export
-prune_forest <- function(forest, cp) {
+pruneForest <- function(forest, cp) {
     new_forest = forest
     for (i in c(1:length(new_forest$Trees))) {
         new_forest$Trees[[i]] <- prune(forest$Trees[[i]],

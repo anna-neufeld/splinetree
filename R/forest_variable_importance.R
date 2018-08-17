@@ -7,10 +7,14 @@
 #'
 #' @param forest a random forest, generated from splineForest()
 #' @param method the method to be used. This must be one of "oob" (out of bag), "all", "itb" (in the bag).
-#' @return a matrix storing variable importance metrics.
+#' @return A matrix storing variable importance metrics. The rows correspond to split variables.
+#' The columns are different methods of measuring importance. The first column is the absolute importance
+#' (mean difference in performance between permuted and unpermuted datasets). The second column measures the
+#' mean percent difference in performance. The third column standardizes the differences by dividing them
+#' by their standard deviation.
 #' @export
 #' @importFrom mosaic shuffle
-varImp_Y_RF = function(forest, method = "oob") {
+varImpY = function(forest, method = "oob") {
 
     vars = attr(terms(forest$formula), "term.labels")
     trees = forest$Trees
@@ -86,6 +90,7 @@ varImp_Y_RF = function(forest, method = "oob") {
     standardized_importance = t(data.frame(lapply(varDifs, function(x) mean(x)/sd(x))))
     imp = cbind(absolute_importance, percent_importance,
         standardized_importance)
+    names(imp) < c("Absolute_Difference", "Percent_Difference", "Standardized_Difference")
     imp
 }
 
@@ -100,7 +105,7 @@ varImp_Y_RF = function(forest, method = "oob") {
 #' @return a matrix of variable importance metrics.
 #' @export
 #' @importFrom mosaic shuffle
-varImp_coeff_RF <- function(forest, removeIntercept = TRUE,
+varImpCoeff <- function(forest, removeIntercept = TRUE,
     method = "oob") {
     formula = forest$formula
     vars = attr(terms(formula), "term.labels")
@@ -212,5 +217,6 @@ varImp_coeff_RF <- function(forest, removeIntercept = TRUE,
     standardized_importance = t(data.frame(lapply(varDifs, function(x) mean(x)/sd(x))))
     imp = cbind(absolute_importance, percent_importance,
                 standardized_importance)
+    names(imp) < c("Absolute_Difference", "Percent_Difference", "Standardized_Difference")
     imp
 }

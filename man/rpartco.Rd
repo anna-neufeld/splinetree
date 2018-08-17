@@ -12,5 +12,7 @@ rpartco(tree, parms = paste(".rpart.parms", dev.cur(), sep = "."))
 \item{parms}{a string}
 }
 \description{
-Figures out the coordinates on the tree plot for the little mini trajectory plots. Originally from longRpart.
+Figures out the coordinates on the tree plot for the each mini trajectory plots.
+Modified from code from the longRPart package.
 }
+\keyword{internal}

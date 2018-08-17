@@ -9,6 +9,7 @@
 #' @param x the X data for this covariate
 #' @param parms the basis matrix for the spline and the proportion of variables randomly sampled (diceProb)
 #' @param continuous value is handled internally by rpart - tells us if this covariate is continuous or categorical (factor).
+#' @keywords internal
 splineforest_split <- function(y, wt, x, parms = NULL, continuous) {
   diceProb <- parms[[2]]
   dice <- runif(1)

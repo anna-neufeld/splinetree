@@ -1,12 +1,12 @@
 #' Calculates coordinates for tree plot
 #'
-#' Figures out the coordinates on the tree plot for the little mini trajectory plots. Originally from longRpart.
+#' Figures out the coordinates on the tree plot for the each mini trajectory plots.
+#' Modified from code from the longRPart package.
 #'
 #' @param tree a SplineTree object
 #' @param parms a string
-#'
-rpartco <- function(tree, parms = paste(".rpart.parms",
-    dev.cur(), sep = ".")) {
+#' @keywords internal
+rpartco <- function(tree, parms = paste(".rpart.parms",dev.cur(), sep = ".")) {
     frame <- tree$frame
     node <- as.numeric(row.names(frame))
     depth <- tree.depth(node)

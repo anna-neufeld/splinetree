@@ -4,10 +4,10 @@
 \alias{stPrint}
 \title{Print a spline tree object}
 \usage{
-stPrint(tree, cp, digits = getOption("digits"))
+stPrint(t, cp, digits = getOption("digits"))
 }
 \arguments{
-\item{tree}{A splinetree object}
+\item{t}{A splinetree object}
 
 \item{cp}{Optional- if provided, a pruned version of the tree will be printed. The tree will be
 pruned using the provided cp as the complexity parameter.}

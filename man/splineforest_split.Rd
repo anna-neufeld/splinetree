@@ -21,3 +21,4 @@ splineforest_split(y, wt, x, parms = NULL, continuous)
 Wrapper for split function required for the random forest functionality. This function is called once per covariate at each potential split.
 Implements the random selection of variables; each variable is randomly selected to be included or excluded.
 }
+\keyword{internal}

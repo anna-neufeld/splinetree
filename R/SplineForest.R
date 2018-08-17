@@ -23,8 +23,10 @@
 #' @param degree Specifies degree of spline basis used in the tree.
 #' @param intercept Specifies whether or not the splitting process will consider the intercept coefficient of the spline projections.
 #' Defaults to FALSE, which means that the tree will split based on trajectory shape, ignoring response level.
-#' @param nGrid Number of grid points to evaluate projection sum of squares at. The default is 7, which corresponds to evaluating projections
-#' at the endpoints and quintiles of the time variable.
+#' @param nGrid Number of grid points to evaluate projection sum of squares at. If gridPoints is not supploed, this arguement
+#' will be used and the projection sum of squares will be evaluated at quantiles of the time variable.
+#' @param gridPoints Optional. A vector of numbers that will be used as the grid on which to evaluate the projection
+#' sum of squares. Should fall roughly within the range of the time variable.
 #' @param minNodeSize Minimum number of observational units that can be in a terminal node. Controls tree size and helps avoid overfitting.
 #' @param cp Complexity parameter passed to the rpart building process.
 #' @param ntree Number of trees in the forest
@@ -45,7 +47,7 @@
 #' }
 splineForest <- function(splitFormula, tformula,
     idvar, data, knots = NULL, df = NULL, degree = 3,
-    intercept = FALSE, nGrid = 7, ntree = 50, prob = 0.3,
+    intercept = FALSE, nGrid = 7, gridPoints = NULL, ntree = 50, prob = 0.3,
     cp = 0.001, minNodeSize=1) {
     #### Once per forest, need to do all of the
     #### preprocessing spline steps.
@@ -66,7 +68,7 @@ splineForest <- function(splitFormula, tformula,
     flat_data <- flatten_predictors(idvar, data)
 
     results <- getBasisMat(yvar, tvar, idvar, data,
-        knots = NULL, df, degree, intercept, nGrid)
+        knots = NULL, df, degree, intercept, gridPoints, nGrid)
 
     basisMatrix <- results[[1]]
     innerKnots <- results[[2]]

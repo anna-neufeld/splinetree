@@ -17,8 +17,8 @@
 #'  tree <- splineTree(split_formula, BMI~AGE, 'ID', nlsySample, degree=1,
 #'   df=3, intercept=TRUE, cp=0.006, minNodeSize=20)
 #' }
-#' R2_y(tree)
-R2_y <- function(model) {
+#' yR2(tree)
+yR2 <- function(model) {
     if (model$parms$intercept) {
     yvar <- model$parms$yvar
     realResp <- model$parms$data[[yvar]]
@@ -52,8 +52,8 @@ R2_y <- function(model) {
 #' tree <- splineTree(split_formula, BMI~AGE, 'ID', nlsySample, degree=1,
 #'   df=3, intercept=TRUE, cp=0.006, minNodeSize=20)
 #' }
-#' plot(predict_y(tree), tree$parms$data[[tree$parms$yvar]])
-predict_y <- function(model, testData = NULL) {
+#' plot(predictY(tree), tree$parms$data[[tree$parms$yvar]])
+predictY <- function(model, testData = NULL) {
 
     ### Calls a different version of the function that returns predicted Ys for training dataset
     if (is.null(testData)) {
@@ -103,11 +103,11 @@ predict_y <- function(model, testData = NULL) {
 #' @param model a splinetree tree object
 #' @param includeIntercept If FALSE and if the model was built with an intercept, the projected squared errors are computed
 #' while ignoring the intercept. If the model was built without an intercept, this parameter does not do anything.
-R2_projected <- function(model, includeIntercept = FALSE) {
+projectedR2 <- function(model, includeIntercept = FALSE) {
 
     ## Goal is to capture how well the predicted spline coefficients approximate the actual spline coefficients.
     real_coeffs = as.matrix(model$parms$flat_data$Ydata)
-    preds_coeffs = as.matrix(t(predict_spline_coeffs(model)))
+    preds_coeffs = as.matrix(t(predictCoeffs(model)))
     beta = model$parms$basisMatrix
 
     ### REm
@@ -161,10 +161,10 @@ R2_projected <- function(model, includeIntercept = FALSE) {
 #' tree <- splineTree(split_formula, BMI~AGE, 'ID', nlsySample, degree=1,
 #'   df=3, intercept=TRUE, cp=0.006, minNodeSize=20)
 #' }
-#' predict_spline_coeffs(tree)
-predict_spline_coeffs <- function(tree, testset = tree$parms$flat_data) {
+#' predictCoeffs(tree)
+predictCoeffs <- function(tree, testset = tree$parms$flat_data) {
     ## Holds assigned node for every row of testset.
-    wheres <- treeClust::rpart.predict.leaves(tree, newdata=tree$parms$flat_data)
+    wheres <- treeClust::rpart.predict.leaves(tree, newdata=testset)
     coeffDims = NCOL(tree$frame$yval2)
 
     preds <- array(NA, c(coeffDims, NROW(testset)))
@@ -182,13 +182,14 @@ predict_spline_coeffs <- function(tree, testset = tree$parms$flat_data) {
 #'
 #' Returns a vector of predicted responses for the dataset used to build the tree
 #'
-#' Calling predict_y(model) and predict_y_training(model) return identical results, because when no test data is
-#' provided to predict_y(), the default is to use the training set. This is a slightly faster version that
+#' Calling predictY(model) and predict_y_training(model) return identical results, because when no test data is
+#' provided to predictY(), the default is to use the training set. This is a slightly faster version that
 #' can be used when you know that you wish to predict on the training data.
 #'
 #' @param model a splinetree object
 #' @return A vector of predicted responses
 #' @export
+#' @keywords internal
 #' @importFrom treeClust rpart.predict.leaves
 predict_y_training <- function(model) {
 

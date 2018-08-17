@@ -238,7 +238,6 @@ nodePlot <- function(model, colors = NULL) {
 #' }
 #' spaghettiPlot(tree)
 spaghettiPlot <- function(model, colors = NULL) {
-    dev.off()
     wheres <- data.frame(cbind(unique(model$parms$data$ID),
         as.numeric(model$where)))
     names(wheres) <- c("ID", "where")

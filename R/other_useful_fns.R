@@ -16,6 +16,28 @@ treeSize <- function(model) {
     NROW(unique(model$where))
 }
 
+
+#' Returns a measure of how similar the two trees are in terms of how they partition the data.
+#'
+#' Computes the Adjusted Rand Index of the clusterings of the population created by the two trees.
+#' In the case of correlated covariates, two trees that split on entirely different variables may actually
+#' describe similar partitions of the population. This metric allows us to detect when two trees are partitioning
+#' the population similarly. A value close to 1 indicates a similar clustering.
+#' @param tree1 a splinetree object
+#' @param tree2 a splinetree object
+#' @return The Adjusted Rand Index of the clusterings created by the two trees.
+#' @importFrom mclust adjustedRandIndex
+#' @seealso mclust::adjustedRandIndex
+#' @examples
+#' splitForm <- BMI~WHITE+BLACK+HISP+SEX+Num_sibs+HGC_MOTHER+HGC_FATHER
+#' tree1 <- splineTree(splitForm, BMI~AGE, "ID", nlsySample, degree=1, df=2, intercept=FALSE, cp=0.001)
+#' tree2 <- splineTree(splitForm, BMI~AGE, "ID", nlsySample, degree=1, df=3, intercept=TRUE, cp=0.001)
+#' treeSimilarity(tree1, tree2)
+#' @export
+treeSimilarity <- function(tree1, tree2) {
+  adjustedRandIndex(tree1$where, tree2$where)
+}
+
 #' Returns the portion of the data found at a given terminal node
 #'
 #' Given a terminal node number, this function returns the dataset found at this terminal node.
@@ -33,7 +55,7 @@ treeSize <- function(model) {
 #' with spline coefficients instead of response values.
 #' @return A dataframe which holds all the data that falls into this node of the tree.
 #' @export
-#' @example
+#' @examples
 #' \dontrun{
 #' split_formula <- BMI ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
 #'   + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
@@ -71,7 +93,11 @@ getNodeData <- function(tree, node, dataType = 'all') {
 #' @param node a node number that must correspond to a terminal node
 #' @param includeData would you like to see the data from the node
 #' plotted along with the predicted trajectory?
-#' @example
+#' @param estimateIntercept If the tree was built without an intercept, should
+#' the average intercept of all the individuals in the node be added to the trajectory
+#' to give the plot interpretable values? Or should the shape of the
+#' trajectory be plotted without any regard to the intercept?
+#' @examples
 #' \dontrun{
 #' split_formula <- BMI ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
 #'   + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
@@ -81,7 +107,7 @@ getNodeData <- function(tree, node, dataType = 'all') {
 #'   df=3, intercept=TRUE, cp=0.006, minNodeSize=20)
 #' }
 #' plotNode(tree, 10, includeData=TRUE)
-plotNode <-  function(tree, node, includeData = FALSE) {
+plotNode <-  function(tree, node, includeData = FALSE, estimateIntercept = TRUE) {
   nodeIndex <- which(row.names(tree$frame)==toString(node))
   nodeCoeffs <- tree$frame[nodeIndex,]$yval2
   if (tree$frame[nodeIndex,]$var != "<leaf>") stop("This node number does not correspond to a terminal node.
@@ -102,11 +128,18 @@ plotNode <-  function(tree, node, includeData = FALSE) {
     newxmat <- bs(xGrid, knots = tree$parms$innerKnots,
                            Boundary.knots = tree$parms$boundaryKnots,
                            degree = tree$parms$degree)
-    mean_int = mean(tree$parms$data[(tree$parms$data[[tree$parms$tvar]] -
+    if (estimateIntercept) {
+        mean_int = mean(tree$parms$data[(tree$parms$data[[tree$parms$tvar]] -
                                   min(tree$parms$data[[tree$parms$tvar]])) < 1, ][[tree$parms$yvar]])
+    }
+    else {mean_int=0}
     preds <- newxmat %*% t(nodeCoeffs) + mean_int
   }
-
-    ggplot() +geom_line(data=data, mapping = aes_string(x = tree$parms$tvar, y = tree$parms$yvar,
-                                    group = tree$parms$idvar))+theme(legend.position="none")+xlab(tree$parms$tvar)+ylab(tree$parms$yvar)+ geom_line(aes(x=xGrid, y=preds, color="red", size=2))
+    if (includeData) {
+    ggplot() +geom_line(data=data, mapping = aes_string(x = tree$parms$tvar, y = tree$parms$yvar,group = tree$parms$idvar))+
+        theme(legend.position="none")+xlab(tree$parms$tvar)+ylab(tree$parms$yvar)+ geom_line(aes(x=xGrid, y=preds, color="red", size=2))
+    }
+    else {
+      ggplot()+geom_line(aes(x=xGrid, y=preds, color="red", size=1))+theme(legend.position="none")+xlab(tree$parms$tvar)+ylab(tree$parms$yvar)
+    }
 }

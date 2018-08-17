@@ -3,7 +3,7 @@
 #' Code adapted only slightly from the rpart base code for print.rpart to support the printing of
 #' all coefficients.
 #'
-#' @param tree A splinetree object
+#' @param t A splinetree object
 #' @param digits Specifies how many digits of each coefficient should be printed
 #' @param cp Optional- if provided, a pruned version of the tree will be printed. The tree will be
 #' pruned using the provided cp as the complexity parameter.
@@ -22,15 +22,15 @@
 #' }
 #' stPrint(tree)
 #' @export
-stPrint <- function(tree, cp, digits = getOption("digits"))
+stPrint <- function(t, cp, digits = getOption("digits"))
 {
   minlength = 0L
   spaces = 2L
-  if (!inherits(tree, "rpart")) stop("Not a legitimate \"splinetree\" object")
+  if (!inherits(t, "rpart")) stop("Not a legitimate \"splinetree\" object")
 
-  if (!missing(cp)) tree <- prune.rpart(tree, cp = cp)
-  frame <- tree$frame
-  ylevel <- attr(tree, "ylevels")
+  if (!missing(cp)) t <- prune.rpart(t, cp = cp)
+  frame <- t$frame
+  ylevel <- attr(t, "ylevels")
   node <- as.numeric(row.names(frame))
   depth <- tree.depth(node)
   indent <- paste(rep(" ", spaces * 32L), collapse = "")
@@ -50,27 +50,26 @@ stPrint <- function(tree, cp, digits = getOption("digits"))
   }
   term <- rep(" ", length(depth))
   term[frame$var == "<leaf>"] <- "*"
-  z <- labels(tree, digits = digits, minlength = minlength)
+  z <- labels(t, digits = digits, minlength = minlength)
   n <-paste(frame$n, ", ", sep='')
   z <- paste(indent, ' ', z, ", ", n, " (", yval, ")", term, sep='')
 
 
-  omit <- tree$na.action
+  omit <- t$na.action
   if (length(omit)) cat("n=", n[1L], " (", naprint(omit), ")\n\n", sep = "")
   else cat("n=", n[1L], "\n\n")
 
-  ## This is stolen, unabashedly, from print.tree
   cat("node), split, n , coefficients \n")
   cat("      * denotes terminal node\n\n")
 
   cat(z, sep = "\n")
-  invisible(tree)
+  invisible(t)
 }
 
 #' Prints the tree frame.
 #'
 #' @param model A splinetree object.
-#' @example
+#' @examples
 #' \dontrun{
 #' split_formula <- BMI ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
 #'   + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
@@ -127,8 +126,19 @@ terminalNodeSummary <- function(tree, node=NULL) {
     nodeIndex = which(row.names(tree$frame)==toString(node))
     cat(paste("\n N:", tree$frame[nodeIndex,]$n))
     coeffs  <- paste(tree$frame[nodeIndex,]$yval2, collapse=',')
-    cat(paste("\n Coefficients:",coeffs))
+    cat(paste("\n Coefficients:",coeffs, "\n"))
   }
+}
+
+#' Given a list of node numbers, returns the depth at which these appear in the tree.
+#'
+#' Used in printing and plotting.
+#' Source: rpart
+#' @keywords internal
+tree.depth <- function (nodes)
+{
+  depth <- floor(log(nodes, base = 2) + 1e-7)
+  depth - min(depth)
 }
 
 

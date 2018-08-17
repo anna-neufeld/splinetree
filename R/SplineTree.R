@@ -9,6 +9,7 @@
 #' @param degree the degree of the bspline
 #' @param intercept whether or not to include an intercept
 #' @param yvar the name of the response variable
+#' @keywords internal
 individual_spline <- function(person, idvar, yvar,
     tvar, data, boundaryKnots, innerKnots, degree,
     intercept) {
@@ -43,6 +44,7 @@ individual_spline <- function(person, idvar, yvar,
 #' @export
 #' @examples
 #' flatten_predictors('ID', nlsySample)
+#' @keywords internal
 flatten_predictors <- function(idvar, data) {
     ## Assuming that the splitting explanatory
     ## variables are not varying with time
@@ -69,6 +71,7 @@ flatten_predictors <- function(idvar, data) {
 #' projection sum of squares. Should fall roughly within the range of the time variable.
 #' @param degree The degree of the spline polynomial
 #' @return The basis matrix to be used for the tree building process
+#' @keywords internal
 getBasisMat <- function(yvar, tvar, idvar, data,
     knots = NULL, df, degree, intercept, gridPoints, nGrid = 7) {
 
@@ -167,8 +170,8 @@ getBasisMat <- function(yvar, tvar, idvar, data,
 #' treeSummary(tree1)
 #' stPlot(tree1)
 #' stPlot(tree2)
-#' R2_projected(tree1)
-#' R2_projected(tree2)
+#' projectedR2(tree1)
+#' projectedR2(tree2)
 splineTree <- function(splitFormula, tformula,
     idvar, data, knots = NULL, df = NULL, degree = 3,
     intercept = FALSE, nGrid = 7, gridPoints = NULL, minNodeSize = 10,
@@ -194,7 +197,7 @@ splineTree <- function(splitFormula, tformula,
 
     ### Get the basis matrix
     results <- getBasisMat(yvar, tvar, idvar, data,
-        knots = NULL, df, degree, intercept, gridPoints, nGrid)
+        knots, df, degree, intercept, gridPoints, nGrid)
 
     basisMatrix <- results[[1]]
     innerKnots <- results[[2]]

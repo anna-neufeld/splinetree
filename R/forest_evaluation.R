@@ -18,14 +18,14 @@
 #' the population mean coefficients.
 #' @export
 #' @examples
-#' forest_projection_R2(sample_forest, method="oob")
-#' forest_projection_R2(sample_forest, method="all")
-#' forest_projection_R2(sample_forest, method="itb")
-#' forest_projection_R2(sample_intercept_forest, method="all")
-#' forest_projection_R2(sample_intercept_forest, method="all", removeIntercept=FALSE)
-forest_projection_R2 <- function(forest, method = "oob", removeIntercept = TRUE) {
+#' projectedR2Forest(sample_forest, method="oob")
+#' projectedR2Forest(sample_forest, method="all")
+#' projectedR2Forest(sample_forest, method="itb")
+#' projectedR2Forest(sample_intercept_forest, method="all")
+#' projectedR2Forest(sample_intercept_forest, method="all", removeIntercept=FALSE)
+projectedR2Forest <- function(forest, method = "oob", removeIntercept = TRUE) {
     # First, get the predicted spline coefficients for every datapoint using the desired method.
-    forest_pred_coeffs <- t(predict_coeffs_RF(forest, method))
+    forest_pred_coeffs <- t(predictCoeffsForest(forest, method))
     # Goal will be to compare these to the true spline coefficients for every datapoint.
     true_coeffs <- forest$flat_data$Ydata ### Note to self- change this to flat_data to be consistent with tree.
 
@@ -74,10 +74,10 @@ forest_projection_R2 <- function(forest, method = "oob", removeIntercept = TRUE)
 #' and SST is the total sum of squared erros of the responses around their mean. If this forest was not built with an intercept, returns NULL.
 #' @export
 #' @examples
-#' forest_Y_R2(sample_intercept_forest, method="oob")
-#' forest_Y_R2(sample_intercept_forest, method="all")
-#' forest_Y_R2(sample_intercept_forest, method="itb")
-forest_Y_R2 <- function(forest, method = "oob") {
+#' yR2Forest(sample_intercept_forest, method="oob")
+#' yR2Forest(sample_intercept_forest, method="all")
+#' yR2Forest(sample_intercept_forest, method="itb")
+yR2Forest <- function(forest, method = "oob") {
     if (!forest$intercept) {
       ### If this forest was built without an intercept,
       ### inappropriate to try to predict responses.
@@ -85,7 +85,7 @@ forest_Y_R2 <- function(forest, method = "oob") {
     }
     else {
     # First step is to get predicted coefficients for all individuals using appropriate method.
-    forest_pred_coeffs = t(predict_coeffs_RF(forest, method))
+    forest_pred_coeffs = t(predictCoeffsForest(forest, method))
 
     dat <- forest$data
     meanYs <- mean(dat[[forest$yvar]])

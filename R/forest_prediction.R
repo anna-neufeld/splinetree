@@ -15,7 +15,7 @@
 #' all trees are used for all datapoints.
 #' @return a matrix of predicted coefficients.
 #' @export
-predict_coeffs_RF = function(forest, method = "oob", testdata=NULL) {
+predictCoeffsForest = function(forest, method = "oob", testdata=NULL) {
   idvar <- forest$idvar
   innerKnots <- forest$innerKnots
   boundaryKnots <- forest$boundaryKnots
@@ -53,7 +53,7 @@ predict_coeffs_RF = function(forest, method = "oob", testdata=NULL) {
 
     testset <- flat_data[test_indices, ]
 
-    preds[, test_indices] <- predict_coeffs_tree(forest$Trees[[tree]],
+    preds[, test_indices] <- predictCoeffs(forest$Trees[[tree]],
                                                  testset)
     predictions[tree, , ] <- preds
   }
@@ -72,7 +72,7 @@ predict_coeffs_RF = function(forest, method = "oob", testdata=NULL) {
 
     for (tree in 1:length(forest$Trees)) {
       preds <- array(NA, c(coeffDims, NROW(testdata)))
-      predictions[tree, , ] <- predict_coeffs_tree(forest$Trees[[tree]],
+      predictions[tree, , ] <- predictCoeffs(forest$Trees[[tree]],
                                                    testdata)
     }
 
@@ -102,7 +102,7 @@ predict_coeffs_RF = function(forest, method = "oob", testdata=NULL) {
 #' all trees are used for all datapoints.
 #' @return a matrix of predicted responses.
 #' @export
-predict_y_RF <- function(forest, method = "oob", testdata=NULL) {
+predictYForest <- function(forest, method = "oob", testdata=NULL) {
   if (!forest$intercept) {
     stop("You should not try to predict response values with a no-intercept model")
   }
@@ -116,7 +116,7 @@ predict_y_RF <- function(forest, method = "oob", testdata=NULL) {
   dat <- forest$data
 
   if (is.null(testdata)) {
-    coeffPreds <- t(predict_coeffs_RF(forest, method))
+    coeffPreds <- t(predictCoeffsForest(forest, method))
     preds <- rep(NA, NROW(forest$data))
 
     for (i in 1:NROW(forest$flat_data)) {
@@ -143,7 +143,7 @@ predict_y_RF <- function(forest, method = "oob", testdata=NULL) {
 
   else {
 
-    coeffPreds <- t(predict_coeffs_RF(forest, method, testdata))
+    coeffPreds <- t(predictCoeffsForest(forest, method, testdata))
     preds <- rep(NA, NROW(testdata))
 
     for (i in 1:NROW(testdata)) {
@@ -173,63 +173,65 @@ predict_y_RF <- function(forest, method = "oob", testdata=NULL) {
 }
 
 
-#' Predict spline coefficients for a testset using a single tree.
-#'
-#' @param tree a splinetree object
-#' @param testset the dataset to return predictions for. If omitted, defaults
-#' to the data used to build this tree.
-#' @return a matrix of predicted coefficients
-#' @importFrom treeClust rpart.predict.leaves
-#' @export
-predict_coeffs_tree <- function(tree, testset = tree$data) {
-  #wheres <- rpart:::pred.rpart(tree, rpart:::rpart.matrix(testset))
-  wheres <- rpart.predict.leaves(tree, newdata=testset)
+# #' Predict spline coefficients for a testset using a single tree from a forest
+# #'
+# #'
+# #' @param tree A splinetree object
+# #' @param testset The dataset to return predictions for. This arguement is required because
+# #' single trees in a forest do not keep track of their own data.
+# #' @return a matrix of predicted coefficients
+# #' @importFrom treeClust rpart.predict.leaves
+# #' @keywords internal
+# #' @export
+# predict_coeffs_tree <- function(tree, testset) {
+#   #wheres <- rpart:::pred.rpart(tree, rpart:::rpart.matrix(testset))
+#   wheres <- rpart.predict.leaves(tree, newdata=testset)
+#
+#
+#   coeffDims <- NCOL(tree$frame$yval2)
+#
+#   preds <- array(NA, c(coeffDims, NROW(testset)))
+#   for (i in 1:NROW(testset)) {
+#     node <- wheres[i]
+#     coeffs <- tree$frame[node, ]$yval2
+#     preds[, i] = coeffs
+#   }
+#   preds
+# }
 
-
-  coeffDims <- NCOL(tree$frame$yval2)
-
-  preds <- array(NA, c(coeffDims, NROW(testset)))
-  for (i in 1:NROW(testset)) {
-    node <- wheres[i]
-    coeffs <- tree$frame[node, ]$yval2
-    preds[, i] = coeffs
-  }
-  preds
-}
-
-#' Predict responses for a testset using a single tree.
-#'
-#' @param tree a splinetree object
-#' @param testset the dataset to return predictions for. Defaults
-#' to the dataaset used to build this tree.
-#' @return a matrix of predicted responses
-#' @export
-predict_Y_tree <- function(tree, testset=tree$data) {
-  #wheres <- rpart:::pred.rpart(tree, rpart:::rpart.matrix(testset))
-  wheres <- rpart.predict.leaves(tree, newdata=testset)
-
-
-  tvar <- tree$parms$tvar
-
-  preds <- rep(NA, NROW(testset))
-  for (i in 1:NROW(testset)) {
-    node <- wheres[i]
-    coeffs <- tree$frame[node, ]$yval2
-    basisMat <- cbind(1, bs(testset[i, ][[tvar]],
-                            knots = tree$parms$innerKnots, Boundary.knots = tree$parms$boundaryKnots,
-                            degree = tree$parms$degree))
-    try1 <- try({
-      pred <- basisMat %*% t(as.matrix(coeffs))
-    }, silent = TRUE)
-    if (class(try1) == "try-error") {
-      try2 <- try({
-        pred <- basisMat %*% as.matrix(coeffs)
-      }, silent = TRUE)
-    }
-    preds[i] <- pred
-  }
-  preds
-}
+# #' Predict responses for a testset using a single tree.
+# #'
+# #' @param tree a splinetree object
+# #' @param testset the dataset to return predictions for. Defaults
+# #' to the dataaset used to build this tree.
+# #' @return a matrix of predicted responses
+# #' @export
+# predict_Y_tree <- function(tree, testset=tree$data) {
+#   #wheres <- rpart:::pred.rpart(tree, rpart:::rpart.matrix(testset))
+#   wheres <- rpart.predict.leaves(tree, newdata=testset)
+#
+#
+#   tvar <- tree$parms$tvar
+#
+#   preds <- rep(NA, NROW(testset))
+#   for (i in 1:NROW(testset)) {
+#     node <- wheres[i]
+#     coeffs <- tree$frame[node, ]$yval2
+#     basisMat <- cbind(1, bs(testset[i, ][[tvar]],
+#                             knots = tree$parms$innerKnots, Boundary.knots = tree$parms$boundaryKnots,
+#                             degree = tree$parms$degree))
+#     try1 <- try({
+#       pred <- basisMat %*% t(as.matrix(coeffs))
+#     }, silent = TRUE)
+#     if (class(try1) == "try-error") {
+#       try2 <- try({
+#         pred <- basisMat %*% as.matrix(coeffs)
+#       }, silent = TRUE)
+#     }
+#     preds[i] <- pred
+#   }
+#   preds
+# }
 
 
 

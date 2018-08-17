@@ -70,3 +70,12 @@
 #' @keywords internal
 "tree"
 
+
+
+#' Sample forest used in vignettes
+#' @keywords internal
+"forest"
+
+#' Sample importance used in vignettes
+#' @keywords internal
+"importance"
