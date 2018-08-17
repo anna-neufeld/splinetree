@@ -2,7 +2,7 @@
 % Please edit documentation in R/variable_importance_plotting.R
 \name{plotImp}
 \alias{plotImp}
-\title{Create a variable importance plot}
+\title{Create a barplot of relative variable importance scores.}
 \usage{
 plotImp(importance_vector, ...)
 }
@@ -12,6 +12,11 @@ plotImp(importance_vector, ...)
 \item{...}{additional arguements to plot, such as "main", "cex", etc.}
 }
 \description{
-Pass in a named vector of variable importance measures. This function will make a barplot of the importances. The importances are scaled, so
-only relative importance is shown.
+Given a named vector of variable importance measures, this function makes a barplot of the relative importances.
+The importances are scaled to sum to 1. An appropriate input is one column of the output from
+varImpY() or varImpCoeff().
+}
+\examples{
+standardized_importance <- varImpCoeff(sample_forest)[,3]
+plotImp(standardized_importance, main="Plot of standardized variable importance")
 }

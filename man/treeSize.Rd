@@ -10,7 +10,7 @@ treeSize(model)
 \item{model}{A splinetree object, or any rpart object}
 }
 \value{
-Number of terminal nodes in tree
+The number of terminal nodes in the tree
 }
 \description{
 Returns number of terminal nodes in a tree.

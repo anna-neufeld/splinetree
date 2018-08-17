@@ -2,7 +2,7 @@
 % Please edit documentation in R/forest_helpers.R
 \name{avSize}
 \alias{avSize}
-\title{Average tree size in forest}
+\title{Compute the average tree size in a forest}
 \usage{
 avSize(forest)
 }
@@ -10,10 +10,10 @@ avSize(forest)
 \item{forest}{A splineforest object}
 }
 \value{
-avergae number of terminal nodes
+The avergae number of terminal nodes in forest
 }
 \description{
-Returns the average number of terminal nodes for tree in forest
+Returns the average number of terminal nodes for trees in a forest
 }
 \examples{
 avSize(sample_forest)

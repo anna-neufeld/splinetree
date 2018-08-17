@@ -2,30 +2,29 @@
 % Please edit documentation in R/forest_prediction.R
 \name{predictYForest}
 \alias{predictYForest}
-\title{Predict responses using random forest.}
+\title{Predict responses for a testset using a splineforest.}
 \usage{
 predictYForest(forest, method = "oob", testdata = NULL)
 }
 \arguments{
-\item{forest}{a splinetree forest object}
+\item{forest}{A splineforest object}
 
-\item{method}{a string; either "oob", "itb", or "all". "oob" is the default value.
-if "oob", predictions for a given data point are made only using trees for which this
-data point was "out of the bag" (not in the bootstrap sample). If "itb", predictions for
-a given data point are made using onle the trees for which this datapoint was in the bag (in the bootstrap sample).
-If "all", all trees are used.}
+\item{method}{A string. Must be either "oob", "itb", or "all". Only relevant when testdata is NULL.
+The default value is "oob". If "oob", predictions for a given data point are made only using
+trees for which this data point was "out of the bag" (not in the bootstrap sample).
+ If "itb", predictions for a given data point are made using only the trees for which this datapoint
+ was in the bag (in the bootstrap sample). If "all", all trees are used for every datapoint.}
 
-\item{testdata}{the test data to make preditions for. If this is provided, then
+\item{testdata}{the Test data to make preditions for. If this is provided, then
 all trees are used for all datapoints.}
 }
 \value{
-a matrix of predicted responses.
+A vector of predicted responses. The indices of the vector correspond to rows of the testdata.
 }
 \description{
-Uses the forest to make predictions of responses for individuals at given times
-in the training sample or on a new sample. If the testdata parameter is null,
-then predictions are given on the training sample according to one of three possible
-methods. The supplied method parameter must be either "oob", "itb", or "all". Note that this method
-should only be used on trees that have an intercept. Otherwise, the Y predictions will
-not be accurate at all.
+Uses the forest to make predictions of responses for individuals. This method should only be used
+on forests where forest$intercept=TRUE. If the testdata parameter is
+null, makes predictions for each row of the training data. In this case, the methods parameter (which should
+be set to "oob", "itb", or "all") determines the method used for prediction. If the testdata parameter is not
+null, the methods parameter is ignored and all trees are used for the prediction of every datapoint.
 }

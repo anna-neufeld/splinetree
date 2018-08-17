@@ -142,16 +142,19 @@ projectedR2 <- function(model, includeIntercept = FALSE) {
 
 
 
-#' Predict spline coefficients from a splinetree object
+#' Predict spline coefficients for a testset using a splinetree object
 #'
 #' Returns a matrix of spline coefficients for each observation in the testset. If no testset is provided,
-#' returns predicted coefficients for the individuals in the dataset used to build the tree.
+#' returns predicted coefficients for the individuals in training set; in this case, the columns of the
+#' returned predictions correspond to the rows of the flattened training dataset (found in tree$parms$flat_data).
 #'
 #' importFrom treeClust rpart.predict.leaves
 #' @param tree A splinetree object
-#' @param testset The dataset to predict coefficients for. Default is the dataset used to make the tree.
+#' @param testset The dataset to predict coefficients for. Default is the flattened dataset used to make the tree.
 #' @export
-#' @return A matrix of spline coefficients. Dimension is number of units in test set by degrees of freedom of the spline.
+#' @return A matrix of spline coefficients. The dimension of the matrix is the degrees of freedom of
+#' the spline by the number of units in the test set. The ith column of the matrix holds the predicted
+#' coefficients for the ith row in the testset.
 #' @examples
 #' \dontrun{
 #' split_formula <- BMI ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work

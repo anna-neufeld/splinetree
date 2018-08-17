@@ -2,7 +2,7 @@
 % Please edit documentation in R/forest_helpers.R
 \name{pruneForest}
 \alias{pruneForest}
-\title{Prunes each tree in forest using a given complexity parameter.}
+\title{Prune each tree in forest using a given complexity parameter.}
 \usage{
 pruneForest(forest, cp)
 }
@@ -12,10 +12,10 @@ pruneForest(forest, cp)
 \item{cp}{The complexity parameter that will be used to prune each tree (see rpart package documentation for detailed description of complexity parameter)}
 }
 \value{
-A new splinetree forest object, where each tree has a new size
+A new splineforest object where each tree has been pruned to the desired level.
 }
 \description{
-Prunes each tree in forest using a given complexity parameter.
+Prunes each tree in the list forest$Trees according to the provided complexity parameter. Returns a new forest.
 }
 \examples{
 print(avSize(sample_forest))

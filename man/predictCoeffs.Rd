@@ -2,21 +2,24 @@
 % Please edit documentation in R/tree_evaluation.R
 \name{predictCoeffs}
 \alias{predictCoeffs}
-\title{Predict spline coefficients from a splinetree object}
+\title{Predict spline coefficients for a testset using a splinetree object}
 \usage{
 predictCoeffs(tree, testset = tree$parms$flat_data)
 }
 \arguments{
 \item{tree}{A splinetree object}
 
-\item{testset}{The dataset to predict coefficients for. Default is the dataset used to make the tree.}
+\item{testset}{The dataset to predict coefficients for. Default is the flattened dataset used to make the tree.}
 }
 \value{
-A matrix of spline coefficients. Dimension is number of units in test set by degrees of freedom of the spline.
+A matrix of spline coefficients. The dimension of the matrix is the degrees of freedom of
+the spline by the number of units in the test set. The ith column of the matrix holds the predicted
+coefficients for the ith row in the testset.
 }
 \description{
 Returns a matrix of spline coefficients for each observation in the testset. If no testset is provided,
-returns predicted coefficients for the individuals in the dataset used to build the tree.
+returns predicted coefficients for the individuals in training set; in this case, the columns of the
+returned predictions correspond to the rows of the flattened training dataset (found in tree$parms$flat_data).
 }
 \details{
 importFrom treeClust rpart.predict.leaves

@@ -1,19 +1,22 @@
-#' Predict spline coefficients using random forest.
+#' Predict spline coefficients for a testset using a splineforest.
 #'
-#' Uses the forest to make predictions of spline coefficients for individuals
-#' in the training sample or on a new sample. If the testdata parameter is null,
-#' then predictions are given on the training sample according to one of three possible
-#' methods. The supplied method parameter must be either "oob", "itb", or "all".
+#' Uses the forest to predict spline coefficients. Returns a matrix of predicted spline coefficients where the columns
+#' of the returned matrix correspond to rows of the testdata. The number of rows of the returned matrix is equal to the
+#' degrees of freedom of the forest. If no testdata is provided, forest$flat_data is used. When testdata is not provided,
+#'  predictions will be made according to one of three methods. The "method" parameter must be either
+#' "oob", "itb", or "all". This parameter specifies which trees are used in making a prediction for a certain datapoint.
+#' This parameter is not relevant when predicting for a testset that is distinct from the training set.
 #'
-#' @param forest a splinetree forest object
-#' @param method a string; either "oob", "itb", or "all". "oob" is the default value.
-#' if "oob", predictions for a given data point are made only using trees for which this
+#' @param forest A splineforest object
+#' @param method A string; either "oob", "itb", or "all".
+#' If "oob" (the default), predictions for a given data point are made only using trees for which this
 #' data point was "out of the bag" (not in the bootstrap sample). If "itb", predictions for
-#' a given data point are made using onle the trees for which this datapoint was in the bag (in the bootstrap sample).
-#' If "all", all trees are used.
-#' @param testdata the test data to make preditions for. If this is provided, then
+#' a given data point are made using onle the trees for which this datapoint was "in the bag"
+#' (in the bootstrap sample). If "all", all trees are used for every datapoint.
+#' @param testdata The test data to make preditions for. If this is provided, then
 #' all trees are used for all datapoints.
-#' @return a matrix of predicted coefficients.
+#' @return A matrix of predicted spline coefficients. The dimensions are forest$df x nrow(testdata). Each column of the matrix
+#' corresponds to a row of the testdata.
 #' @export
 predictCoeffsForest = function(forest, method = "oob", testdata=NULL) {
   idvar <- forest$idvar
@@ -83,24 +86,23 @@ predictCoeffsForest = function(forest, method = "oob", testdata=NULL) {
   actualpredictions
 }
 
-#' Predict responses using random forest.
+#' Predict responses for a testset using a splineforest.
 #'
-#' Uses the forest to make predictions of responses for individuals at given times
-#' in the training sample or on a new sample. If the testdata parameter is null,
-#' then predictions are given on the training sample according to one of three possible
-#' methods. The supplied method parameter must be either "oob", "itb", or "all". Note that this method
-#' should only be used on trees that have an intercept. Otherwise, the Y predictions will
-#' not be accurate at all.
+#' Uses the forest to make predictions of responses for individuals. This method should only be used
+#' on forests where forest$intercept=TRUE. If the testdata parameter is
+#' null, makes predictions for each row of the training data. In this case, the methods parameter (which should
+#' be set to "oob", "itb", or "all") determines the method used for prediction. If the testdata parameter is not
+#' null, the methods parameter is ignored and all trees are used for the prediction of every datapoint.
 #'
-#' @param forest a splinetree forest object
-#' @param method a string; either "oob", "itb", or "all". "oob" is the default value.
-#' if "oob", predictions for a given data point are made only using trees for which this
-#' data point was "out of the bag" (not in the bootstrap sample). If "itb", predictions for
-#' a given data point are made using onle the trees for which this datapoint was in the bag (in the bootstrap sample).
-#' If "all", all trees are used.
-#' @param testdata the test data to make preditions for. If this is provided, then
+#' @param forest A splineforest object
+#' @param method A string. Must be either "oob", "itb", or "all". Only relevant when testdata is NULL.
+#' The default value is "oob". If "oob", predictions for a given data point are made only using
+#' trees for which this data point was "out of the bag" (not in the bootstrap sample).
+#'  If "itb", predictions for a given data point are made using only the trees for which this datapoint
+#'  was in the bag (in the bootstrap sample). If "all", all trees are used for every datapoint.
+#' @param testdata the Test data to make preditions for. If this is provided, then
 #' all trees are used for all datapoints.
-#' @return a matrix of predicted responses.
+#' @return A vector of predicted responses. The indices of the vector correspond to rows of the testdata.
 #' @export
 predictYForest <- function(forest, method = "oob", testdata=NULL) {
   if (!forest$intercept) {
@@ -164,79 +166,6 @@ predictYForest <- function(forest, method = "oob", testdata=NULL) {
       }
       preds[i] <- pred
     }
-
-
   }
-
-
   preds
 }
-
-
-# #' Predict spline coefficients for a testset using a single tree from a forest
-# #'
-# #'
-# #' @param tree A splinetree object
-# #' @param testset The dataset to return predictions for. This arguement is required because
-# #' single trees in a forest do not keep track of their own data.
-# #' @return a matrix of predicted coefficients
-# #' @importFrom treeClust rpart.predict.leaves
-# #' @keywords internal
-# #' @export
-# predict_coeffs_tree <- function(tree, testset) {
-#   #wheres <- rpart:::pred.rpart(tree, rpart:::rpart.matrix(testset))
-#   wheres <- rpart.predict.leaves(tree, newdata=testset)
-#
-#
-#   coeffDims <- NCOL(tree$frame$yval2)
-#
-#   preds <- array(NA, c(coeffDims, NROW(testset)))
-#   for (i in 1:NROW(testset)) {
-#     node <- wheres[i]
-#     coeffs <- tree$frame[node, ]$yval2
-#     preds[, i] = coeffs
-#   }
-#   preds
-# }
-
-# #' Predict responses for a testset using a single tree.
-# #'
-# #' @param tree a splinetree object
-# #' @param testset the dataset to return predictions for. Defaults
-# #' to the dataaset used to build this tree.
-# #' @return a matrix of predicted responses
-# #' @export
-# predict_Y_tree <- function(tree, testset=tree$data) {
-#   #wheres <- rpart:::pred.rpart(tree, rpart:::rpart.matrix(testset))
-#   wheres <- rpart.predict.leaves(tree, newdata=testset)
-#
-#
-#   tvar <- tree$parms$tvar
-#
-#   preds <- rep(NA, NROW(testset))
-#   for (i in 1:NROW(testset)) {
-#     node <- wheres[i]
-#     coeffs <- tree$frame[node, ]$yval2
-#     basisMat <- cbind(1, bs(testset[i, ][[tvar]],
-#                             knots = tree$parms$innerKnots, Boundary.knots = tree$parms$boundaryKnots,
-#                             degree = tree$parms$degree))
-#     try1 <- try({
-#       pred <- basisMat %*% t(as.matrix(coeffs))
-#     }, silent = TRUE)
-#     if (class(try1) == "try-error") {
-#       try2 <- try({
-#         pred <- basisMat %*% as.matrix(coeffs)
-#       }, silent = TRUE)
-#     }
-#     preds[i] <- pred
-#   }
-#   preds
-# }
-
-
-
-
-
-
-
-

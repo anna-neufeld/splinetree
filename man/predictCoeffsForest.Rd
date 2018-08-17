@@ -2,28 +2,31 @@
 % Please edit documentation in R/forest_prediction.R
 \name{predictCoeffsForest}
 \alias{predictCoeffsForest}
-\title{Predict spline coefficients using random forest.}
+\title{Predict spline coefficients for a testset using a splineforest.}
 \usage{
 predictCoeffsForest(forest, method = "oob", testdata = NULL)
 }
 \arguments{
-\item{forest}{a splinetree forest object}
+\item{forest}{A splineforest object}
 
-\item{method}{a string; either "oob", "itb", or "all". "oob" is the default value.
-if "oob", predictions for a given data point are made only using trees for which this
+\item{method}{A string; either "oob", "itb", or "all".
+If "oob" (the default), predictions for a given data point are made only using trees for which this
 data point was "out of the bag" (not in the bootstrap sample). If "itb", predictions for
-a given data point are made using onle the trees for which this datapoint was in the bag (in the bootstrap sample).
-If "all", all trees are used.}
+a given data point are made using onle the trees for which this datapoint was "in the bag"
+(in the bootstrap sample). If "all", all trees are used for every datapoint.}
 
-\item{testdata}{the test data to make preditions for. If this is provided, then
+\item{testdata}{The test data to make preditions for. If this is provided, then
 all trees are used for all datapoints.}
 }
 \value{
-a matrix of predicted coefficients.
+A matrix of predicted spline coefficients. The dimensions are forest$df x nrow(testdata). Each column of the matrix
+corresponds to a row of the testdata.
 }
 \description{
-Uses the forest to make predictions of spline coefficients for individuals
-in the training sample or on a new sample. If the testdata parameter is null,
-then predictions are given on the training sample according to one of three possible
-methods. The supplied method parameter must be either "oob", "itb", or "all".
+Uses the forest to predict spline coefficients. Returns a matrix of predicted spline coefficients where the columns
+of the returned matrix correspond to rows of the testdata. The number of rows of the returned matrix is equal to the
+degrees of freedom of the forest. If no testdata is provided, forest$flat_data is used. When testdata is not provided,
+ predictions will be made according to one of three methods. The "method" parameter must be either
+"oob", "itb", or "all". This parameter specifies which trees are used in making a prediction for a certain datapoint.
+This parameter is not relevant when predicting for a testset that is distinct from the training set.
 }

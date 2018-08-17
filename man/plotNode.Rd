@@ -7,21 +7,22 @@
 plotNode(tree, node, includeData = FALSE, estimateIntercept = TRUE)
 }
 \arguments{
-\item{tree}{a splinetree object}
+\item{tree}{A splinetree object}
 
-\item{node}{a node number that must correspond to a terminal node}
+\item{node}{A node number. Must be a valid terminal node for the given splinetree object.
+To view valid terminal node numbers, use stPrint() or treeSummary().}
 
-\item{includeData}{would you like to see the data from the node
+\item{includeData}{Would you like to see the data from the node
 plotted along with the predicted trajectory?}
 
 \item{estimateIntercept}{If the tree was built without an intercept, should
-the average intercept of all the individuals in the node be added to the trajectory
+the average starting response of all the individuals in the node be added to the trajectory
 to give the plot interpretable values? Or should the shape of the
 trajectory be plotted without any regard to the intercept?}
 }
 \description{
-Make a simple plot to view the trajectory predicted at a given node. Option to include or not include
-the individual trajectories of people in the node as well.
+Creates a simple plot of the predicted trajectory at a given node. Option to include
+the data that falls in the node on the same plot.
 }
 \examples{
 \dontrun{

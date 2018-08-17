@@ -2,28 +2,42 @@
 % Please edit documentation in R/other_useful_fns.R
 \name{getNodeData}
 \alias{getNodeData}
-\title{Returns the portion of the data found at a given terminal node}
+\title{Returns the subset of the data found at a given terminal node}
 \usage{
 getNodeData(tree, node, dataType = "all")
 }
 \arguments{
 \item{tree}{a splinetree object}
 
-\item{node}{The number of the node that you want the data for.
-Node numbers for your model can be seen using stPrint(tree)
-or treeSummary(tree). This node number should correspond to
-a terminal node.}
+\item{node}{The number of the node to retrieve data from. Must be valid
+number of a terminal node. Node numbers can be seen using stPrint(tree)
+or treeSummary(tree).}
 
-\item{dataType}{If "all", the data returned is the original data (one row per individual observation
+\item{dataType}{If "all", the data returned is from the original dataset (one row per individual observation
 with original response values). If "flat", the data returned is the flattened data (one row per person/unit),
-with spline coefficients instead of response values.}
+with individual spline coefficients instead of response values.}
 }
 \value{
 A dataframe which holds all the data that falls into this node of the tree.
 }
 \description{
-Given a terminal node number, this function returns the dataset found at this terminal node.
-If the dataType arguement is 'all', then all rows of data (with original response values) that
+Given a terminal node number, this function returns the data belonging to
+this terminal node. If the dataType arguement is 'all', then all rows of data (with original response values) that
 fall in this node are returned.  Otherwise, the flattened data is returned (one row of data per
-person/unit, original responses replaced by spline coefficients).
+ID, original responses replaced by spline coefficients).
+}
+\examples{
+\dontrun{
+split_formula <- BMI ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
+  + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
+  + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14
+  + Mother_14 + Father_14 + STABLE_RESIDENCE + URBAN_14 + South_Birth
+tree <- splineTree(split_formula, BMI~AGE, 'ID', nlsySample, degree=1,
+  df=3, intercept=TRUE, cp=0.006, minNodeSize=20)
+}
+node10data <- getNodeData(tree, 10, dataType = 'all')
+plot(BMI~AGE, data=node10data)
+NROW(node10data)
+NROW(unique(node10data$ID))
+NROW(getNodeData(tree, 10, dataType= 'flat'))
 }
