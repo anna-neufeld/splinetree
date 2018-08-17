@@ -1,15 +1,14 @@
-#' Print a spline tree object
+#' Print a spline tree object in the style of print.rpart
 #'
-#' Code adapted only slightly from the rpart base code for print.rpart to support the printing of
-#' all coefficients.
+#' The printout provides numbered labels for the terminal nodes,
+#' a description of the split at each node, the number of observations found at each node,
+#' and the predicted spline coefficients for each node. This code is primarily taken from rpart base code for print.rpart. It has been modified to
+#' ensure that the full vector of coefficients is printed for each node.
 #'
 #' @param t A splinetree object
 #' @param digits Specifies how many digits of each coefficient should be printed
 #' @param cp Optional- if provided, a pruned version of the tree will be printed. The tree will be
 #' pruned using the provided cp as the complexity parameter.
-#' @return A printout of the tree. The printout provides numbered labels for the terminal nodes,
-#' a description of the split at each node, the number of observations found at each node, and the
-#' predicted spline coefficients for each node.
 #' @importFrom stats naprint
 #' @examples
 #' \dontrun{
@@ -68,7 +67,18 @@ stPrint <- function(t, cp, digits = getOption("digits"))
 
 #' Prints the tree frame.
 #'
+#' Provides a similar output to model$frame, but with the redundant information of yval and
+#' yval2 removed. Also omits the deviance, the complexity, and the weight. Useful for viewing
+#' node numbers and for extracting coefficeints for a given node.
+#'
 #' @param model A splinetree object.
+#' @return A dataframe. The number of rows is the same as the number of nodes in the tree.
+#' The row names display the node labels of each node. The "var" attribute either displays
+#' the split variable selected at each node, or <leaf> if this node is a terminal node. The "n"
+#' attribute displays the number of indivduals in the node. The "dev" attribute reports the
+#' projected sum of squares at this node; terminal nodes have the smallest values for "dev" because
+#' this is what the tree building process is supposed to minimize. The "coeffs" attribute displays
+#' the coefficients predicted for each node.
 #' @examples
 #' \dontrun{
 #' split_formula <- BMI ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
@@ -97,7 +107,8 @@ treeSummary <- function(model) {
 #'
 #' @param tree A splinetree object
 #' @param node The number of the node that you want summarized. To see which nodes correspond to
-#' which numbers, see stPrint(tree).
+#' which numbers, see stPrint(tree) or treeSummary(tree). If this parameter is provided, must correspond
+#' to a valid terminal node in the tree.
 #' @export
 #' @examples
 #' \dontrun{

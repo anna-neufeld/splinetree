@@ -1,9 +1,13 @@
-#' Plots a Spline Tree, showing the tree and the trajectories for comparison.
+#' Plots a splinetree.
 #'
-#' Creates a two paneled plot of a SplineTree object that shows both the tree and the trajectories side by side.
+#' Creates a two paneled plot of a splinetree object that shows both the tree and the trajectories side by side.
+#' Note that this function has trouble when the plot window is not wide enough. If nothing shows up in RStudio,
+#' try increasing the size of the plot window and trying again. For a tree without an intercept, intercepts are
+#' estimated after-the-fact for each node using the average starting value in the data so that the plotted
+#' trajectories have reasonable response values.
 #'
-#' @param model a SplineTree object
-#' @param colors a list of colors that will be used for the trajectories (if NULL, will automatically select colors from
+#' @param model A splinetree object
+#' @param colors A list of colors that will be used for the trajectories (if NULL, will automatically select colors from
 #' rainbow color scheme.
 #' @importFrom grDevices dev.off
 #' @examples
@@ -18,7 +22,6 @@
 #' stPlot(tree, colors = c("red", "orange", "green", "blue", "cyan", "magenta"))
 #' @export
 stPlot <- function(model, colors = NULL) {
-    #dev.off()
     if (is.null(colors)) {
         colors = rainbow(dim(model$frame)[1], v = 0.9)
     }
@@ -33,9 +36,10 @@ stPlot <- function(model, colors = NULL) {
 
 
 
-#' Tree plot of a spline tree
+#' Creates a tree plot of a splinetree object.
 #'
-#' Creates a tree plot of a SplineTree object.
+#' Creates a tree plot of a splinetree object. This corresponds to plotting only the first panel of
+#' stPlot(). Code for this function was borrowed from the longRPart package on github.
 #'
 #' @param model a splinetree object
 #' @param colors a list of colors that will be used for the terminal nodes (if NULL, will use a rainbow)
@@ -153,6 +157,16 @@ splineTreePlot <- function(model, colors = NULL) {
         silent = TRUE)
 }
 
+
+#' Plots the trajectories of each terminal node side by side.
+#'
+#' Corresponds to plotting only the second panel of stPlot(). If model$intercept==FALSE, estimated
+#' intercepts are added to each trajectory so that the trajectories are plotted at the level of reasonable
+#' response values.
+#'
+#' @param model A splinetree object
+#' @param colors A list of colors to use. By default, uses colors drawn from a rainbow.
+#' @export
 nodePlot <- function(model, colors = NULL) {
     data = model$parms$data
     tvar = model$parms$tvar
@@ -221,7 +235,8 @@ nodePlot <- function(model, colors = NULL) {
 #' Create a facetted spaghetti plot of a splinetree model
 #'
 #' Uses ggplot to create a paneled spaghetti plot of the data, where each panel corresponds to a terminal node in the tree.
-#' Allows users to visualize homogeneity of trajectories within the terminal nodes of the tree.
+#' Allows users to visualize homogeneity of trajectories within the terminal nodes of the tree while also looking
+#' at the trajectories of different nodes side by side.
 #'
 #' @param model a splinetree object
 #' @param colors optional arguement specifying colors to be used for each panel.
@@ -309,5 +324,69 @@ spaghettiPlot <- function(model, colors = NULL) {
             data = plotDat) + scale_color_manual(values = colors) +
         theme(legend.position = "none")
 }
+
+#' Plot the predicted trajectory for a single node
+#'
+#' Creates a simple plot of the predicted trajectory at a given node. Option to include
+#' the data that falls in the node on the same plot.
+#'
+#' @importFrom ggplot2 ggplot xlab ylab
+#' @export
+#' @param tree A splinetree object
+#' @param node A node number. Must be a valid terminal node for the given splinetree object.
+#' To view valid terminal node numbers, use stPrint() or treeSummary().
+#' @param includeData Would you like to see the data from the node
+#' plotted along with the predicted trajectory?
+#' @param estimateIntercept If the tree was built without an intercept, should
+#' the average starting response of all the individuals in the node be added to the trajectory
+#' to give the plot interpretable values? Or should the shape of the
+#' trajectory be plotted without any regard to the intercept?
+#' @examples
+#' \dontrun{
+#' split_formula <- BMI ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
+#'   + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
+#'   + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14
+#'   + Mother_14 + Father_14 + STABLE_RESIDENCE + URBAN_14 + South_Birth
+#' tree <- splineTree(split_formula, BMI~AGE, 'ID', nlsySample, degree=1,
+#'   df=3, intercept=TRUE, cp=0.006, minNodeSize=20)
+#' }
+#' plotNode(tree, 10, includeData=TRUE)
+plotNode <-  function(tree, node, includeData = FALSE, estimateIntercept = TRUE) {
+  nodeIndex <- which(row.names(tree$frame)==toString(node))
+  nodeCoeffs <- tree$frame[nodeIndex,]$yval2
+  if (tree$frame[nodeIndex,]$var != "<leaf>") stop("This node number does not correspond to a terminal node.
+                                                   Please look at the numbers provided in the
+                                                   stPrint() printout printed tree and try again.")
+
+  flat_node_data = tree$parms$flat_data[tree$where==nodeIndex,]
+  data = tree$parms$data[tree$parms$data[[tree$parms$idvar]] %in% flat_node_data[[tree$parms$idvar]],]
+
+  xRange = range(data[[tree$parms$tvar]])
+  xGrid = seq(xRange[1], xRange[2], length.out=20)
+  if (tree$parms$intercept) {
+    newxmat <- cbind(1, bs(xGrid, knots = tree$parms$innerKnots,
+                           Boundary.knots = tree$parms$boundaryKnots,
+                           degree = tree$parms$degree))
+    preds <- newxmat %*% t(nodeCoeffs)
+  } else {
+    newxmat <- bs(xGrid, knots = tree$parms$innerKnots,
+                  Boundary.knots = tree$parms$boundaryKnots,
+                  degree = tree$parms$degree)
+    if (estimateIntercept) {
+      mean_int = mean(tree$parms$data[(tree$parms$data[[tree$parms$tvar]] -
+                                         min(tree$parms$data[[tree$parms$tvar]])) < 1, ][[tree$parms$yvar]])
+    }
+    else {mean_int=0}
+    preds <- newxmat %*% t(nodeCoeffs) + mean_int
+  }
+  if (includeData) {
+    ggplot() +geom_line(data=data, mapping = aes_string(x = tree$parms$tvar, y = tree$parms$yvar,group = tree$parms$idvar))+
+      theme(legend.position="none")+xlab(tree$parms$tvar)+ylab(tree$parms$yvar)+ geom_line(aes(x=xGrid, y=preds, color="red", size=2))
+  }
+  else {
+    ggplot()+geom_line(aes(x=xGrid, y=preds, color="red", size=1))+theme(legend.position="none")+xlab(tree$parms$tvar)+ylab(tree$parms$yvar)
+  }
+}
+
 
 

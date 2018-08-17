@@ -1,11 +1,12 @@
-#' Build a splinetree random forest
+#' Build a splineforest object.
 #'
 #' Builds an ensemble of regression trees for longitudinal or functional data using the spline projection method. The resulting object
-#' is a list of splinetree objects along with some additional information. All parameters are used in the same way that they are used in the splineTree
-#' function. The additional parameter ntree specifies how many trees should be in the ensemble, and prob controls the
-#' probability of selecting a given variable for split consideration at a node.
+#' contains a list of splinetree objects along with some additional information. All parameters are used in the same way that they are used in
+#' the splineTree() function. The additional parameter ntree specifies how many trees should be in the ensemble, and prob controls the
+#' probability of selecting a given variable for split consideration at a node. This method may take several minutes to run- saving the forest after
+#' building it is recommended.
 #'
-#' The ensemble method is highly similar to the random forest methodology of Brieman (2001). Each tree in the ensemble is fit to a bootstrap sample
+#' The ensemble method is highly similar to the random forest methodology of Breiman (2001). Each tree in the ensemble is fit to a bootstrap sample
 #' of the data. At each node of each tree, only a subset of the split variables are considered candidates for the split. In our methodology,
 #' the subset of variables considered at each node is determined by a random process. The prob parameter specifies the probability that a given variable
 #' will be selected at a certain node. Because the method is based on probability, the same number of variables are not considered for splitting at each node
@@ -23,17 +24,19 @@
 #' @param degree Specifies degree of spline basis used in the tree.
 #' @param intercept Specifies whether or not the splitting process will consider the intercept coefficient of the spline projections.
 #' Defaults to FALSE, which means that the tree will split based on trajectory shape, ignoring response level.
-#' @param nGrid Number of grid points to evaluate projection sum of squares at. If gridPoints is not supploed, this arguement
-#' will be used and the projection sum of squares will be evaluated at quantiles of the time variable.
+#' @param nGrid Number of grid points to evaluate projection sum of squares at. If gridPoints is not supplied, then this is the
+#' number of grid points that will be automatically placed at quantiles of the time variable. The default is 7.
 #' @param gridPoints Optional. A vector of numbers that will be used as the grid on which to evaluate the projection
 #' sum of squares. Should fall roughly within the range of the time variable.
 #' @param minNodeSize Minimum number of observational units that can be in a terminal node. Controls tree size and helps avoid overfitting.
-#' @param cp Complexity parameter passed to the rpart building process.
-#' @param ntree Number of trees in the forest
+#' Default is 10.
+#' @param cp Complexity parameter passed to the rpart building process. Default is the rpart default of 0.01
+#' @param ntree Number of trees in the forest.
 #' @param prob Probability of selecting a variable to included as a candidate for each split.
-#' @return A splineforest object, which stores a list of splinetree objects (in model$Trees), along with information about the
+#' @return A splineforest object, which stores a list of tree (in model$Trees), along with information about the
 #' spline basis used (model$intercept, model$innerKnots, model$boundaryKnots, etc.), and information about which datapoints were
-#' used to build each tree (model$oob_indices and model$index).
+#' used to build each tree (model$oob_indices and model$index). Note that each element in model$Trees is an rpart object but
+#' it is NOT the same as a splinetree object because it does not store all relevant information in model$parms.
 #' @export
 #' @import nlme
 #' @import rpart

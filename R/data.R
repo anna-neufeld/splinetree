@@ -1,12 +1,13 @@
 #' Baseline socioeconomic information and BMI of 100 individuals.
 #'
 #' A dataset containing the body mass index (BMI) and baseline
-#' socioeconomic information of 500 individuals from the National
+#' socioeconomic information of 100 individuals from the National
 #' Longitudinal Survey of Youth 1979 (NLSY), a freely available longitudinal dataset.
 #' The 1000 individuals were drawn randomly from among all NLSY respondents with at least 10
 #' non-missing height/weight responses spread out over at least 20 years.
 #' This dataset is used in the package vignettes and code examples. Only a small
-#' subset of the variables available from the NLSY are included here- see https://www.bls.gov/nls/nlsy79.htm for more
+#' subset of the variables available from the NLSY are included here.
+#' See https://www.bls.gov/nls/nlsy79.htm for more
 #'
 #' @format A data frame with 16126 rows and 34 columns.
 #' \describe{
@@ -69,7 +70,6 @@
 #' Sample tree used in examples
 #' @keywords internal
 "tree"
-
 
 
 #' Sample forest used in vignettes

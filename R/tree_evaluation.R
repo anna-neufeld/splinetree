@@ -1,6 +1,7 @@
-#' Percent of variation in response explained by spline tree.
+#' Computes percent of variation in response explained by spline tree.
 #'
-#' Computes an R^2 measure for the spline tree with respect to prediction. Note that this metric is only meaningful if the spline tree object includes an intercept.
+#' Computes the percentage of variation in response explained by the spline tree.
+#' This metric is only meaningful if model$intercept==TRUE.
 #' If the tree includes an intercept, the measure will be between 0 and 1.
 #'
 #' @param model a splinetree tree object
@@ -34,12 +35,13 @@ yR2 <- function(model) {
 }
 
 
-#' Returns predicted responses.
+#' Predictions from a splitted splinetree object
 #'
-#' Returns predicted responses. Note that this function is most meaningful when used on spline tree objects that have an intercept.
+#' Returns a vector of predicted responses for the testData. If testData is ommitted,
+#' returns predictions for the training data. This function is most meaningful if model$intercept==TRUE.
 #'
-#' @param model a SplineTree object
-#' @param testData The data to predict on. By default, uses the training set.
+#' @param model A splinetree object.
+#' @param testData The data to return predictions for. If ommitted, uses the training data.
 #' @return A vector of predictions with rows corresponding to the testdata.
 #' @importFrom treeClust rpart.predict.leaves
 #' @export
@@ -94,15 +96,20 @@ predictY <- function(model, testData = NULL) {
 }
 
 
-#' Computes an R^2-like measure that is based on the projected sum of squared errors.
+#' Computes percent of variation in projected response explained by a splinetree.
 #'
-#' Computes an R^2-like measure that is based on the projected sum of squared errors. Can be used on trees whether or not they
-#' were built with an intercept. If the tree was built with an intercept, there is the option to ignore the intercept in this
-#' projection to isolate how well the tree clusters based on shape.
+#' Computes an R^2 measure for a splinetree based on the projected sum of squared errors. Returns 1-SSE/SST.
+#' SSE is the sum of projection squared errors between individual smoothed trajectories and predicted smoothed
+#' trajectories evaluated on a fixed grid. SST is the sum of projection squared errors between individual smoothed
+#' trajectories and the overall population mean trajectory, evaluated on the same fixed grid.
+#' If model$intercept==TRUE, then there is the option to ignore the intercept coefficient when computing this metric.
+#' When the intercept is ignored, the metric captures how well the model explains variation in shape, and ignores
+#' any variation in intercept explained by the model.
 #' @export
 #' @param model a splinetree tree object
 #' @param includeIntercept If FALSE and if the model was built with an intercept, the projected squared errors are computed
 #' while ignoring the intercept. If the model was built without an intercept, this parameter does not do anything.
+#' @return The percentage of variation in projected trajectory explained by the model. Computed as 1-SSE/SST. See description.
 projectedR2 <- function(model, includeIntercept = FALSE) {
 
     ## Goal is to capture how well the predicted spline coefficients approximate the actual spline coefficients.
@@ -183,14 +190,13 @@ predictCoeffs <- function(tree, testset = tree$parms$flat_data) {
 
 #' Predict responses for the training data
 #'
-#' Returns a vector of predicted responses for the dataset used to build the tree
-#'
 #' Calling predictY(model) and predict_y_training(model) return identical results, because when no test data is
 #' provided to predictY(), the default is to use the training set. This is a slightly faster version that
-#' can be used when you know that you wish to predict on the training data.
+#' can be used when you know that you wish to predict on the training data. It is faster because it takes advantage
+#' of the relationship between model$parms$flat_data and model$parms$data.
 #'
 #' @param model a splinetree object
-#' @return A vector of predicted responses
+#' @return A vector of predicted responses where each element in the vector corresponds to a row in model$parms$data.
 #' @export
 #' @keywords internal
 #' @importFrom treeClust rpart.predict.leaves

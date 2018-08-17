@@ -17,7 +17,7 @@ treeSize <- function(model) {
 }
 
 
-#' Returns a measure of how similar the two trees are in terms of how they partition the data.
+#' Returns a measure of how similar the two trees are.
 #'
 #' Computes the Adjusted Rand Index of the clusterings of the population created by the two trees.
 #' In the case of correlated covariates, two trees that split on entirely different variables may actually
@@ -38,12 +38,12 @@ treeSimilarity <- function(tree1, tree2) {
   adjustedRandIndex(tree1$where, tree2$where)
 }
 
-#' Returns the subset of the data found at a given terminal node
+#' Retrieve the subset of the data found at a given terminal node
 #'
 #' Given a terminal node number, this function returns the data belonging to
-#' this terminal node. If the dataType arguement is 'all', then all rows of data (with original response values) that
-#' fall in this node are returned.  Otherwise, the flattened data is returned (one row of data per
-#' ID, original responses replaced by spline coefficients).
+#' this terminal node. If the dataType arguement is 'all', returns all rows of data from the
+#' original dataset that fall in this node.  Otherwise, the flattened data that belongs to
+#' this node is returned (one row of data per ID, original responses replaced by spline coefficients).
 #'
 #' @param tree a splinetree object
 #' @param node The number of the node to retrieve data from. Must be valid
@@ -84,65 +84,3 @@ getNodeData <- function(tree, node, dataType = 'all') {
 }
 
 
-#' Plot the predicted trajectory for a single node
-#'
-#' Creates a simple plot of the predicted trajectory at a given node. Option to include
-#' the data that falls in the node on the same plot.
-#'
-#' @importFrom ggplot2 ggplot xlab ylab
-#' @export
-#' @param tree A splinetree object
-#' @param node A node number. Must be a valid terminal node for the given splinetree object.
-#' To view valid terminal node numbers, use stPrint() or treeSummary().
-#' @param includeData Would you like to see the data from the node
-#' plotted along with the predicted trajectory?
-#' @param estimateIntercept If the tree was built without an intercept, should
-#' the average starting response of all the individuals in the node be added to the trajectory
-#' to give the plot interpretable values? Or should the shape of the
-#' trajectory be plotted without any regard to the intercept?
-#' @examples
-#' \dontrun{
-#' split_formula <- BMI ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
-#'   + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
-#'   + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14
-#'   + Mother_14 + Father_14 + STABLE_RESIDENCE + URBAN_14 + South_Birth
-#' tree <- splineTree(split_formula, BMI~AGE, 'ID', nlsySample, degree=1,
-#'   df=3, intercept=TRUE, cp=0.006, minNodeSize=20)
-#' }
-#' plotNode(tree, 10, includeData=TRUE)
-plotNode <-  function(tree, node, includeData = FALSE, estimateIntercept = TRUE) {
-  nodeIndex <- which(row.names(tree$frame)==toString(node))
-  nodeCoeffs <- tree$frame[nodeIndex,]$yval2
-  if (tree$frame[nodeIndex,]$var != "<leaf>") stop("This node number does not correspond to a terminal node.
-                                                   Please look at the numbers provided in the
-                                                   stPrint() printout printed tree and try again.")
-
-  flat_node_data = tree$parms$flat_data[tree$where==nodeIndex,]
-  data = tree$parms$data[tree$parms$data[[tree$parms$idvar]] %in% flat_node_data[[tree$parms$idvar]],]
-
-  xRange = range(data[[tree$parms$tvar]])
-  xGrid = seq(xRange[1], xRange[2], length.out=20)
-  if (tree$parms$intercept) {
-    newxmat <- cbind(1, bs(xGrid, knots = tree$parms$innerKnots,
-                           Boundary.knots = tree$parms$boundaryKnots,
-                           degree = tree$parms$degree))
-    preds <- newxmat %*% t(nodeCoeffs)
-  } else {
-    newxmat <- bs(xGrid, knots = tree$parms$innerKnots,
-                           Boundary.knots = tree$parms$boundaryKnots,
-                           degree = tree$parms$degree)
-    if (estimateIntercept) {
-        mean_int = mean(tree$parms$data[(tree$parms$data[[tree$parms$tvar]] -
-                                  min(tree$parms$data[[tree$parms$tvar]])) < 1, ][[tree$parms$yvar]])
-    }
-    else {mean_int=0}
-    preds <- newxmat %*% t(nodeCoeffs) + mean_int
-  }
-    if (includeData) {
-    ggplot() +geom_line(data=data, mapping = aes_string(x = tree$parms$tvar, y = tree$parms$yvar,group = tree$parms$idvar))+
-        theme(legend.position="none")+xlab(tree$parms$tvar)+ylab(tree$parms$yvar)+ geom_line(aes(x=xGrid, y=preds, color="red", size=2))
-    }
-    else {
-      ggplot()+geom_line(aes(x=xGrid, y=preds, color="red", size=1))+theme(legend.position="none")+xlab(tree$parms$tvar)+ylab(tree$parms$yvar)
-    }
-}
