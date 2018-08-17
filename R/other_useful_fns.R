@@ -1,6 +1,6 @@
 #' Returns number of terminal nodes in a tree.
 #' @param model A splinetree object, or any rpart object
-#' @return Number of terminal nodes in tree
+#' @return The number of terminal nodes in the tree
 #' @export
 #' @examples
 #' \dontrun{
@@ -38,21 +38,20 @@ treeSimilarity <- function(tree1, tree2) {
   adjustedRandIndex(tree1$where, tree2$where)
 }
 
-#' Returns the portion of the data found at a given terminal node
+#' Returns the subset of the data found at a given terminal node
 #'
-#' Given a terminal node number, this function returns the dataset found at this terminal node.
-#' If the dataType arguement is 'all', then all rows of data (with original response values) that
+#' Given a terminal node number, this function returns the data belonging to
+#' this terminal node. If the dataType arguement is 'all', then all rows of data (with original response values) that
 #' fall in this node are returned.  Otherwise, the flattened data is returned (one row of data per
-#' person/unit, original responses replaced by spline coefficients).
+#' ID, original responses replaced by spline coefficients).
 #'
 #' @param tree a splinetree object
-#' @param node The number of the node that you want the data for.
-#' Node numbers for your model can be seen using stPrint(tree)
-#' or treeSummary(tree). This node number should correspond to
-#' a terminal node.
-#' @param dataType If "all", the data returned is the original data (one row per individual observation
+#' @param node The number of the node to retrieve data from. Must be valid
+#' number of a terminal node. Node numbers can be seen using stPrint(tree)
+#' or treeSummary(tree).
+#' @param dataType If "all", the data returned is from the original dataset (one row per individual observation
 #' with original response values). If "flat", the data returned is the flattened data (one row per person/unit),
-#' with spline coefficients instead of response values.
+#' with individual spline coefficients instead of response values.
 #' @return A dataframe which holds all the data that falls into this node of the tree.
 #' @export
 #' @examples
@@ -64,8 +63,11 @@ treeSimilarity <- function(tree1, tree2) {
 #' tree <- splineTree(split_formula, BMI~AGE, 'ID', nlsySample, degree=1,
 #'   df=3, intercept=TRUE, cp=0.006, minNodeSize=20)
 #' }
-#' node10data <- getNodeData(model1, 10, dataType = 'all)
+#' node10data <- getNodeData(tree, 10, dataType = 'all')
 #' plot(BMI~AGE, data=node10data)
+#' NROW(node10data)
+#' NROW(unique(node10data$ID))
+#' NROW(getNodeData(tree, 10, dataType= 'flat'))
 getNodeData <- function(tree, node, dataType = 'all') {
   nodeIndex <- which(row.names(tree$frame)==node)
   if (tree$frame[nodeIndex,]$var != "<leaf>") stop("This node number does not correspond to a terminal node.

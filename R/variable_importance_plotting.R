@@ -1,11 +1,15 @@
-#' Create a variable importance plot
+#' Create a barplot of relative variable importance scores.
 #'
-#' Pass in a named vector of variable importance measures. This function will make a barplot of the importances. The importances are scaled, so
-#' only relative importance is shown.
+#' Given a named vector of variable importance measures, this function makes a barplot of the relative importances.
+#' The importances are scaled to sum to 1. An appropriate input is one column of the output from
+#' varImpY() or varImpCoeff().
 #'
 #' @param importance_vector a named vector where the names are the variables and the vector stores the importances.
 #' @param ... additional arguements to plot, such as "main", "cex", etc.
 #' @export
+#' @examples
+#' standardized_importance <- varImpCoeff(sample_forest)[,3]
+#' plotImp(standardized_importance, main="Plot of standardized variable importance")
 plotImp <- function(importance_vector, ...) {
     try({
     par(las = 2)

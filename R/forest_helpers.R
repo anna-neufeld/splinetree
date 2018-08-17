@@ -1,10 +1,10 @@
-#' Average tree size in forest
+#' Compute the average tree size in a forest
 #'
-#' Returns the average number of terminal nodes for tree in forest
+#' Returns the average number of terminal nodes for trees in a forest
 #'
 #' @param forest A splineforest object
 #'
-#' @return avergae number of terminal nodes
+#' @return The avergae number of terminal nodes in forest
 #' @export
 #' @examples
 #' avSize(sample_forest)
@@ -13,9 +13,11 @@ avSize <- function(forest) {
         function(x) NROW(unique(x$where)))))))
 }
 
-#' Prunes each tree in forest using a given complexity parameter.
+#' Prune each tree in forest using a given complexity parameter.
+#' 
+#' Prunes each tree in the list forest$Trees according to the provided complexity parameter. Returns a new forest. 
 #'
-#' @return A new splinetree forest object, where each tree has a new size
+#' @return A new splineforest object where each tree has been pruned to the desired level.
 #' @param forest A spline forest object
 #' @param cp The complexity parameter that will be used to prune each tree (see rpart package documentation for detailed description of complexity parameter)
 #' @examples
