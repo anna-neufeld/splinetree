@@ -90,7 +90,7 @@ sample_tree <- splineTree(split_formula, tformula, idvar="ID", data=nlsySample, 
 
 ### Try to evaluate both trees
 yR2(sample_tree)
-test <- try(yR2(forest$Trees[[17]]))
+test <- try(yR2(forest$Trees[[17]]), silent=TRUE)
 class(test)
 
 ### Try to access additional information from both trees
