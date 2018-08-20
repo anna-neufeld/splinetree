@@ -126,54 +126,57 @@ Making a prediction using a spline forest involves averaging predictions over in
 
 ```{r}
 newData <- data.frame("WHITE" = 0, "BLACK"=1, "HISP"=0, "Num_sibs"=3, "HGC_MOTHER"=12, "HGC_FATHER"=12, "SEX"=1)
-predictCoeffsForest(forest, testdata = newdata)
+predictCoeffsForest(forest, testdata = newData)
 ```
 
 ```{r}
-AGE <- c(16,18,20,22,25,30)
+AGE <- c(16,18,20,22,25,30,37,39,50)
 newData2 <- cbind(AGE, newData)
-predictYForest(forest, testdata=newData2)
+predictions <- predictYForest(forest, testdata=newData2)
+plot(AGE, predictions, type='l')
 ```
 
-
-
-# Evaluating a Forest
-
-# Variable Importance
-
-
-
-
-The ``prob`` parameter specifies the 
-
-Other built-in forest performance metrics have a similar parameter that can take on values of ``all`` (all trees are used for the prediction of every datapoint), ``itb`` (only trees for which this datapoint was in the bootstrap sample are used), or ``oob`` (only trees for which this datapoint was out of the bootstrap sample are used). For example, we can 
-
-
-```{r, include=FALSE}
-library(splinetree)
-```
+When predicting coefficients or responses for a datapoint that was in the training set, we have the option to use one of three different methods, specified by the "methods" parameter in ``predictYForest`` and ``predictCoeffsForest``. For a given datapoint, we can either average its prediction over all trees in the forest (``method = "all"``), over only trees in the forest for which this datapoint was not in the bootstrap sample (``method="oob"``), or over only trees in the forest for which this datapoint was in the bootstrap sample (``method="itb"``). The ``oob`` method is preferred, as it gives a sense of out-of-sample performance and avoids overfitting the training data. We can compare response predictions for the tree methods in terms of how closely they match the actual responses. As expected, the ``itb`` predictions match the actual values much more closely.
 
 ```{r}
-set.seed(123)
-splitform <- BMI~HISP+WHITE+BLACK+HGC_FATHER+Num_sibs+HGC_MOTHER+SEX+News+Mag+Lib
-#forest <- splineForest(splitform, BMI~AGE, "ID", nlsySample, degree=1, df=2, intercept=FALSE, cp=0.001, ntree=50)
-#intercept_forest <- splineForest(BMI~HISP+WHITE+BLACK+HGC_FATHER+Num_sibs+HGC_MOTHER+SEX+News+Mag+Lib, BMI~AGE, "ID", nlsySample, degree=1, df=3, intercept=TRUE, cp=0.001, ntree=50)
+cor(nlsySample$BMI, predictYForest(forest, method="oob"))
+cor(nlsySample$BMI, predictYForest(forest, method="all"))
+cor(nlsySample$BMI, predictYForest(forest, method="itb"))
 ```
-
-# Working with a Forest
- 
-- components of a forest object
-- Prediction
 
 # Evaluating a Forest
 
-- R2 Y
-- R2 Projected
-- Oob vs itb vs. etc. 
+As with a single tree, we can evaluate a forest with respect to how well it predicts actual responses or with respect to how well it predicts individually-projected trajectories.  In many cases, it makes more sense to look at how well the forest is predicting actual responses; a forest that is excellent at predicting individually projected trajectories may be mostly useless if the individual trajectories do not approximate the actual responses (due to a poorly chosen basis). However, there are also advantages to evaluating a forest with respect to projected trajectories. The projectedion-based metrics can be used whether or not the forest includes an intercept. Furthermore, they do not give the forest credit for the portion of variation that is explained simply by the population average trend of BMI and AGE; they only give the forest credit for explaining additional variation. Furthermore, when used on a no-intercept forest or when used with the arguement ``removeIntercept=TRUE``, these metrics tell us how well we explain variation in shape of trajectory, regardless of what is happening with level. When our goal is to explain variation in shape, this metric may be more useful than the prediction metric.  
+
+Apart from the response vs. projected response choice, we can also measure forest performance using ``out-of-the-bag``, ``in-the-bag``, or all tree predictions. Out of the bag performance metrics are often preferred because they provide a more realistic assesment of how the tree will perform out of sample. Combining these different dimensions of choice, there are 9 different ways that we could evaluate the performance of one single forest with an intercept! We can compare the 9 metrics. 
+
+The response-based $R^2$ measure is the most straightforward. Unsuprisingly, performance is worst using ``oob`` predictions and best using ``itb`` predictions. 
+
+```{r}
+yR2Forest(forest, method="oob")
+yR2Forest(forest, method="all")
+yR2Forest(forest, method="itb")
+```
+
+The projection based $R^2$ metrics follow the same pattern of ``oob`` measures performing the worst, but overall performance is much lower because the forest no longer gets credit for explaining variation that could be explained with the population average BMI vs. AGE trajectory. 
+
+```{r}
+projectedR2Forest(forest, method="oob", removeIntercept = FALSE)
+projectedR2Forest(forest, method="all", removeIntercept = FALSE)
+projectedR2Forest(forest, method="itb", removeIntercept = FALSE)
+```
+
+Finally, when we exclude the intercept, the same patterns hold but we see that even less total variation is explained by our model with we do not give the model credit for explaining variation in starting level. These metrics suggest that, moving out of sample, we will only be able to explain aroudn 3\% of variation in shape of BMI trajectory. 
+
+```{r}
+projectedR2Forest(forest, method="oob", removeIntercept = TRUE)
+projectedR2Forest(forest, method="all", removeIntercept = TRUE)
+projectedR2Forest(forest, method="itb", removeIntercept = TRUE)
+```
 
 # Variable Importance
-- Show how to use function
-- Show plot
+
+Our primary motivation in building forests of spline trees is to obtain stable measures of variable importance using permutation importance. 
 
 
 
