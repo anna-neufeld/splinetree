@@ -22,14 +22,126 @@ This guide is meant for users who are familiar with regression trees, random for
 
 # Building a Forest
 
-If you are familiar with building trees in ``splinetree`` (see *Introduction to Tree Building with splinetree*), then building a forest is straightforward. The majority of the parameters needed to use the ``splineForest()`` function are identical to those used in the ``splineTree()`` function; the processed used to project the longitudinal data onto smoothed trajectories is identical. There are just two additional parameters for the ``splineForest`` function.
+For users familiar with building trees in ``splinetree`` (see *Introduction to Tree Building with splinetree*), then building a forest is straightforward. The majority of the parameters needed to use the ``splineForest()`` function are identical to those used in the ``splineTree()`` function; the processed used to project the longitudinal data onto smoothed trajectories is identical. There are just two additional parameters for the ``splineForest`` function.
 
-The ``nTree`` parameter specifies the number of trees in the forest. The default value is $50$. Large forests provide additional stability over smaller forests, but we note that on large datasets building a spline forest of size 50 will take a few minutes. For quick experimentation, it may be useful to build smaller forests. The ``prob`` parameter specifies the probability that a variable will be in consideration as a split variable at a given node. To avoid a situation where no variables are considered at a certain node, we recommend that that ``prob`` is relatively large when the number of split variables is small. If only 6 split variables are in consideration, then setting ``prob=1/3`` leaves around an 8\% chance ($\left( \frac{2}{3} \right)^6$) that no variable will be selected for a split at the root node. Increasing ``prob`` to ``1/2`` reduces this probability to under 2\%. 
+The ``nTree`` parameter specifies the number of trees in the forest. The default value is $50$. Large forests provide additional stability over smaller forests, but on large datasets building a large spline forest may take several minutes. The ``prob`` parameter specifies the probability that a variable will be in consideration as a split variable at a given node. To avoid a situation where no variables are considered at a certain node, we recommend that that ``prob`` is relatively large when the number of split variables is small. If only 6 split variables are in consideration, then setting ``prob=1/3`` leaves around an 8\% chance ($\left( \frac{2}{3} \right)^6$) that no variable will be selected for a split at the root node. Increasing ``prob`` to ``1/2`` reduces this probability to under 2\%. 
 
-Using the same $NLSY$ sample with the same  
+We will build a forest of 50 trees using a probability of 0.5. As split variables, we will include indicators for the subject's race and sex as well as the subject's number of siblings and the highest grade completed (HGC) by the subject's mother and father. We will use a spline basis with 1 degree and 1 internal knot; this choice is based on the knowledge that adult BMI trajectories tend to be steeper in early adulthood before flattening out in late adulthood (@clarke2008social). We will build both a forest with an intercept and a forest without an intercept, as the difference between the two will allow for interesting comparisons. 
+
+```{r}
+library(splinetree)
+split_formula <- BMI~HISP+WHITE+BLACK+SEX+Num_sibs+HGC_FATHER+HGC_MOTHER
+tformula <- BMI~AGE
+```
+
+```{r}
+set.seed(555)
+forest <- splineForest(split_formula, tformula, idvar="ID", data=nlsySample, degree=1, df=3, intercept=TRUE,ntree=50, prob=0.5, cp=0.005)
+no_intercept_forest <- splineForest(split_formula, tformula, idvar="ID", data=nlsySample, degree=1, df=2, intercept=FALSE,ntree=50, prob=0.5, cp=0.005)
+```
+
+# Working with a splineforest object
+
+Each of these ``splineforest`` objects is a named list with 16 components.
+
+```{r}
+names(forest)
+```
+
+A few of these 16 components have unsurprising values. For example, ``forest$data`` holds a copy of the original dataset, and ``forest$formula``, ``forest$idvar``, ``forest$yvar``, and ``forest$tvar`` each hold pieces of information about the call to the ``splineTree()`` function. 
+
+```{r}
+forest$formula
+forest$idvar
+forest$yvar
+forest$tvar
+```
+
+Other components allow us reconstruct the spline basis that was used to build the tree. These are useful for converting coefficients into smoothed trajectories without using built-in functions. The attribute ``forest$flat_data`` contains the flattened dataset used to build the trees, including the individually projected coefficients for each individual. We can access the individually projected coefficients more quickly in ``forest$Ydata``.  We can use the average of all the individual coefficients as well as the information that is stored about the spline basis in ``forest$innerKnots``, ``forest$degree``, ``forest$intercept``, and ``forest$boundaryKnots`` to reconstruct the population average trajectory. 
+
+```{r}
+mean_coeffs <- apply(forest$Ydata, 1, mean)
+
+times <- sort(unique(forest$data[[forest$tvar]]))
 
 
-Many forest performance metrics are based on the notion of 
+basisMatrix <- bs(times, degree=forest$degree, Boundary.knots = forest$boundaryKnots, knots = forest$innerKnots)
+if (forest$intercept) {
+  basisMatrix <- cbind(1, basisMatrix)
+}
+ 
+preds <- basisMatrix %*% mean_coeffs
+
+plot(times, preds, type='l', main="Population Average Trajectory")
+```
+
+Apart from all of the information that is stored about the function call and the spline basis, the ``splineforest`` object contains information about the forest itself.  Most important of all is the component ``forest$Trees``, which stores a list of ``rpart`` objects. This ensemble of trees is the fucntional part of the forest model. We can view any individual tree using ``stPrint()``.
+
+```{r}
+stPrint(forest$Trees[[17]])
+```
+
+Although we can print any tree in the forest using ``stPrint()``, it is important to note that these trees are not identical to ``splineTree`` objects. These ``rpart`` trees do not store all of the extra information that is stored in a typical ``splinetree`` object. For example, we can note the difference between a single tree and ``forest$Trees[[17]]``.
+
+```{r}
+sample_tree <- splineTree(split_formula, tformula, idvar="ID", data=nlsySample, degree=1, df=2, intercept=FALSE, cp=0.005)
+
+### Try to evaluate both trees
+yR2(sample_tree)
+test <- try(yR2(forest$Trees[[17]]))
+class(test)
+
+### Try to access additional information from both trees
+sample_tree$parms$degree
+forest$Trees[[17]]$parms$degree
+```
+
+The remaining components of ``forest`` include ``forest$index``, ``forest$oob_indices``, and ``forest$splits``. The ``index`` component let's us access the data that was used to build each tree. For example, ``forest$index[[17]]`` stores the indices of each row in ``forest$flat_data`` that was used to build the 17th tree. On the other hand, ``forest$oob_indices[[17]]`` stores a list of indices that correpond to rows in ``forest$flat_data`` that were NOT used to build tree 17 (these rows were "out of the bag", or "oob"). Storing both of these pieces of information may seem redundant, but both are accessed frequently in the forest prediction and evaluation functions. If we want to uncover datapoints that are "in the bag"" and "out of the bag" for tree 17, we can use:
+
+```{r}
+itb17 <- forest$flat_data[forest$index[[17]],]
+oob17 <- forest$flat_data[forest$oob_indices[[17]],]
+```
+
+The ``in the bag`` dataset is around twice as large as the ``out of bag`` dataset, which makes sense given the known properties of bootstrap sampling (on average, around 2/3 of datapoints will end up in the sample).
+
+The final component of a forest object is accessed in ``forest$splits``.  This very long list stores every variable selected as a split throughout the entire forest. It might be useful to compare the frequency with which different variables are selected. It is important to note that these frequecies should $not$ be used as a variable importance metric. The barplot below shows that HGC_FATHER, HGC_MOTHER, and Num_Sibs are the most frequently selected varaibles throughout the forest. These three variables are the only numeric variables in the dataset; the rest are binary, meaning that they can never be used consecutively in the same branch of a tree. More appropriate measures of variable importance will be discussed below. 
+
+```{r}
+freqs <- table(forest$splits)/sum(table(forest$splits))
+par(las = 2)
+barplot(freqs)
+```
+
+The bias in splits towards variables with more unique values is exacerbated in forests where each tree is very large; in forests such as these, numeric variables with many unique values will be repeatedly used for successive splits while binary variables are limited. It is sometimes useful to check the size of the average tree in the forest and, if necessary, prune each tree in the forest to reduce the average size. 
+
+```{r}
+avSize(forest)
+avSize(pruneForest(forest, cp=0.01))
+```
+
+# Making predictions with a forest
+
+Making a prediction using a spline forest involves averaging predictions over individual trees in the forest. When making predictions for a datapoint that was not in the testset, the only reasonable option is to use all the trees in the forest to make the prediction. Using this method, either coefficients or response values (assuming ``forest$intercept==TRUE``) can be predicted. In predicting coefficients, no value is required for the "AGE" variable, but in predicting responses ages must be specified. 
+
+```{r}
+newData <- data.frame("WHITE" = 0, "BLACK"=1, "HISP"=0, "Num_sibs"=3, "HGC_MOTHER"=12, "HGC_FATHER"=12, "SEX"=1)
+predictCoeffsForest(forest, testdata = newdata)
+```
+
+```{r}
+AGE <- c(16,18,20,22,25,30)
+newData2 <- cbind(AGE, newData)
+predictYForest(forest, testdata=newData2)
+```
+
+
+
+# Evaluating a Forest
+
+# Variable Importance
+
+
 
 
 The ``prob`` parameter specifies the 

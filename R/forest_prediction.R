@@ -106,7 +106,7 @@ predictCoeffsForest = function(forest, method = "oob", testdata=NULL) {
 #' @export
 predictYForest <- function(forest, method = "oob", testdata=NULL) {
   if (!forest$intercept) {
-    stop("You should not try to predict response values with a no-intercept model")
+    stop("Cannot predict response values with a no-intercept model")
   }
 
   innerKnots <- forest$innerKnots
@@ -145,7 +145,7 @@ predictYForest <- function(forest, method = "oob", testdata=NULL) {
 
   else {
 
-    coeffPreds <- t(predictCoeffsForest(forest, method, testdata))
+    coeffPreds <- t(predictCoeffsForest(forest, method="all", testdata=testdata))
     preds <- rep(NA, NROW(testdata))
 
     for (i in 1:NROW(testdata)) {
