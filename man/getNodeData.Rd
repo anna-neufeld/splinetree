@@ -2,7 +2,7 @@
 % Please edit documentation in R/other_useful_fns.R
 \name{getNodeData}
 \alias{getNodeData}
-\title{Returns the subset of the data found at a given terminal node}
+\title{Retrieve the subset of the data found at a given terminal node}
 \usage{
 getNodeData(tree, node, dataType = "all")
 }
@@ -22,9 +22,9 @@ A dataframe which holds all the data that falls into this node of the tree.
 }
 \description{
 Given a terminal node number, this function returns the data belonging to
-this terminal node. If the dataType arguement is 'all', then all rows of data (with original response values) that
-fall in this node are returned.  Otherwise, the flattened data is returned (one row of data per
-ID, original responses replaced by spline coefficients).
+this terminal node. If the dataType arguement is 'all', returns all rows of data from the
+original dataset that fall in this node.  Otherwise, the flattened data that belongs to
+this node is returned (one row of data per ID, original responses replaced by spline coefficients).
 }
 \examples{
 \dontrun{

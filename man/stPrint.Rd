@@ -2,7 +2,7 @@
 % Please edit documentation in R/tree_print.R
 \name{stPrint}
 \alias{stPrint}
-\title{Print a spline tree object}
+\title{Print a spline tree object in the style of print.rpart}
 \usage{
 stPrint(t, cp, digits = getOption("digits"))
 }
@@ -14,14 +14,11 @@ pruned using the provided cp as the complexity parameter.}
 
 \item{digits}{Specifies how many digits of each coefficient should be printed}
 }
-\value{
-A printout of the tree. The printout provides numbered labels for the terminal nodes,
-a description of the split at each node, the number of observations found at each node, and the
-predicted spline coefficients for each node.
-}
 \description{
-Code adapted only slightly from the rpart base code for print.rpart to support the printing of
-all coefficients.
+The printout provides numbered labels for the terminal nodes,
+a description of the split at each node, the number of observations found at each node,
+and the predicted spline coefficients for each node. This code is primarily taken from rpart base code for print.rpart. It has been modified to
+ensure that the full vector of coefficients is printed for each node.
 }
 \examples{
 \dontrun{

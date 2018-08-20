@@ -13,38 +13,48 @@ splineTree(splitFormula, tformula, idvar, data, knots = NULL, df = NULL,
 
 \item{tformula}{Formula specifying the longitudinal response variable and the variable that acts as the time variable.}
 
-\item{idvar}{The name of the variable that serves as the ID variable for grouping observations. Must be in quotes}
+\item{idvar}{The name of the variable that serves as the ID variable for grouping observations. Must be a string.}
 
-\item{data}{dataframe that contains all variables specified in the formulas- in long format.}
+\item{data}{dataframe in long format that contains all variables specified in the formulas.}
 
 \item{knots}{Specified locations for internal knots in the spline basis. Defaults to NULL, which corresponds to no internal knots.}
 
 \item{df}{Degrees of freedom of the spline basis. If this is specified but the knots parameter is NULL, then the appropriate number of internal knots
-will be added at quantiles of the training data. If both df and knots are unspecified, the spline basis will have no internal knots.}
+will be added at quantiles of the training data. If both df and knots are unspecified, the spline basis will have no internal knots. If knots is specifed,
+this parameter will be ignored.}
 
-\item{degree}{Specifies degree of spline basis used in the tree.}
+\item{degree}{Specifies degree of spline basis used for projection.}
 
-\item{intercept}{Specifies whether or not the splitting process will consider the intercept coefficient of the spline projections.
+\item{intercept}{Specifies whether or not the set of basis functions will include the intercept function.
 Defaults to FALSE, which means that the tree will split based on trajectory shape, ignoring response level.}
 
 \item{nGrid}{Number of grid points to evaluate projection sum of squares at. If gridPoints
-is not supploed, this arguement will be used and the projection sum of squares will be evaluated
-at quantiles of the time variable.}
+is not supplied, this arguement will be used and the appropriate number of grid points will be placed at
+equally spaced quantiles of the time variable. The default is 7.}
 
 \item{gridPoints}{Optional. A vector of numbers that will be used as the grid on which to evaluate the
 projection sum of squares. Should fall roughly within the range of the time variable.}
 
-\item{minNodeSize}{Minimum number of observational units that can be in a terminal node. Controls tree size and helps avoid overfitting.}
+\item{minNodeSize}{Minimum number of observational units that can be in a terminal node. Controls tree size
+and helps avoid overfitting. Defaults to 10.}
 
-\item{cp}{Complexity parameter passed to the rpart building process.}
+\item{cp}{Complexity parameter passed to the rpart building process. Controls tree size. Defaults to
+the rpart default of 0.01.}
 }
 \value{
-An rpart object with additional splinetree-specific information stored in model$parms.
+An rpart object with additional splinetree-specific information stored in model$parms. The important
+attributes of the rpart object include model$frame, model$where, and model$cptable. model$frame holds informatio
+about each node in the tree. The ith entry in model$where tells us which row of model$frame describes the node that
+the ith individual in the flattened dataset falls into. model$parms$flat_data holds the flattened dataset that
+was used to build the tree. model$cptable displays the complexity parameters that would be needed to prune the tree
+to various desired sizes. Apart from holding the flattened dataset, model$parms holds the boundary knots and the internal
+knots of the spline basis used to build the tree. These are sometimes important to recover later.
 }
 \description{
 Builds a regression tree for longitudinal or functional data using the spline projection method. The underlying tree building process uses the rpart package,
-and the splinetree object is an rpart object with additional stored information. The parmaters df, knots, degree, interept, and nGrid allow for flexibility
-in the spline basis used for splitting. The parameters minNodeSize and cp allow for flexibility in controlling the size of the final tree.
+and the splinetree object is an rpart object with additional stored information. The parmaters df, knots, degree, interept allow for flexibility
+in customizing the spline basis used for projection. The parameters nGrid and gridPoints allow for flexibility in the grid on which the
+projection sum of squares is evaluated. The parameters minNodeSize and cp allow for flexibility in controlling the size of the final tree.
 }
 \examples{
 splitForm <-BMI~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs

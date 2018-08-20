@@ -2,7 +2,7 @@
 % Please edit documentation in R/tree_evaluation.R
 \name{yR2}
 \alias{yR2}
-\title{Percent of variation in response explained by spline tree.}
+\title{Computes percent of variation in response explained by spline tree.}
 \usage{
 yR2(model)
 }
@@ -15,7 +15,8 @@ responses, and SST is sum of squared errors of true responses around population 
 without an intercept, this function will return NULL.
 }
 \description{
-Computes an R^2 measure for the spline tree with respect to prediction. Note that this metric is only meaningful if the spline tree object includes an intercept.
+Computes the percentage of variation in response explained by the spline tree.
+This metric is only meaningful if model$intercept==TRUE.
 If the tree includes an intercept, the measure will be between 0 and 1.
 }
 \examples{

@@ -13,7 +13,8 @@ spaghettiPlot(model, colors = NULL)
 }
 \description{
 Uses ggplot to create a paneled spaghetti plot of the data, where each panel corresponds to a terminal node in the tree.
-Allows users to visualize homogeneity of trajectories within the terminal nodes of the tree.
+Allows users to visualize homogeneity of trajectories within the terminal nodes of the tree while also looking
+at the trajectories of different nodes side by side.
 }
 \examples{
 \dontrun{

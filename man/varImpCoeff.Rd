@@ -19,3 +19,6 @@ a matrix of variable importance metrics.
 \description{
 Returns the random forest variable importance based on the permutation accruacy measure, which is calculated as the difference in mean squared error between the original data and from randomly permutating the values of a variable.
 }
+\examples{
+importanceMatrix <- varImpCoeff(forest, removeIntercept=TRUE)
+}

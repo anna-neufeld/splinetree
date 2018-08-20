@@ -18,11 +18,8 @@
 #' the population mean coefficients.
 #' @export
 #' @examples
-#' projectedR2Forest(sample_forest, method="oob")
-#' projectedR2Forest(sample_forest, method="all")
-#' projectedR2Forest(sample_forest, method="itb")
-#' projectedR2Forest(sample_intercept_forest, method="all")
-#' projectedR2Forest(sample_intercept_forest, method="all", removeIntercept=FALSE)
+#' projectedR2Forest(forest, method="all", removeIntercept=TRUE)
+#' projectedR2Forest(forest, method="all", removeIntercept=FALSE)
 projectedR2Forest <- function(forest, method = "oob", removeIntercept = TRUE) {
     # First, get the predicted spline coefficients for every datapoint using the desired method.
     forest_pred_coeffs <- t(predictCoeffsForest(forest, method))
@@ -74,9 +71,7 @@ projectedR2Forest <- function(forest, method = "oob", removeIntercept = TRUE) {
 #' and SST is the total sum of squared erros of the responses around their mean. If this forest was not built with an intercept, returns NULL.
 #' @export
 #' @examples
-#' yR2Forest(sample_intercept_forest, method="oob")
-#' yR2Forest(sample_intercept_forest, method="all")
-#' yR2Forest(sample_intercept_forest, method="itb")
+#' yR2Forest(forest, method="all")
 yR2Forest <- function(forest, method = "oob") {
     if (!forest$intercept) {
       ### If this forest was built without an intercept,

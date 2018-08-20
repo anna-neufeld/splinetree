@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotting.R
 \name{splineTreePlot}
 \alias{splineTreePlot}
-\title{Tree plot of a spline tree}
+\title{Creates a tree plot of a splinetree object.}
 \usage{
 splineTreePlot(model, colors = NULL)
 }
@@ -12,5 +12,6 @@ splineTreePlot(model, colors = NULL)
 \item{colors}{a list of colors that will be used for the terminal nodes (if NULL, will use a rainbow)}
 }
 \description{
-Creates a tree plot of a SplineTree object.
+Creates a tree plot of a splinetree object. This corresponds to plotting only the first panel of
+stPlot(). Code for this function was borrowed from the longRPart package on github.
 }

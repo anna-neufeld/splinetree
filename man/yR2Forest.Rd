@@ -24,7 +24,6 @@ actual response values. Note that this function should only be used on forests w
 A simple 1-SSE/SST calculation.
 }
 \examples{
-yR2Forest(sample_intercept_forest, method="oob")
-yR2Forest(sample_intercept_forest, method="all")
-yR2Forest(sample_intercept_forest, method="itb")
+yR2Forest(forest, method="all")
+yR2Forest(forest, method="oob")
 }

@@ -3,6 +3,7 @@
 export(avSize)
 export(flatten_predictors)
 export(getNodeData)
+export(nodePlot)
 export(plotImp)
 export(plotNode)
 export(predictCoeffs)

@@ -2,6 +2,7 @@
 title: "Forest Building with splinetree"
 author: "Anna Neufeld"
 date: "`r Sys.Date()`"
+bibliography: thesis.bib
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Forest Intro}
@@ -13,8 +14,7 @@ vignette: >
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>",
-  fig.width = 8
+  fig.width = 7
 )
 ```
 

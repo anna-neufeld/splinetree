@@ -52,21 +52,6 @@
 "nlsySample"
 
 
-#' A pre-built random forest (with no intercet) with 20 trees, built to the NLSY sample.
-#'
-#' The purpose of this pre-built forest is to demonstrate the forest evaluation functions without
-#' needing to rebuild a forest (slow) every time. This forest does not use an intercept.
-#' @keywords internal
-"sample_forest"
-
-#' A pre-built random forest (with intercept) with 20 trees, built to the NLSY sample.
-#'
-#' The purpose of this pre-built forest is to demonstrate the forest evaluation functions without
-#' needing to rebuild a forest (slow) every time. This forest uses an intercept.
-#' @keywords internal
-"sample_intercept_forest"
-
-
 #' Sample tree used in examples
 #' @keywords internal
 "tree"

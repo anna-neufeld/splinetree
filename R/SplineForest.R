@@ -36,7 +36,7 @@
 #' @return A splineforest object, which stores a list of tree (in model$Trees), along with information about the
 #' spline basis used (model$intercept, model$innerKnots, model$boundaryKnots, etc.), and information about which datapoints were
 #' used to build each tree (model$oob_indices and model$index). Note that each element in model$Trees is an rpart object but
-#' it is NOT the same as a splinetree object because it does not store all relevant information in model$parms.
+#' it is not the same as a splinetree object because it does not store all relevant information in model$parms.
 #' @export
 #' @import nlme
 #' @import rpart

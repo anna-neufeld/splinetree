@@ -2,7 +2,7 @@
 % Please edit documentation in R/other_useful_fns.R
 \name{treeSimilarity}
 \alias{treeSimilarity}
-\title{Returns a measure of how similar the two trees are in terms of how they partition the data.}
+\title{Returns a measure of how similar the two trees are.}
 \usage{
 treeSimilarity(tree1, tree2)
 }

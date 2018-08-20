@@ -16,5 +16,5 @@ The avergae number of terminal nodes in forest
 Returns the average number of terminal nodes for trees in a forest
 }
 \examples{
-avSize(sample_forest)
+avSize(forest)
 }

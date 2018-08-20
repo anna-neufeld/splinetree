@@ -2,7 +2,7 @@
 % Please edit documentation in R/splineForest.R
 \name{splineForest}
 \alias{splineForest}
-\title{Build a splinetree random forest}
+\title{Build a splineforest object.}
 \usage{
 splineForest(splitFormula, tformula, idvar, data, knots = NULL, df = NULL,
   degree = 3, intercept = FALSE, nGrid = 7, gridPoints = NULL,
@@ -27,33 +27,36 @@ will be added at quantiles of the training data. If both df and knots are unspec
 \item{intercept}{Specifies whether or not the splitting process will consider the intercept coefficient of the spline projections.
 Defaults to FALSE, which means that the tree will split based on trajectory shape, ignoring response level.}
 
-\item{nGrid}{Number of grid points to evaluate projection sum of squares at. If gridPoints is not supploed, this arguement
-will be used and the projection sum of squares will be evaluated at quantiles of the time variable.}
+\item{nGrid}{Number of grid points to evaluate projection sum of squares at. If gridPoints is not supplied, then this is the
+number of grid points that will be automatically placed at quantiles of the time variable. The default is 7.}
 
 \item{gridPoints}{Optional. A vector of numbers that will be used as the grid on which to evaluate the projection
 sum of squares. Should fall roughly within the range of the time variable.}
 
-\item{ntree}{Number of trees in the forest}
+\item{ntree}{Number of trees in the forest.}
 
 \item{prob}{Probability of selecting a variable to included as a candidate for each split.}
 
-\item{cp}{Complexity parameter passed to the rpart building process.}
+\item{cp}{Complexity parameter passed to the rpart building process. Default is the rpart default of 0.01}
 
-\item{minNodeSize}{Minimum number of observational units that can be in a terminal node. Controls tree size and helps avoid overfitting.}
+\item{minNodeSize}{Minimum number of observational units that can be in a terminal node. Controls tree size and helps avoid overfitting.
+Default is 10.}
 }
 \value{
-A splineforest object, which stores a list of splinetree objects (in model$Trees), along with information about the
+A splineforest object, which stores a list of tree (in model$Trees), along with information about the
 spline basis used (model$intercept, model$innerKnots, model$boundaryKnots, etc.), and information about which datapoints were
-used to build each tree (model$oob_indices and model$index).
+used to build each tree (model$oob_indices and model$index). Note that each element in model$Trees is an rpart object but
+it is not the same as a splinetree object because it does not store all relevant information in model$parms.
 }
 \description{
 Builds an ensemble of regression trees for longitudinal or functional data using the spline projection method. The resulting object
-is a list of splinetree objects along with some additional information. All parameters are used in the same way that they are used in the splineTree
-function. The additional parameter ntree specifies how many trees should be in the ensemble, and prob controls the
-probability of selecting a given variable for split consideration at a node.
+contains a list of splinetree objects along with some additional information. All parameters are used in the same way that they are used in
+the splineTree() function. The additional parameter ntree specifies how many trees should be in the ensemble, and prob controls the
+probability of selecting a given variable for split consideration at a node. This method may take several minutes to run- saving the forest after
+building it is recommended.
 }
 \details{
-The ensemble method is highly similar to the random forest methodology of Brieman (2001). Each tree in the ensemble is fit to a bootstrap sample
+The ensemble method is highly similar to the random forest methodology of Breiman (2001). Each tree in the ensemble is fit to a bootstrap sample
 of the data. At each node of each tree, only a subset of the split variables are considered candidates for the split. In our methodology,
 the subset of variables considered at each node is determined by a random process. The prob parameter specifies the probability that a given variable
 will be selected at a certain node. Because the method is based on probability, the same number of variables are not considered for splitting at each node

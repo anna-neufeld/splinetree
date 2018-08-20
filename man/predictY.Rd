@@ -2,20 +2,21 @@
 % Please edit documentation in R/tree_evaluation.R
 \name{predictY}
 \alias{predictY}
-\title{Returns predicted responses.}
+\title{Predictions from a splitted splinetree object}
 \usage{
 predictY(model, testData = NULL)
 }
 \arguments{
-\item{model}{a SplineTree object}
+\item{model}{A splinetree object.}
 
-\item{testData}{The data to predict on. By default, uses the training set.}
+\item{testData}{The data to return predictions for. If ommitted, uses the training data.}
 }
 \value{
 A vector of predictions with rows corresponding to the testdata.
 }
 \description{
-Returns predicted responses. Note that this function is most meaningful when used on spline tree objects that have an intercept.
+Returns a vector of predicted responses for the testData. If testData is ommitted,
+returns predictions for the training data. This function is most meaningful if model$intercept==TRUE.
 }
 \examples{
 \dontrun{

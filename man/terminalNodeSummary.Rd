@@ -10,7 +10,8 @@ terminalNodeSummary(tree, node = NULL)
 \item{tree}{A splinetree object}
 
 \item{node}{The number of the node that you want summarized. To see which nodes correspond to
-which numbers, see stPrint(tree).}
+which numbers, see stPrint(tree) or treeSummary(tree). If this parameter is provided, must correspond
+to a valid terminal node in the tree.}
 }
 \description{
 If no arguement is provided for the parameter \code{node}, summaries are printed for every

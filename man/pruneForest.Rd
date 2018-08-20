@@ -18,7 +18,7 @@ A new splineforest object where each tree has been pruned to the desired level.
 Prunes each tree in the list forest$Trees according to the provided complexity parameter. Returns a new forest.
 }
 \examples{
-print(avSize(sample_forest))
-print(avSize(pruneForest(sample_forest, cp=0.007)))
-print(avSize(pruneForest(sample_forest, cp=0.01)))
+print(avSize(forest))
+print(avSize(pruneForest(forest, cp=0.007)))
+print(avSize(pruneForest(forest, cp=0.01)))
 }

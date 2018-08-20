@@ -2,7 +2,7 @@
 % Please edit documentation in R/tree_evaluation.R
 \name{projectedR2}
 \alias{projectedR2}
-\title{Computes an R^2-like measure that is based on the projected sum of squared errors.}
+\title{Computes percent of variation in projected response explained by a splinetree.}
 \usage{
 projectedR2(model, includeIntercept = FALSE)
 }
@@ -12,8 +12,15 @@ projectedR2(model, includeIntercept = FALSE)
 \item{includeIntercept}{If FALSE and if the model was built with an intercept, the projected squared errors are computed
 while ignoring the intercept. If the model was built without an intercept, this parameter does not do anything.}
 }
+\value{
+The percentage of variation in projected trajectory explained by the model. Computed as 1-SSE/SST. See description.
+}
 \description{
-Computes an R^2-like measure that is based on the projected sum of squared errors. Can be used on trees whether or not they
-were built with an intercept. If the tree was built with an intercept, there is the option to ignore the intercept in this
-projection to isolate how well the tree clusters based on shape.
+Computes an R^2 measure for a splinetree based on the projected sum of squared errors. Returns 1-SSE/SST.
+SSE is the sum of projection squared errors between individual smoothed trajectories and predicted smoothed
+trajectories evaluated on a fixed grid. SST is the sum of projection squared errors between individual smoothed
+trajectories and the overall population mean trajectory, evaluated on the same fixed grid.
+If model$intercept==TRUE, then there is the option to ignore the intercept coefficient when computing this metric.
+When the intercept is ignored, the metric captures how well the model explains variation in shape, and ignores
+any variation in intercept explained by the model.
 }

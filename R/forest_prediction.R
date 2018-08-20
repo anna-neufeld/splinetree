@@ -17,6 +17,11 @@
 #' all trees are used for all datapoints.
 #' @return A matrix of predicted spline coefficients. The dimensions are forest$df x nrow(testdata). Each column of the matrix
 #' corresponds to a row of the testdata.
+#' @examples
+#' trainingSetPreds <- predictCoeffsForest(forest)
+#' newData <- data.frame("WHITE" = 0, "BLACK"=1, "HISP"=0, "Num_sibs"=3,
+#'    "HGC_MOTHER"=12, "HGC_FATHER"=12, "SEX"=1)
+#' predictCoeffsForest(forest, testdata = newData)
 #' @export
 predictCoeffsForest = function(forest, method = "oob", testdata=NULL) {
   idvar <- forest$idvar
@@ -103,6 +108,11 @@ predictCoeffsForest = function(forest, method = "oob", testdata=NULL) {
 #' @param testdata the Test data to make preditions for. If this is provided, then
 #' all trees are used for all datapoints.
 #' @return A vector of predicted responses. The indices of the vector correspond to rows of the testdata.
+#' @examples
+#' trainingSetPreds <- predictYForest(forest)
+#' newData <- data.frame("AGE"=21, "WHITE" = 0, "BLACK"=1, "HISP"=0,
+#'    "Num_sibs"=3, "HGC_MOTHER"=12, "HGC_FATHER"=12, "SEX"=1)
+#' predictYForest(forest, testdata = newData)
 #' @export
 predictYForest <- function(forest, method = "oob", testdata=NULL) {
   if (!forest$intercept) {

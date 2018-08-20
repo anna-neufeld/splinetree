@@ -10,14 +10,12 @@ predict_y_training(model)
 \item{model}{a splinetree object}
 }
 \value{
-A vector of predicted responses
+A vector of predicted responses where each element in the vector corresponds to a row in model$parms$data.
 }
 \description{
-Returns a vector of predicted responses for the dataset used to build the tree
-}
-\details{
 Calling predictY(model) and predict_y_training(model) return identical results, because when no test data is
 provided to predictY(), the default is to use the training set. This is a slightly faster version that
-can be used when you know that you wish to predict on the training data.
+can be used when you know that you wish to predict on the training data. It is faster because it takes advantage
+of the relationship between model$parms$flat_data and model$parms$data.
 }
 \keyword{internal}
