@@ -25,5 +25,4 @@ A simple 1-SSE/SST calculation.
 }
 \examples{
 yR2Forest(forest, method="all")
-yR2Forest(forest, method="oob")
 }

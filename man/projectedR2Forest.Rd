@@ -30,8 +30,6 @@ to the predicted coefficients, and SST is the total sum of squared projection er
 the population mean coefficients. If this is an intercept forest, have the option to compute these sum of squares either with the intercept included or with the intercept ignored to isolate the shape.
 }
 \examples{
-projectedR2Forest(forest, method="oob")
-projectedR2Forest(forest, method="all")
-projectedR2Forest(forest, method="itb")
+projectedR2Forest(forest, method="all", removeIntercept=TRUE)
 projectedR2Forest(forest, method="all", removeIntercept=FALSE)
 }
