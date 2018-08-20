@@ -34,12 +34,8 @@ split_formula <- BMI~HISP+WHITE+BLACK+SEX+Num_sibs+HGC_FATHER+HGC_MOTHER
 tformula <- BMI~AGE
 ```
 
-```{r, eval='FALSE'}
+```{r, eval=FALSE}
 forest <- splineForest(split_formula, tformula, idvar="ID", data=nlsySample, degree=1, df=3, intercept=TRUE,ntree=50, prob=0.5, cp=0.005)
-```
-
-```{r, include=FALSE, eval=FALSE}
-no_intercept_forest <- splineForest(split_formula, tformula, idvar="ID", data=nlsySample, degree=1, df=2, intercept=FALSE,ntree=50, prob=0.5, cp=0.005)
 ```
 
 # Working with a splineforest object
@@ -100,7 +96,7 @@ forest$Trees[[17]]$parms$degree
 
 The remaining components of ``forest`` include ``forest$index``, ``forest$oob_indices``, and ``forest$splits``. The ``index`` component let's us access the data that was used to build each tree. For example, ``forest$index[[17]]`` stores the indices of each row in ``forest$flat_data`` that was used to build the 17th tree. On the other hand, ``forest$oob_indices[[17]]`` stores a list of indices that correpond to rows in ``forest$flat_data`` that were NOT used to build tree 17 (these rows were "out of the bag", or "oob"). Storing both of these pieces of information may seem redundant, but both are accessed frequently in the forest prediction and evaluation functions. If we want to uncover datapoints that are "in the bag"" and "out of the bag" for tree 17, we can use:
 
-```{r}
+```{r, eval=FALSE}
 itb17 <- forest$flat_data[forest$index[[17]],]
 oob17 <- forest$flat_data[forest$oob_indices[[17]],]
 ```
@@ -126,9 +122,9 @@ avSize(pruneForest(forest, cp=0.01))
 
 Making a prediction using a spline forest involves averaging predictions over individual trees in the forest. When making predictions for a datapoint that was not in the testset, the only reasonable option is to use all the trees in the forest to make the prediction. Using this method, either coefficients or response values (assuming ``forest$intercept==TRUE``) can be predicted. In predicting coefficients, no value is required for the "AGE" variable, but in predicting responses ages must be specified. 
 
-```{r}
+```{r, eval=FALSE}
 newData <- data.frame("WHITE" = 0, "BLACK"=1, "HISP"=0, "Num_sibs"=3, "HGC_MOTHER"=12, "HGC_FATHER"=12, "SEX"=1)
-predictCoeffsForest(forest, testdata = newData)
+preds <- predictCoeffsForest(forest, testdata = newData)
 ```
 
 ```{r}
