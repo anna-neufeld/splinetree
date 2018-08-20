@@ -24,9 +24,9 @@ This guide is meant for users who are familiar with regression trees, random for
 
 For users familiar with building trees in ``splinetree`` (see *Introduction to Tree Building with splinetree*), then building a forest is straightforward. The majority of the parameters needed to use the ``splineForest()`` function are identical to those used in the ``splineTree()`` function; the processed used to project the longitudinal data onto smoothed trajectories is identical. There are just two additional parameters for the ``splineForest`` function.
 
-The ``nTree`` parameter specifies the number of trees in the forest. The default value is $50$. Large forests provide additional stability over smaller forests, but on large datasets building a large spline forest may take several minutes. The ``prob`` parameter specifies the probability that a variable will be in consideration as a split variable at a given node. To avoid a situation where no variables are considered at a certain node, we recommend that that ``prob`` is relatively large when the number of split variables is small. If only 6 split variables are in consideration, then setting ``prob=1/3`` leaves around an 8\% chance ($\left( \frac{2}{3} \right)^6$) that no variable will be selected for a split at the root node. Increasing ``prob`` to ``1/2`` reduces this probability to under 2\%. 
+The ``nTree`` parameter specifies the number of trees in the forest. The default value is $50$. Large forests provide additional stability over smaller forests, but on large datasets building a large spline forest may take several minutes. The ``prob`` parameter specifies the probability that a variable will be in consideration as a split variable at a given node. To avoid a situation where no variables are considered at a certain node, we recommend that that ``prob`` is relatively large when the number of split variables is small. If only 6 split variables are in consideration, then setting ``prob=1/3`` leaves around an 8\% chance $\left( (2/3)^6 \right)$ that no variable will be selected for a split at the root node. Increasing ``prob`` to ``1/2`` reduces this probability to under 2\%. 
 
-We will build a forest of 50 trees using a probability of 0.5. As split variables, we will include indicators for the subject's race and sex as well as the subject's number of siblings and the highest grade completed (HGC) by the subject's mother and father. We will use a spline basis with 1 degree and 1 internal knot; this choice is based on the knowledge that adult BMI trajectories tend to be steeper in early adulthood before flattening out in late adulthood (@clarke2008social). We will build both a forest with an intercept and a forest without an intercept, as the difference between the two will allow for interesting comparisons. 
+We will build a forest of 50 trees using a probability of 0.5. As split variables, we will include indicators for the subject's race and sex as well as the subject's number of siblings and the highest grade completed (HGC) by the subject's mother and father. We will use a spline basis with 1 degree and 1 internal knot; this choice is based on the knowledge that adult BMI trajectories tend to be steeper in early adulthood before flattening out in late adulthood (@clarke2008social). We will build both a forest with an intercept for the sake of demonstrating a few functions (such as prediction responses) that are not available for forests without an intercept. 
 
 ```{r}
 library(splinetree)
@@ -34,15 +34,17 @@ split_formula <- BMI~HISP+WHITE+BLACK+SEX+Num_sibs+HGC_FATHER+HGC_MOTHER
 tformula <- BMI~AGE
 ```
 
-```{r}
-set.seed(555)
+```{r, eval='FALSE'}
 forest <- splineForest(split_formula, tformula, idvar="ID", data=nlsySample, degree=1, df=3, intercept=TRUE,ntree=50, prob=0.5, cp=0.005)
+```
+
+```{r, include=FALSE, eval=FALSE}
 no_intercept_forest <- splineForest(split_formula, tformula, idvar="ID", data=nlsySample, degree=1, df=2, intercept=FALSE,ntree=50, prob=0.5, cp=0.005)
 ```
 
 # Working with a splineforest object
 
-Each of these ``splineforest`` objects is a named list with 16 components.
+This newly built ``splineforest`` object is a named list with 16 components.
 
 ```{r}
 names(forest)
@@ -84,7 +86,7 @@ stPrint(forest$Trees[[17]])
 Although we can print any tree in the forest using ``stPrint()``, it is important to note that these trees are not identical to ``splineTree`` objects. These ``rpart`` trees do not store all of the extra information that is stored in a typical ``splinetree`` object. For example, we can note the difference between a single tree and ``forest$Trees[[17]]``.
 
 ```{r}
-sample_tree <- splineTree(split_formula, tformula, idvar="ID", data=nlsySample, degree=1, df=2, intercept=FALSE, cp=0.005)
+sample_tree <- splineTree(split_formula, tformula, idvar="ID", data=nlsySample, degree=1, df=2, intercept=TRUE, cp=0.005)
 
 ### Try to evaluate both trees
 yR2(sample_tree)
@@ -176,10 +178,34 @@ projectedR2Forest(forest, method="itb", removeIntercept = TRUE)
 
 # Variable Importance
 
-Our primary motivation in building forests of spline trees is to obtain stable measures of variable importance using permutation importance. 
+Our primary motivation in building forests of spline trees is to obtain stable measures of variable importance using a permutation importance metric related to that described in @breiman2001random and @liaw2002classification.
+
+For every tree in the forest, tree performance is measured on out-of-the-bag datapoints. Then, the values of variable $V$ are randomly permuted, and tree performance is re-measured. The average difference in performance over all trees in forest becomes the variable importance score for variable $V$. The ``splinetree`` package provides scores using the absolute difference in performance, the percent difference in importance, and standardized difference in importance (differences divided by their standard deviation). In most cases, these three metrics will rank the variables in the same way, and so the choice is a matter of preference. 
+
+The "tree performance" metric involved in the permuation importance could be response-based or projection-based, and the latter metric (in the case of forests that include an intercept) can be modified to either include or exclude the intercept. The function ``varImpY()`` implements response-based projection where  the tree performance metric used is the Mean Squared Prediction Error (MSE), as in @liaw2002classification. Alternatively, the ``varImpCoeff()`` funcion uses projection sum of squares, and has an additional arguement ``removeIntercept`` to specify whether or not the intercept should be included in the projection sum or squares. As with performance metrics, the variable importance metrics can be calculated according to ``oob``, ``all``, or ``itb`` frameworks. The ``oob`` method is recommended, because in measuring variable importance it is important to consider which variables are most likely to be associated with the outcome outside of our training sample. 
+
+We can create three different variable importance matrices using our sample forest. We can then compare the response-based importance to the projection-based importances (both including and ignoring the intercept). Each of these importance matrix contains three columns, corresponding to absolute differences in performance, percent differences in performance, and standardized differences in importance. We will use the third column.  
+
+```{r}
+Y_imps <- varImpY(forest, method="oob")
+coeff_imps <- varImpCoeff(forest, method="oob", removeIntercept=FALSE)
+shape_imps <- varImpCoeff(forest, method="oob", removeIntercept=TRUE)
+```
 
 
+```{r}
+par(mfrow=c(1,3))
+plotImp(Y_imps[,3], main="Response")
+plotImp(coeff_imps[,3], main = "Coeff w/ Intercept")
+plotImp(shape_imps[,3], main = "Coeff w/out Intercept")
+```
 
+The first two panels of the plot look relatively similar. While based on different performance metrics, both take into account variability explained by the forest with respect to level of the outcome and shape of the trajectory. The high level of agreement between the first two panels suggests that the projected trajectories are reasonable approximations of the true response; variables that are important in explaining the projected trajectories are also important in explaining the actual responses. The third panel shows more stark differences, as this metric defines performance only in terms of explaining the shape of the trajectory. Sex is far less important when level is ignored, suggesting that sex impacts the level of an individual's BMI but has almost no bearing on trajectory of BMI over time. 
+
+
+# Conclusion
+
+Spline forests are useful tools for understanding which variables may be associated with heterogeneity in longitudninal trajectories in a population. 
 
 
 
