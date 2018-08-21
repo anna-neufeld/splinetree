@@ -11,7 +11,7 @@
 #' without an intercept, this function will return NULL.
 #' @examples
 #' \dontrun{
-#' split_formula <- BMI ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
+#' split_formula <-  ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
 #'   + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
 #'   + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14
 #'   + Mother_14 + Father_14 + STABLE_RESIDENCE + URBAN_14 + South_Birth
@@ -47,7 +47,7 @@ yR2 <- function(model) {
 #' @export
 #' @examples
 #' \dontrun{
-#' split_formula <- BMI ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
+#' split_formula <-  ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
 #'   + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
 #'   + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14
 #'   + Mother_14 + Father_14 + STABLE_RESIDENCE + URBAN_14 + South_Birth
@@ -110,6 +110,8 @@ predictY <- function(model, testData = NULL) {
 #' @param includeIntercept If FALSE and if the model was built with an intercept, the projected squared errors are computed
 #' while ignoring the intercept. If the model was built without an intercept, this parameter does not do anything.
 #' @return The percentage of variation in projected trajectory explained by the model. Computed as 1-SSE/SST. See description.
+#' @examples
+#' r2 <- projectedR2(tree)
 projectedR2 <- function(model, includeIntercept = FALSE) {
 
     ## Goal is to capture how well the predicted spline coefficients approximate the actual spline coefficients.
@@ -164,14 +166,14 @@ projectedR2 <- function(model, includeIntercept = FALSE) {
 #' coefficients for the ith row in the testset.
 #' @examples
 #' \dontrun{
-#' split_formula <- BMI ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
+#' split_formula <- ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
 #'   + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
 #'   + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14
 #'   + Mother_14 + Father_14 + STABLE_RESIDENCE + URBAN_14 + South_Birth
 #' tree <- splineTree(split_formula, BMI~AGE, 'ID', nlsySample, degree=1,
 #'   df=3, intercept=TRUE, cp=0.006, minNodeSize=20)
 #' }
-#' predictCoeffs(tree)
+#' preds <- predictCoeffs(tree)
 predictCoeffs <- function(tree, testset = tree$parms$flat_data) {
     ## Holds assigned node for every row of testset.
     wheres <- treeClust::rpart.predict.leaves(tree, newdata=testset)

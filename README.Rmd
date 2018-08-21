@@ -29,7 +29,7 @@ devtools::install_github("anna-neufeld/splinetree")
 
 ```{r}
 library(splinetree)
-tree <- splineTree(BMI ~ HISP + WHITE + BLACK + HGC_MOTHER + SEX, BMI ~ AGE, "ID", nlsySample, degree = 1, intercept = FALSE, cp = 0.005)
+tree <- splineTree(~HISP+WHITE+BLACK+HGC_MOTHER+SEX, BMI ~ AGE, "ID", nlsySample, degree = 1, intercept = FALSE, cp = 0.005)
 stPlot(tree)
 stPrint(tree)
 projectedR2(tree)

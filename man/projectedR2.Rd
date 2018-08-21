@@ -24,3 +24,6 @@ If model$intercept==TRUE, then there is the option to ignore the intercept coeff
 When the intercept is ignored, the metric captures how well the model explains variation in shape, and ignores
 any variation in intercept explained by the model.
 }
+\examples{
+r2 <- projectedR2(tree)
+}
