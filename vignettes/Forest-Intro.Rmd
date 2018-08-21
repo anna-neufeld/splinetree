@@ -30,7 +30,7 @@ We will build a forest of 50 trees using a probability of 0.5. As split variable
 
 ```{r}
 library(splinetree)
-split_formula <- BMI~HISP+WHITE+BLACK+SEX+Num_sibs+HGC_FATHER+HGC_MOTHER
+split_formula <- ~HISP+WHITE+BLACK+SEX+Num_sibs+HGC_FATHER+HGC_MOTHER
 tformula <- BMI~AGE
 ```
 
