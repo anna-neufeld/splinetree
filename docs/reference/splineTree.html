@@ -204,17 +204,34 @@ knots of the spline basis used to build the tree. These are sometimes important 
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>splitForm</span> <span class='kw'>&lt;-</span><span class='no'>BMI</span>~<span class='no'>HISP</span>+<span class='no'>WHITE</span>+<span class='no'>BLACK</span>+<span class='no'>HGC_MOTHER</span>+<span class='no'>HGC_FATHER</span>+<span class='no'>SEX</span>+<span class='no'>Num_sibs</span>
+    <pre class="examples"><div class='input'><span class='no'>splitForm</span> <span class='kw'>&lt;-</span> ~<span class='no'>HISP</span>+<span class='no'>WHITE</span>+<span class='no'>BLACK</span>+<span class='no'>HGC_MOTHER</span>+<span class='no'>HGC_FATHER</span>+<span class='no'>SEX</span>+<span class='no'>Num_sibs</span>
 <span class='no'>tree1</span> <span class='kw'>&lt;-</span> <span class='fu'>splineTree</span>(<span class='no'>splitForm</span>, <span class='no'>BMI</span>~<span class='no'>AGE</span>, <span class='st'>'ID'</span>, <span class='no'>nlsySample</span>, <span class='kw'>degree</span><span class='kw'>=</span><span class='fl'>1</span>, <span class='kw'>intercept</span><span class='kw'>=</span><span class='fl'>FALSE</span>, <span class='kw'>cp</span><span class='kw'>=</span><span class='fl'>0.005</span>)
 <span class='no'>tree2</span> <span class='kw'>&lt;-</span> <span class='fu'>splineTree</span>(<span class='no'>splitForm</span>, <span class='no'>BMI</span>~<span class='no'>AGE</span>, <span class='st'>'ID'</span>, <span class='no'>nlsySample</span>, <span class='kw'>degree</span><span class='kw'>=</span><span class='fl'>3</span>, <span class='kw'>intercept</span><span class='kw'>=</span><span class='fl'>TRUE</span>, <span class='kw'>cp</span><span class='kw'>=</span><span class='fl'>0.005</span>)
-<span class='fu'><a href='stPrint.html'>stPrint</a></span>(<span class='no'>tree1</span>)
-<span class='fu'><a href='stPrint.html'>stPrint</a></span>(<span class='no'>tree2</span>)
-<span class='fu'><a href='stPlot.html'>stPlot</a></span>(<span class='no'>tree1</span>)
-<span class='fu'><a href='stPlot.html'>stPlot</a></span>(<span class='no'>tree2</span>)
-<span class='fu'><a href='projectedR2.html'>projectedR2</a></span>(<span class='no'>tree1</span>)
-<span class='fu'><a href='projectedR2.html'>projectedR2</a></span>(<span class='no'>tree2</span>)
-<span class='co'># }</span></pre>
+<span class='fu'><a href='stPrint.html'>stPrint</a></span>(<span class='no'>tree1</span>)</div><div class='output co'>#&gt; n= 1000,  
+#&gt; 
+#&gt; node), split, n , coefficients 
+#&gt;       * denotes terminal node
+#&gt; 
+#&gt; 1) root, 1000,  (8.126419) 
+#&gt;   2) BLACK&lt; 0.5, 707,  (7.553963)*
+#&gt;   3) BLACK&gt;=0.5, 293,  (9.507738) 
+#&gt;     6) Num_sibs&lt; 2.5, 80,  (11.20884)*
+#&gt;     7) Num_sibs&gt;=2.5, 213,  (8.868829)*</div><div class='input'><span class='fu'><a href='stPrint.html'>stPrint</a></span>(<span class='no'>tree2</span>)</div><div class='output co'>#&gt; n= 1000,  
+#&gt; 
+#&gt; node), split, n , coefficients 
+#&gt;       * denotes terminal node
+#&gt; 
+#&gt;  1) root, 1000,  (21.35545,  4.256522,  7.366760,  7.648072) 
+#&gt;    2) WHITE&lt; 0.5, 505,  (21.32571,  4.760361,  8.924894,  8.110806) 
+#&gt;      4) HGC_FATHER&lt; 0.5, 25,  (19.92756, 14.621870,  9.921766, 11.794690)*
+#&gt;      5) HGC_FATHER&gt;=0.5, 480,  (21.39853,  4.246741,  8.872974,  7.918937)*
+#&gt;    3) WHITE&gt;=0.5, 495,  (21.38580,  3.742504,  5.777149,  7.175989) 
+#&gt;      6) SEX&lt; 1.5, 259,  (22.33184,  4.313184,  5.239568,  7.368298)*
+#&gt;      7) SEX&gt;=1.5, 236,  (20.34755,  3.116208,  6.367121,  6.964938) 
+#&gt;       14) HGC_FATHER&lt; 7.5, 12,  (20.13734,  9.018339, 11.356100, 10.202730)*
+#&gt;       15) HGC_FATHER&gt;=7.5, 224,  (20.35881,  2.800022,  6.099855,  6.791485)*</div><div class='input'><span class='fu'><a href='stPlot.html'>stPlot</a></span>(<span class='no'>tree1</span>)</div><div class='img'><img src='splineTree-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='stPlot.html'>stPlot</a></span>(<span class='no'>tree2</span>)</div><div class='img'><img src='splineTree-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='projectedR2.html'>projectedR2</a></span>(<span class='no'>tree1</span>)</div><div class='output co'>#&gt;            [,1]
+#&gt; [1,] 0.02906564</div><div class='input'><span class='fu'><a href='projectedR2.html'>projectedR2</a></span>(<span class='no'>tree2</span>)</div><div class='output co'>#&gt;            [,1]
+#&gt; [1,] 0.03286185</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

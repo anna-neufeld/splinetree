@@ -163,13 +163,8 @@ with individual spline coefficients instead of response values.</p></td>
   + <span class='no'>Mother_14</span> + <span class='no'>Father_14</span> + <span class='no'>STABLE_RESIDENCE</span> + <span class='no'>URBAN_14</span> + <span class='no'>South_Birth</span>
 <span class='no'>tree</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='splineTree.html'>splineTree</a></span>(<span class='no'>split_formula</span>, <span class='no'>BMI</span>~<span class='no'>AGE</span>, <span class='st'>'ID'</span>, <span class='no'>nlsySample</span>, <span class='kw'>degree</span><span class='kw'>=</span><span class='fl'>1</span>,
   <span class='kw'>df</span><span class='kw'>=</span><span class='fl'>3</span>, <span class='kw'>intercept</span><span class='kw'>=</span><span class='fl'>TRUE</span>, <span class='kw'>cp</span><span class='kw'>=</span><span class='fl'>0.006</span>, <span class='kw'>minNodeSize</span><span class='kw'>=</span><span class='fl'>20</span>)
-<span class='co'># }</span><span class='co'># NOT RUN {</span>
-<span class='no'>node10data</span> <span class='kw'>&lt;-</span> <span class='fu'>getNodeData</span>(<span class='no'>tree</span>, <span class='fl'>10</span>, <span class='kw'>dataType</span> <span class='kw'>=</span> <span class='st'>'all'</span>)
-<span class='fu'>plot</span>(<span class='no'>BMI</span>~<span class='no'>AGE</span>, <span class='kw'>data</span><span class='kw'>=</span><span class='no'>node10data</span>)
-<span class='fu'>NROW</span>(<span class='no'>node10data</span>)
-<span class='fu'>NROW</span>(<span class='fu'>unique</span>(<span class='no'>node10data</span>$<span class='no'>ID</span>))
-<span class='fu'>NROW</span>(<span class='fu'>getNodeData</span>(<span class='no'>tree</span>, <span class='fl'>10</span>, <span class='kw'>dataType</span><span class='kw'>=</span> <span class='st'>'flat'</span>))
-<span class='co'># }</span></pre>
+<span class='co'># }</span><div class='input'><span class='no'>node10data</span> <span class='kw'>&lt;-</span> <span class='fu'>getNodeData</span>(<span class='no'>tree</span>, <span class='fl'>10</span>, <span class='kw'>dataType</span> <span class='kw'>=</span> <span class='st'>'all'</span>)
+<span class='fu'>plot</span>(<span class='no'>BMI</span>~<span class='no'>AGE</span>, <span class='kw'>data</span><span class='kw'>=</span><span class='no'>node10data</span>)</div><div class='img'><img src='getNodeData-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>NROW</span>(<span class='no'>node10data</span>)</div><div class='output co'>#&gt; [1] 3409</div><div class='input'><span class='fu'>NROW</span>(<span class='fu'>unique</span>(<span class='no'>node10data</span>$<span class='no'>ID</span>))</div><div class='output co'>#&gt; [1] 212</div><div class='input'><span class='fu'>NROW</span>(<span class='fu'>getNodeData</span>(<span class='no'>tree</span>, <span class='fl'>10</span>, <span class='kw'>dataType</span><span class='kw'>=</span> <span class='st'>'flat'</span>))</div><div class='output co'>#&gt; [1] 212</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

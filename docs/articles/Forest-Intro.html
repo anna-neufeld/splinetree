@@ -98,7 +98,7 @@
 ## Loading required package: rpart
 ## Loading required package: nlme
 ## Loading required package: splines
-split_formula &lt;-<span class="st"> </span>BMI~HISP+WHITE+BLACK+SEX+Num_sibs+HGC_FATHER+HGC_MOTHER
+split_formula &lt;-<span class="st"> </span><span class="er">~</span>HISP+WHITE+BLACK+SEX+Num_sibs+HGC_FATHER+HGC_MOTHER
 tformula &lt;-<span class="st"> </span>BMI~AGE</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">forest &lt;-<span class="st"> </span><span class="kw"><a href="../reference/splineForest.html">splineForest</a></span>(split_formula, tformula, <span class="dt">idvar=</span><span class="st">"ID"</span>, <span class="dt">data=</span>nlsySample, <span class="dt">degree=</span><span class="dv">1</span>, <span class="dt">df=</span><span class="dv">3</span>, <span class="dt">intercept=</span><span class="ot">TRUE</span>,<span class="dt">ntree=</span><span class="dv">50</span>, <span class="dt">prob=</span><span class="fl">0.5</span>, <span class="dt">cp=</span><span class="fl">0.005</span>)</code></pre></div>
 </div>

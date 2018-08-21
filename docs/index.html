@@ -97,10 +97,8 @@ devtools::<span class="kw">install_github</span>(<span class="st">"anna-neufeld/
 <span class="co">#&gt; Loading required package: rpart</span>
 <span class="co">#&gt; Loading required package: nlme</span>
 <span class="co">#&gt; Loading required package: splines</span>
-tree &lt;-<span class="st"> </span><span class="kw"><a href="reference/splineTree.html">splineTree</a></span>(BMI ~<span class="st"> </span>HISP +<span class="st"> </span>WHITE +<span class="st"> </span>BLACK +<span class="st"> </span>HGC_MOTHER +<span class="st"> </span>SEX, BMI ~<span class="st"> </span>AGE, <span class="st">"ID"</span>, nlsySample, <span class="dt">degree =</span> <span class="dv">1</span>, <span class="dt">intercept =</span> <span class="ot">FALSE</span>, <span class="dt">cp =</span> <span class="fl">0.005</span>)
-<span class="kw"><a href="reference/stPlot.html">stPlot</a></span>(tree)</code></pre></div>
-<p><img src="README-unnamed-chunk-2-1.png" width="700"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/stPrint.html">stPrint</a></span>(tree)
+tree &lt;-<span class="st"> </span><span class="kw"><a href="reference/splineTree.html">splineTree</a></span>(~HISP+WHITE+BLACK+HGC_MOTHER+SEX, BMI ~<span class="st"> </span>AGE, <span class="st">"ID"</span>, nlsySample, <span class="dt">degree =</span> <span class="dv">1</span>, <span class="dt">intercept =</span> <span class="ot">FALSE</span>, <span class="dt">cp =</span> <span class="fl">0.005</span>)
+<span class="kw"><a href="reference/stPrint.html">stPrint</a></span>(tree)
 <span class="co">#&gt; n= 1000,  </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; node), split, n , coefficients </span>
@@ -110,8 +108,10 @@ tree &lt;-<span class="st"> </span><span class="kw"><a href="reference/splineTre
 <span class="co">#&gt;   2) BLACK&lt; 0.5, 707,  (7.553963) </span>
 <span class="co">#&gt;     4) HGC_MOTHER&lt; 8.5, 157,  (8.595055)*</span>
 <span class="co">#&gt;     5) HGC_MOTHER&gt;=8.5, 550,  (7.256778)*</span>
-<span class="co">#&gt;   3) BLACK&gt;=0.5, 293,  (9.507738)*</span>
-<span class="kw"><a href="reference/projectedR2.html">projectedR2</a></span>(tree)
+<span class="co">#&gt;   3) BLACK&gt;=0.5, 293,  (9.507738)*</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/stPlot.html">stPlot</a></span>(tree)</code></pre></div>
+<p><img src="README-unnamed-chunk-3-1.png" width="672"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/projectedR2.html">projectedR2</a></span>(tree)
 <span class="co">#&gt;            [,1]</span>
 <span class="co">#&gt; [1,] 0.02645298</span></code></pre></div>
 </div>
@@ -122,7 +122,7 @@ tree &lt;-<span class="st"> </span><span class="kw"><a href="reference/splineTre
     <div class="links">
 <h2>Links</h2>
 <ul class="list-unstyled">
-<li>Report a bug at <br><a href="NA">NA</a>
+<li>Report a bug at <br><a href="https://github.com/anna-neufeld/splinetree/issues">https://​github.com/​anna-neufeld/​splinetree/​issues</a>
 </li>
 </ul>
 </div>

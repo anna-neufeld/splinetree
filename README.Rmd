@@ -8,7 +8,8 @@ output: github_document
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "README-"
+  fig.path = "README-",
+  fig.width = 7
 )
 ```
 
@@ -25,12 +26,24 @@ You can install splinetree from github with:
 devtools::install_github("anna-neufeld/splinetree")
 ```
 
-## Example
+## Example Tree
 
 ```{r}
 library(splinetree)
-tree <- splineTree(~HISP+WHITE+BLACK+HGC_MOTHER+SEX, BMI ~ AGE, "ID", nlsySample, degree = 1, intercept = FALSE, cp = 0.005)
+tree1 <- splineTree(~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs, 
+        BMI ~ AGE, "ID", nlsySample, degree = 1, df=2, intercept = FALSE, cp = 0.005)
+stPrint(tree1)
+```
+
+```{r}
 stPlot(tree)
-stPrint(tree)
-projectedR2(tree)
+```
+
+## Example Forest
+```{r}
+set.seed(1234)
+forest1 <- splineTree(~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs, 
+        BMI ~ AGE, "ID", nlsySample, degree = 1, df=2, intercept = FALSE, ntree=50, prob=1/2)
+varImps <- varImpCoeff(forest1)
+plotImp(varImps[,3])
 ```

@@ -155,9 +155,18 @@ the coefficients predicted for each node.</p>
   + <span class='no'>Mother_14</span> + <span class='no'>Father_14</span> + <span class='no'>STABLE_RESIDENCE</span> + <span class='no'>URBAN_14</span> + <span class='no'>South_Birth</span>
 <span class='no'>tree</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='splineTree.html'>splineTree</a></span>(<span class='no'>split_formula</span>, <span class='no'>BMI</span>~<span class='no'>AGE</span>, <span class='st'>'ID'</span>, <span class='no'>nlsySample</span>, <span class='kw'>degree</span><span class='kw'>=</span><span class='fl'>1</span>,
   <span class='kw'>df</span><span class='kw'>=</span><span class='fl'>3</span>, <span class='kw'>intercept</span><span class='kw'>=</span><span class='fl'>TRUE</span>, <span class='kw'>cp</span><span class='kw'>=</span><span class='fl'>0.006</span>, <span class='kw'>minNodeSize</span><span class='kw'>=</span><span class='fl'>20</span>)
-<span class='co'># }</span><span class='co'># NOT RUN {</span>
-<span class='fu'>treeSummary</span>(<span class='no'>tree</span>)
-<span class='co'># }</span></pre>
+<span class='co'># }</span><div class='input'><span class='fu'>treeSummary</span>(<span class='no'>tree</span>)</div><div class='output co'>#&gt;               var    n        dev  coeffs.1  coeffs.2  coeffs.3
+#&gt; 1           WHITE 1000 163603.659 21.524159  4.961796  8.091247
+#&gt; 2      HGC_FATHER  505  86430.024 21.423001  5.882807  9.006190
+#&gt; 4          &lt;leaf&gt;   25   5488.602 23.089278  7.703289  8.380706
+#&gt; 5  Age_first_weed  480  79468.029 21.336216  5.787990  9.038767
+#&gt; 10         &lt;leaf&gt;  212  31908.127 21.194830  5.295649  8.166209
+#&gt; 11         &lt;leaf&gt;  268  46492.235 21.448059  6.177454  9.728999
+#&gt; 3             SEX  495  73724.077 21.627360  4.022179  7.157821
+#&gt; 6   Age_first_alc  259  27679.034 22.693600  3.999510  6.896897
+#&gt; 12         &lt;leaf&gt;  236  21368.254 22.441496  3.973166  6.809123
+#&gt; 13         &lt;leaf&gt;   23   4808.222 25.280410  4.269825  7.797534
+#&gt; 7          &lt;leaf&gt;  236  42156.361 20.457207  4.047057  7.444175</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

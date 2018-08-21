@@ -17,3 +17,5 @@ Suggests: knitr,
     rmarkdown,
     testthat
 VignetteBuilder: knitr
+BugReports: https://github.com/anna-neufeld/splinetree/issues
+Description: https://github.com/anna-neufeld/splinetree
