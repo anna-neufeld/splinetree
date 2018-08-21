@@ -69,7 +69,7 @@ Previous research by @clarke2008social suggests that adult BMIs tend to increase
 
 ```{r, include=FALSE}
 library(splinetree)
-split_formula <- BMI ~ HISP + WHITE + BLACK + SEX + Num_sibs + HGC_FATHER + HGC_MOTHER
+split_formula <- ~ HISP + WHITE + BLACK + SEX + Num_sibs + HGC_FATHER + HGC_MOTHER
 tformula <- BMI ~ AGE
 sample_tree <- splineTree(split_formula, tformula, idvar = "ID", data = nlsySample, degree = 1, df = 2, intercept = FALSE, cp = 0.005)
 sample_tree_intercept <- splineTree(split_formula, tformula, idvar = "ID", data = nlsySample, degree = 1, df = 3, intercept = TRUE, cp = 0.005)
