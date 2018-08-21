@@ -173,7 +173,7 @@ getBasisMat <- function(yvar, tvar, idvar, data,
 #' @importFrom graphics barplot layout par plot points rect text
 #' @importFrom stats complete.cases formula lm quantile runif sd terms time
 #' @examples
-#' splitForm <-BMI~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs
+#' splitForm <-~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs
 #' tree1 <- splineTree(splitForm, BMI~AGE, 'ID', nlsySample, degree=1, intercept=FALSE, cp=0.005)
 #' tree2 <- splineTree(splitForm, BMI~AGE, 'ID', nlsySample, degree=3, intercept=TRUE, cp=0.005)
 #' stPrint(tree1)
@@ -190,7 +190,7 @@ splineTree <- function(splitFormula, tformula,
     ### First step: Preprocess the data by finding
     ### spline basis, flattening data, and finding
     ### coefficients for all people.
-    yvar <- attr(terms(getResponseFormula(splitFormula)),
+    yvar <- attr(terms(getResponseFormula(tformula)),
         "term.labels")
     tvar <- attr(terms(tformula), "term.labels")
     splitvars <- attr(terms(splitFormula), "term.labels")

@@ -17,10 +17,7 @@ Returns number of terminal nodes in a tree.
 }
 \examples{
 \dontrun{
-split_formula <- BMI ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
-  + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
-  + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14
-  + Mother_14 + Father_14 + STABLE_RESIDENCE + URBAN_14 + South_Birth
+split_formula <- ~ HISP + WHITE + BLACK + SEX + HGC_FATHER + HGC_MOTHER + Num_sibs
 tree <- splineTree(split_formula, BMI~AGE, 'ID', nlsySample, degree=1,
   df=3, intercept=TRUE, cp=0.006, minNodeSize=20)
 }
