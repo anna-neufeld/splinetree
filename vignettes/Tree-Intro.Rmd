@@ -32,7 +32,7 @@ To build a tree, we use the ``splineTree()`` function. There are four parameters
 
 3. The name of an identifier variable, which labels individual observations that belong to the same trajectory, is supplied as a string via the ``idvar`` parameter. In our data example, the name of the identifier variable is "ID".
 
-4. The split formula, to be supplied via the ``splitformula`` parameter, which is made up of the response variable and the split variables. All split variables should be *time constant*, meaning that for a given value of the ID varaible, each split variable takes on only one value. These are variables that we suspect might be related to heterogeneity in trajectories in the population. In our example, these are the baseline socioeconomic variables selected from the NLSY.  
+4. A one-sided split formula specifying the split variables, to be supplied via the ``splitformula`` parameter. All split variables should be *time constant*, meaning that for a given value of the ID varaible, each split variable takes on only one value. These are variables that we suspect might be related to heterogeneity in trajectories in the population. In our example, these are the baseline socioeconomic variables selected from the NLSY.  
 
 The data subset below illustrates concepts such as long format, ID variable, and time constant split variable in our dataset. In selecting split variables, we can use ``HGC_MOTHER`` and ``HGC_FATHER`` because these are baseline variables that were recorded once at the first subject interview  and did not change over time. However, ``HGC`` (highest grade completed by survey participant) cannot be used as a split variable because the responses for a given individual change as individuals complete more schooling. We will omit ``HGC``, but if we wished to include it we could create a new, time-constant variable using the maximum HGC achieved by each ID. 
 
@@ -50,8 +50,7 @@ After identifying these different types of varaibles in ``nlsySample``, we are r
 data <- nlsySample
 tformula <- BMI ~ AGE
 idvar <- "ID"
-split_formula <- BMI ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work + Mom_Full_Work + Age_first_weed + Age_first_smoke + Age_first_alc + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14 + Mother_14 + Father_14 + STABLE_RESIDENCE + URBAN_14 + South_Birth
-
+split_formula <- ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14 + Mother_14 + Father_14 + STABLE_RESIDENCE + URBAN_14 + South_Birth
 first_tree <- splineTree(split_formula, tformula, idvar, data)
 ```
 

@@ -21,7 +21,7 @@ If the tree includes an intercept, the measure will be between 0 and 1.
 }
 \examples{
 \dontrun{
-split_formula <- BMI ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
+split_formula <-  ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
   + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
   + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14
   + Mother_14 + Father_14 + STABLE_RESIDENCE + URBAN_14 + South_Birth

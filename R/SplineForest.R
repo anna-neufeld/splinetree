@@ -45,7 +45,7 @@
 #' @importFrom stats complete.cases formula lm quantile runif sd terms time
 #' @examples
 #' \donttest{
-#' splitForm <-BMI~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs
+#' splitForm <-~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs
 #' forest <- splineForest(splitForm, BMI~AGE, 'ID', nlsySample, degree=1, cp=0.005, ntree=30)
 #' }
 splineForest <- function(splitFormula, tformula,
@@ -54,8 +54,8 @@ splineForest <- function(splitFormula, tformula,
     cp = 0.001, minNodeSize=1) {
     #### Once per forest, need to do all of the
     #### preprocessing spline steps.
-    yvar <- attr(terms(getResponseFormula(splitFormula)),
-        "term.labels")
+    yvar <- attr(terms(getResponseFormula(tformula)),
+               "term.labels")
     tvar <- attr(terms(tformula), "term.labels")
     splitvars <- attr(terms(splitFormula), "term.labels")
 

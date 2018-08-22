@@ -21,9 +21,9 @@ describe similar partitions of the population. This metric allows us to detect w
 the population similarly. A value close to 1 indicates a similar clustering.
 }
 \examples{
-splitForm <- BMI~WHITE+BLACK+HISP+SEX+Num_sibs+HGC_MOTHER+HGC_FATHER
-tree1 <- splineTree(splitForm, BMI~AGE, "ID", nlsySample, degree=1, df=2, intercept=FALSE, cp=0.001)
-tree2 <- splineTree(splitForm, BMI~AGE, "ID", nlsySample, degree=1, df=3, intercept=TRUE, cp=0.001)
+splitForm <- ~SEX+Num_sibs+HGC_MOTHER+HGC_FATHER
+tree1 <- splineTree(splitForm, BMI~AGE, "ID", nlsySample, degree=1, df=2, intercept=FALSE, cp=0.005)
+tree2 <- splineTree(splitForm, BMI~AGE, "ID", nlsySample, degree=1, df=3, intercept=TRUE, cp=0.005)
 treeSimilarity(tree1, tree2)
 }
 \seealso{
