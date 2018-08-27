@@ -120,7 +120,7 @@ avSize(pruneForest(forest, cp=0.01))
 
 # Making predictions with a forest
 
-Making a prediction using a spline forest involves averaging predictions over individual trees in the forest. When making predictions for a datapoint that was not in the testset, the only reasonable option is to use all the trees in the forest to make the prediction. Using this method, either coefficients or response values (assuming ``forest$intercept==TRUE``) can be predicted. In predicting coefficients, no value is required for the "AGE" variable, but in predicting responses ages must be specified. 
+Making a prediction using a spline forest involves averaging predictions over individual trees in the forest. When making predictions for a datapoint that was not in the training set, the only reasonable option is to use all the trees in the forest to make the prediction. Using this method, either coefficients or response values (assuming ``forest$intercept==TRUE``) can be predicted. In predicting coefficients, no value is required for the "AGE" variable, but in predicting responses ages must be specified. 
 
 ```{r}
 newData <- data.frame("WHITE" = 0, "BLACK"=1, "HISP"=0, "Num_sibs"=3, "HGC_MOTHER"=12, "HGC_FATHER"=12, "SEX"=1)
