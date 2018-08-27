@@ -116,7 +116,9 @@ all_imps = all_imps[-1,]
 row.names(all_imps)=vars
 all_imps=data.frame(all_imps)
 names(all_imps) = c("Large Tree", "Small Tree")
+```
 
+```{r, echo=FALSE}
 par(mfrow=c(1,2))
 par(las=2) # make label text perpendicular to axis
 par(mar=c(1,7,3,1)) # increase y-axis margin.
