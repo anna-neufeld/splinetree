@@ -182,7 +182,7 @@ The "tree performance" metric involved in the permuation importance could be res
 
 We can create three different variable importance matrices using our sample forest. We can then compare the response-based importance to the projection-based importances (both including and ignoring the intercept). Each of these importance matrix contains three columns, corresponding to absolute differences in performance, percent differences in performance, and standardized differences in importance. We will use the third column.  
 
-```{r}
+```{r, message=FALSE}
 Y_imps <- varImpY(forest, method="oob")
 coeff_imps <- varImpCoeff(forest, method="oob", removeIntercept=FALSE)
 shape_imps <- varImpCoeff(forest, method="oob", removeIntercept=TRUE)

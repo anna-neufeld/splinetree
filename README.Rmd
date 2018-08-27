@@ -40,7 +40,7 @@ stPlot(tree)
 ```
 
 ## Example Forest
-```{r}
+```{r, message=FALSE}
 set.seed(1234)
 forest1 <- splineForest(~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs, 
         BMI ~ AGE, "ID", nlsySample, degree = 1, df=2, intercept = FALSE, ntree=50, prob=1/2)

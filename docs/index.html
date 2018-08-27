@@ -90,30 +90,140 @@
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># install.packages("devtools")</span>
 devtools::<span class="kw">install_github</span>(<span class="st">"anna-neufeld/splinetree"</span>)</code></pre></div>
 </div>
-<div id="example" class="section level2">
+<div id="example-tree" class="section level2">
 <h2 class="hasAnchor">
-<a href="#example" class="anchor"></a>Example</h2>
+<a href="#example-tree" class="anchor"></a>Example Tree</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(splinetree)
 <span class="co">#&gt; Loading required package: rpart</span>
 <span class="co">#&gt; Loading required package: nlme</span>
 <span class="co">#&gt; Loading required package: splines</span>
-tree &lt;-<span class="st"> </span><span class="kw"><a href="reference/splineTree.html">splineTree</a></span>(~HISP+WHITE+BLACK+HGC_MOTHER+SEX, BMI ~<span class="st"> </span>AGE, <span class="st">"ID"</span>, nlsySample, <span class="dt">degree =</span> <span class="dv">1</span>, <span class="dt">intercept =</span> <span class="ot">FALSE</span>, <span class="dt">cp =</span> <span class="fl">0.005</span>)
-<span class="kw"><a href="reference/stPrint.html">stPrint</a></span>(tree)
+tree1 &lt;-<span class="st"> </span><span class="kw"><a href="reference/splineTree.html">splineTree</a></span>(~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs, 
+        BMI ~<span class="st"> </span>AGE, <span class="st">"ID"</span>, nlsySample, <span class="dt">degree =</span> <span class="dv">1</span>, <span class="dt">df=</span><span class="dv">2</span>, <span class="dt">intercept =</span> <span class="ot">FALSE</span>, <span class="dt">cp =</span> <span class="fl">0.005</span>)
+<span class="kw"><a href="reference/stPrint.html">stPrint</a></span>(tree1)
 <span class="co">#&gt; n= 1000,  </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; node), split, n , coefficients </span>
 <span class="co">#&gt;       * denotes terminal node</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; 1) root, 1000,  (8.126419) </span>
-<span class="co">#&gt;   2) BLACK&lt; 0.5, 707,  (7.553963) </span>
-<span class="co">#&gt;     4) HGC_MOTHER&lt; 8.5, 157,  (8.595055)*</span>
-<span class="co">#&gt;     5) HGC_MOTHER&gt;=8.5, 550,  (7.256778)*</span>
-<span class="co">#&gt;   3) BLACK&gt;=0.5, 293,  (9.507738)*</span></code></pre></div>
+<span class="co">#&gt; 1) root, 1000,  (4.961796, 8.091247) </span>
+<span class="co">#&gt;   2) WHITE&lt; 0.5, 505,  (5.882807, 9.006190)*</span>
+<span class="co">#&gt;   3) WHITE&gt;=0.5, 495,  (4.022179, 7.157821) </span>
+<span class="co">#&gt;     6) HGC_FATHER&lt; 8.5, 78,  (5.198284, 8.642817)*</span>
+<span class="co">#&gt;     7) HGC_FATHER&gt;=8.5, 417,  (3.802188, 6.880053)*</span></code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/stPlot.html">stPlot</a></span>(tree)</code></pre></div>
 <p><img src="README-unnamed-chunk-3-1.png" width="672"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/projectedR2.html">projectedR2</a></span>(tree)
-<span class="co">#&gt;            [,1]</span>
-<span class="co">#&gt; [1,] 0.02645298</span></code></pre></div>
+</div>
+<div id="example-forest" class="section level2">
+<h2 class="hasAnchor">
+<a href="#example-forest" class="anchor"></a>Example Forest</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">1234</span>)
+forest1 &lt;-<span class="st"> </span><span class="kw"><a href="reference/splineForest.html">splineForest</a></span>(~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs, 
+        BMI ~<span class="st"> </span>AGE, <span class="st">"ID"</span>, nlsySample, <span class="dt">degree =</span> <span class="dv">1</span>, <span class="dt">df=</span><span class="dv">2</span>, <span class="dt">intercept =</span> <span class="ot">FALSE</span>, <span class="dt">ntree=</span><span class="dv">50</span>, <span class="dt">prob=</span><span class="dv">1</span>/<span class="dv">2</span>)
+<span class="co">#&gt; [1] "Building Tree:"</span>
+<span class="co">#&gt; [1] 1</span>
+<span class="co">#&gt; [1] 2</span>
+<span class="co">#&gt; [1] 3</span>
+<span class="co">#&gt; [1] 4</span>
+<span class="co">#&gt; [1] 5</span>
+<span class="co">#&gt; [1] 6</span>
+<span class="co">#&gt; [1] 7</span>
+<span class="co">#&gt; [1] 8</span>
+<span class="co">#&gt; [1] 9</span>
+<span class="co">#&gt; [1] 10</span>
+<span class="co">#&gt; [1] 11</span>
+<span class="co">#&gt; [1] 12</span>
+<span class="co">#&gt; [1] 13</span>
+<span class="co">#&gt; [1] 14</span>
+<span class="co">#&gt; [1] 15</span>
+<span class="co">#&gt; [1] 16</span>
+<span class="co">#&gt; [1] 17</span>
+<span class="co">#&gt; [1] 18</span>
+<span class="co">#&gt; [1] 19</span>
+<span class="co">#&gt; [1] 20</span>
+<span class="co">#&gt; [1] 21</span>
+<span class="co">#&gt; [1] 22</span>
+<span class="co">#&gt; [1] 23</span>
+<span class="co">#&gt; [1] 24</span>
+<span class="co">#&gt; [1] 25</span>
+<span class="co">#&gt; [1] 26</span>
+<span class="co">#&gt; [1] 27</span>
+<span class="co">#&gt; [1] 28</span>
+<span class="co">#&gt; [1] 29</span>
+<span class="co">#&gt; [1] 30</span>
+<span class="co">#&gt; [1] 31</span>
+<span class="co">#&gt; [1] 32</span>
+<span class="co">#&gt; [1] 33</span>
+<span class="co">#&gt; [1] 34</span>
+<span class="co">#&gt; [1] 35</span>
+<span class="co">#&gt; [1] 36</span>
+<span class="co">#&gt; [1] 37</span>
+<span class="co">#&gt; [1] 38</span>
+<span class="co">#&gt; [1] 39</span>
+<span class="co">#&gt; [1] 40</span>
+<span class="co">#&gt; [1] 41</span>
+<span class="co">#&gt; [1] 42</span>
+<span class="co">#&gt; [1] 43</span>
+<span class="co">#&gt; [1] 44</span>
+<span class="co">#&gt; [1] 45</span>
+<span class="co">#&gt; [1] 46</span>
+<span class="co">#&gt; [1] 47</span>
+<span class="co">#&gt; [1] 48</span>
+<span class="co">#&gt; [1] 49</span>
+<span class="co">#&gt; [1] 50</span>
+varImps &lt;-<span class="st"> </span><span class="kw"><a href="reference/varImpCoeff.html">varImpCoeff</a></span>(forest1)
+<span class="co">#&gt; [1] "working on tree"</span>
+<span class="co">#&gt; [1] 1</span>
+<span class="co">#&gt; [1] 2</span>
+<span class="co">#&gt; [1] 3</span>
+<span class="co">#&gt; [1] 4</span>
+<span class="co">#&gt; [1] 5</span>
+<span class="co">#&gt; [1] 6</span>
+<span class="co">#&gt; [1] 7</span>
+<span class="co">#&gt; [1] 8</span>
+<span class="co">#&gt; [1] 9</span>
+<span class="co">#&gt; [1] 10</span>
+<span class="co">#&gt; [1] 11</span>
+<span class="co">#&gt; [1] 12</span>
+<span class="co">#&gt; [1] 13</span>
+<span class="co">#&gt; [1] 14</span>
+<span class="co">#&gt; [1] 15</span>
+<span class="co">#&gt; [1] 16</span>
+<span class="co">#&gt; [1] 17</span>
+<span class="co">#&gt; [1] 18</span>
+<span class="co">#&gt; [1] 19</span>
+<span class="co">#&gt; [1] 20</span>
+<span class="co">#&gt; [1] 21</span>
+<span class="co">#&gt; [1] 22</span>
+<span class="co">#&gt; [1] 23</span>
+<span class="co">#&gt; [1] 24</span>
+<span class="co">#&gt; [1] 25</span>
+<span class="co">#&gt; [1] 26</span>
+<span class="co">#&gt; [1] 27</span>
+<span class="co">#&gt; [1] 28</span>
+<span class="co">#&gt; [1] 29</span>
+<span class="co">#&gt; [1] 30</span>
+<span class="co">#&gt; [1] 31</span>
+<span class="co">#&gt; [1] 32</span>
+<span class="co">#&gt; [1] 33</span>
+<span class="co">#&gt; [1] 34</span>
+<span class="co">#&gt; [1] 35</span>
+<span class="co">#&gt; [1] 36</span>
+<span class="co">#&gt; [1] 37</span>
+<span class="co">#&gt; [1] 38</span>
+<span class="co">#&gt; [1] 39</span>
+<span class="co">#&gt; [1] 40</span>
+<span class="co">#&gt; [1] 41</span>
+<span class="co">#&gt; [1] 42</span>
+<span class="co">#&gt; [1] 43</span>
+<span class="co">#&gt; [1] 44</span>
+<span class="co">#&gt; [1] 45</span>
+<span class="co">#&gt; [1] 46</span>
+<span class="co">#&gt; [1] 47</span>
+<span class="co">#&gt; [1] 48</span>
+<span class="co">#&gt; [1] 49</span>
+<span class="co">#&gt; [1] 50</span>
+<span class="kw"><a href="reference/plotImp.html">plotImp</a></span>(varImps[,<span class="dv">3</span>])</code></pre></div>
+<p><img src="README-unnamed-chunk-4-1.png" width="672"></p>
 </div>
 </div>
   </div>
