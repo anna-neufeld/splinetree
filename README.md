@@ -3,8 +3,6 @@
 splinetree
 ==========
 
-[![Build Status](https://travis-ci.org/https://travis-ci.org/anna-neufeld/splinetree.svg?branch=master)](https://travis-ci.org/https://travis-ci.org/anna-neufeld/splinetree)
-
 This package allows users to create, visualize, and evaluate regression trees and random forests for longitudinal or functional data through a spline projection method first suggested by Yu and Lambert (1999).
 
 Installation
