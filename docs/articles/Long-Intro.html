@@ -131,6 +131,18 @@
 <p>In this section, we will show how to use <code><a href="../reference/splineTree.html">splineTree()</a></code> to build a tree. More details on customizing, visualizing, and evaluating <code>splinetree</code> objects can be found in the vignette <em>Tree Building with splinetree</em>.</p>
 <p>This example uses data taken from the National Longitudinal Survey of Youth, 1979 (NLSY). The longitudinal trajectory of interest is body mass index (BMI) over time. We randomly sample 1,000 individuals from the NLSY out of those who have non-missing BMI data at at least 10 timepoints spread out over at least 20 years. We are interested in the relationship between BMI trajectories and time-constant variables such as HISP, WHITE, BLACK (indicator variables for subject’s reported race), SEX (indicator for subject’s reported sex), Num_sibs (number of siblings), and HGC_FATHER and HGC_MOTHER (reported highest grade completed by subject’s father and subject’s mother).</p>
 <p>Previous research by <span class="citation">Clarke et al. (2008)</span> suggests that adult BMIs tend to increase steadily throughout early adulthood and flatten out in later adulthood. This type of trajectory can be modeled with a piecewise linear trajectory, so we will define our spline basis with <code>degree = 1</code> and one internal knot. Since we do not have a particular location in mind for the internal knot, we use the <code>df</code> parameter rather than the <code>knots</code> parameter. This will place the knot at the median age. If we include an intercept, we will need to let <code>df = 3</code> to add one internal knot, but if we do not include an intercept <code>df = 2</code> will suffice. In this example, we build one tree with an intercept and one tree without an intercept so as to compare the two. The default value in the <code>rpart</code> package for the <code>cp</code> parameter, which controls the size of the tree, is 0.01. Here, we set the value of <code>cp</code> slightly lower to create trees that are large enough to be interesting but small enough to view in a plot.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(splinetree)
+## Loading required package: rpart
+## Loading required package: nlme
+## Loading required package: splines</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">split_formula &lt;-<span class="st"> </span><span class="er">~</span>HISP +<span class="st"> </span>WHITE +<span class="st"> </span>BLACK +<span class="st"> </span>SEX +<span class="st"> </span>Num_sibs +<span class="st"> </span>HGC_FATHER +<span class="st"> </span>HGC_MOTHER
+tformula &lt;-<span class="st"> </span>BMI ~<span class="st"> </span>AGE
+sample_tree &lt;-<span class="st"> </span><span class="kw"><a href="../reference/splineTree.html">splineTree</a></span>(split_formula, tformula, <span class="dt">idvar =</span> <span class="st">"ID"</span>, 
+                          <span class="dt">data =</span> nlsySample, <span class="dt">degree =</span> <span class="dv">1</span>, <span class="dt">df =</span> <span class="dv">2</span>, 
+                          <span class="dt">intercept =</span> <span class="ot">FALSE</span>, <span class="dt">cp =</span> <span class="fl">0.005</span>)
+sample_tree_intercept &lt;-<span class="st"> </span><span class="kw"><a href="../reference/splineTree.html">splineTree</a></span>(split_formula, tformula, <span class="dt">idvar =</span> <span class="st">"ID"</span>, 
+                                    <span class="dt">data =</span> nlsySample, <span class="dt">degree =</span> <span class="dv">1</span>, <span class="dt">df =</span> <span class="dv">3</span>, 
+                                    <span class="dt">intercept =</span> <span class="ot">TRUE</span>, <span class="dt">cp =</span> <span class="fl">0.005</span>)</code></pre></div>
 <p>After building these two trees, we can view a printed summary or a plot of each. Beginning with the no-intercept tree, we see that non-white individuals are predicted to have more rapid growth in body mass index than white individuals. Among white individuals, those whose fathers did not complete more than 8.5 years of schooling show more rapid BMI growth. Since this tree was built without an intercept, the average starting BMI is added to each average trajectory in the plot.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/stPrint.html">stPrint</a></span>(sample_tree)
 ## n= 1000,  
@@ -144,7 +156,7 @@
 ##     6) HGC_FATHER&lt; 8.5, 78,  (5.198284, 8.642817)*
 ##     7) HGC_FATHER&gt;=8.5, 417,  (3.802188, 6.880053)*
 <span class="kw"><a href="../reference/stPlot.html">stPlot</a></span>(sample_tree)</code></pre></div>
-<p><img src="Long-Intro_files/figure-html/unnamed-chunk-2-1.png" width="672"></p>
+<p><img src="Long-Intro_files/figure-html/unnamed-chunk-3-1.png" width="672"></p>
 <p>In the tree that is built with an intercept, each node is associated with three coefficients instead of two. While we see two of the same variables that were in the no-intercept tree included here, we now also see sex playing a role. This suggests that sex may impact the level of BMI but not the shape of the trajectory.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/stPrint.html">stPrint</a></span>(sample_tree_intercept)
 ## n= 1000,  
@@ -162,7 +174,7 @@
 ##       14) HGC_FATHER&lt; 7.5, 12,  (20.40041, 9.027571, 9.903029)*
 ##       15) HGC_FATHER&gt;=7.5, 224,  (20.46025, 3.780243, 7.312451)*
 <span class="kw"><a href="../reference/stPlot.html">stPlot</a></span>(sample_tree_intercept, <span class="dt">colors=</span><span class="kw">c</span>(<span class="st">"red"</span>, <span class="st">"orange"</span>, <span class="st">"yellow"</span>, <span class="st">"blue"</span>, <span class="st">"cyan"</span>))</code></pre></div>
-<p><img src="Long-Intro_files/figure-html/unnamed-chunk-3-1.png" width="672"></p>
+<p><img src="Long-Intro_files/figure-html/unnamed-chunk-4-1.png" width="672"></p>
 </div>
 <div id="forests" class="section level1">
 <h1 class="hasAnchor">
@@ -173,7 +185,7 @@
 vars =<span class="st"> </span><span class="kw">attr</span>(<span class="kw">terms</span>(split_formula), <span class="st">"term.labels"</span>)
 imp_large=extra_large_tree$variable.importance
 imp_small=sample_tree_intercept$variable.importance</code></pre></div>
-<p><img src="Long-Intro_files/figure-html/unnamed-chunk-6-1.png" width="672"></p>
+<p><img src="Long-Intro_files/figure-html/unnamed-chunk-7-1.png" width="672"></p>
 <p>In the univariate setting, Random Forests and the associated permutation importance measure are popular ways to obtain more stable measures of variable importance (see <span class="citation">Breiman (2001)</span> or <span class="citation">Liaw and Wiener (2002)</span> for more). Through bootrapping and random variable selection, Random Forests give variables that are not locally optimal in a single tree a chance to appear in a tree. The <code><a href="../reference/splineForest.html">splineForest()</a></code> method allows users to build ensembles of spline trees, combining the projection splitting framework of <code><a href="../reference/splineTree.html">splineTree()</a></code> with the bagging and random variable selection principles of a Random Forest.</p>
 <div id="spline-forest-implementation" class="section level2">
 <h2 class="hasAnchor">
@@ -244,7 +256,7 @@ shape_imps &lt;-<span class="st"> </span><span class="kw"><a href="../reference/
 <span class="kw"><a href="../reference/plotImp.html">plotImp</a></span>(Y_imps[,<span class="dv">3</span>], <span class="dt">main =</span> <span class="st">"Response"</span>)
 <span class="kw"><a href="../reference/plotImp.html">plotImp</a></span>(coeff_imps[,<span class="dv">3</span>], <span class="dt">main =</span><span class="st">"Coeff w/ Intercept"</span>)
 <span class="kw"><a href="../reference/plotImp.html">plotImp</a></span>(shape_imps[,<span class="dv">3</span>], <span class="dt">main =</span> <span class="st">"Coeff w/out Intercept"</span>)</code></pre></div>
-<p><img src="Long-Intro_files/figure-html/unnamed-chunk-15-1.png" width="672"></p>
+<p><img src="Long-Intro_files/figure-html/unnamed-chunk-16-1.png" width="672"></p>
 <p>Using a splineForest, some new variables have relatively high importance. For example, while HGC_MOTHER did not appear in a splineTree, it has a similar overall imporance to HGC_FATHER. These two variables may be unlikely to appear in the same tree due to their correlation (0.667 among complete cases), but the permutation importance metric shows that both variables are associated with the level and the shape of the outcome. The first two panels of the graph are quite similar because they both take into account level and shape; the difference is that the first panel looks at how influential the variables are for approximating BMI values, whereas the second panel looks at how influential the variables are for approximating the smoothed BMI trajectories. The fact that the panels look similar is good because it suggests that the smoothed trajectories used are reasonable approximations of true BMI.</p>
 <p>The third panel of the graph shows more differences. When the intercept of the smoothed trajectories is ignored, the <code>SEX</code> variable loses all importance. This mirrors the observation from our splineTree, where <code>SEX</code> appeared in the intercept tree but not the no intercept tree. Now that we are using a forest, we can more confidently assert that reported sex is associated with the level of BMI but not the shape of the trajectory over time.</p>
 </div>
