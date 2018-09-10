@@ -63,7 +63,14 @@
   </ul>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/anna-neufeld/splinetree">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -77,9 +84,9 @@
     <div class="page-header toc-ignore">
       <h1>Introduction to splinetree</h1>
             
-            <h4 class="date">2018-08-21</h4>
+            <h4 class="date">2018-09-10</h4>
       
-      
+      <small class="dont-index">Source: <a href="https://github.com/anna-neufeld/splinetree/blob/master/vignettes/Long-Intro.Rmd"><code>vignettes/Long-Intro.Rmd</code></a></small>
       <div class="hidden name"><code>Long-Intro.Rmd</code></div>
 
     </div>
@@ -161,12 +168,12 @@
 <h1 class="hasAnchor">
 <a href="#forests" class="anchor"></a>Forests</h1>
 <p>The examples above suggest that the variables <code>WHITE</code> and <code>HGC_FATHER</code> are most associated with the shape of a BMI trajectory, and that these same variables, with the addition of <code>SEX</code>, are associated with the BMI level. However, a single regression tree gives a poor overview of the true importance of covariates. If there is a close tie between the “goodness” of two possible splits at the top level of the tree, then a new tree built to a slightly perturbed dataset could include an entirely different set of covariates. If two covariates that are associated with the trajectories are highly correlated, it is likely that only one will appear in the tree.</p>
-<p>The <code>rpart</code> package has a built in variable importance metric based on improvements of goodness of fit provided by both split varaibles and surrogate split variables (see the <code>rpart</code> documentation for more information). While this measure helps capture the importance of second-best or correlated covariates that do not appear in the tree itself, this measure based on the CART algorithm shows bias towards variables with more unique values (INSERT CITATION). A very important binary variable that is used at the top level of a tree is not available for surrogate splits later in the tree, and so its importance according to this metric may be smaller than a less important numeric variable that is repeatedly used as a surrogate split throughout the tree.</p>
-<!-- This point seems a little off topic, so I don't think it needs a long section, but at the same time I don't have anything to cite besides an example made by me, so should example be included?? -->
-<!-- 
-The ``rpart`` package has a built in variable importance metric (accessed through ``tree$variable.importance``) that provides an improvement over just looking at a tree. This metric computes a variable's overall importance as the sum of the "goodness" that the variable provides at all nodes where it is selected either as a primary or a surrogate split (see @rpart for more). However, the bias towards variables with more potential splits still proves a problem for this measure. Furthermore, the measure can be highly dependent on how you choose to prune the final tree. To see an example, we will use the same data as in the previous section but include a few extra split variables. We will build a larger tree and a smaller tree and then compare the variable importance metrics found using the rpart metric for each, 
- -->
-<!--  The point of this is that the importance of the numeric variables relative to the binary variables gets inflated in larger trees. The 6 variables that start to pass the race variables are all ones that are non-binary. Doesn't happen to the binary variables- they remain much less important than race, sex. --->
+<p>The <code>rpart</code> package has a built in variable importance metric based on improvements of goodness of fit provided by both split varaibles and surrogate split variables (see the <code>rpart</code> documentation for more information). While this measure helps capture the importance of second-best or correlated covariates that do not appear in the tree itself, this measure can show bias towards variables with more unique values; a very important binary variable that is used at the top level of a tree is not available for surrogate splits later in the tree, and so its importance according to this metric may be smaller than a less important numeric variable that is repeatedly used as a surrogate split throughout the tree. A consequence of this bias is that the <code>rpart</code> variable importance rankings are highly dependent on the size that a tree is pruned to; in larger trees, variables with many unique values can appear over and over again as primary or surrogate splits, which inflates their importance. This bias is illustrated in the plot below, which displays the <code>rpart</code> variable importance metric for the <code>sample_intercept_tree</code> from above along with an identical tree that is allowed to grow much larger. While <code>SEX</code> is rated to be the most important variable in the small tree, when the tree is allowed to grow larger the importance of all three non-binary variables surpasses the importance of <code>SEX</code>. This is an example of a general trend; as trees grow larger, the <code>rpart</code> importance of variables with many unique values is inflated relative to variables with fewer unique values.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">extra_large_tree &lt;-<span class="st"> </span><span class="kw"><a href="../reference/splineTree.html">splineTree</a></span>(split_formula, BMI ~<span class="st"> </span>AGE, <span class="st">"ID"</span>, nlsySample, <span class="dt">degree =</span> <span class="dv">1</span>, <span class="dt">df =</span> <span class="dv">2</span>, <span class="dt">intercept =</span> <span class="ot">TRUE</span>, <span class="dt">cp =</span> <span class="fl">0.0005</span>)
+vars =<span class="st"> </span><span class="kw">attr</span>(<span class="kw">terms</span>(split_formula), <span class="st">"term.labels"</span>)
+imp_large=extra_large_tree$variable.importance
+imp_small=sample_tree_intercept$variable.importance</code></pre></div>
+<p><img src="Long-Intro_files/figure-html/unnamed-chunk-6-1.png" width="672"></p>
 <p>In the univariate setting, Random Forests and the associated permutation importance measure are popular ways to obtain more stable measures of variable importance (see <span class="citation">Breiman (2001)</span> or <span class="citation">Liaw and Wiener (2002)</span> for more). Through bootrapping and random variable selection, Random Forests give variables that are not locally optimal in a single tree a chance to appear in a tree. The <code><a href="../reference/splineForest.html">splineForest()</a></code> method allows users to build ensembles of spline trees, combining the projection splitting framework of <code><a href="../reference/splineTree.html">splineTree()</a></code> with the bagging and random variable selection principles of a Random Forest.</p>
 <div id="spline-forest-implementation" class="section level2">
 <h2 class="hasAnchor">
@@ -237,7 +244,7 @@ shape_imps &lt;-<span class="st"> </span><span class="kw"><a href="../reference/
 <span class="kw"><a href="../reference/plotImp.html">plotImp</a></span>(Y_imps[,<span class="dv">3</span>], <span class="dt">main =</span> <span class="st">"Response"</span>)
 <span class="kw"><a href="../reference/plotImp.html">plotImp</a></span>(coeff_imps[,<span class="dv">3</span>], <span class="dt">main =</span><span class="st">"Coeff w/ Intercept"</span>)
 <span class="kw"><a href="../reference/plotImp.html">plotImp</a></span>(shape_imps[,<span class="dv">3</span>], <span class="dt">main =</span> <span class="st">"Coeff w/out Intercept"</span>)</code></pre></div>
-<p><img src="Long-Intro_files/figure-html/unnamed-chunk-14-1.png" width="672"></p>
+<p><img src="Long-Intro_files/figure-html/unnamed-chunk-15-1.png" width="672"></p>
 <p>Using a splineForest, some new variables have relatively high importance. For example, while HGC_MOTHER did not appear in a splineTree, it has a similar overall imporance to HGC_FATHER. These two variables may be unlikely to appear in the same tree due to their correlation (0.667 among complete cases), but the permutation importance metric shows that both variables are associated with the level and the shape of the outcome. The first two panels of the graph are quite similar because they both take into account level and shape; the difference is that the first panel looks at how influential the variables are for approximating BMI values, whereas the second panel looks at how influential the variables are for approximating the smoothed BMI trajectories. The fact that the panels look similar is good because it suggests that the smoothed trajectories used are reasonable approximations of true BMI.</p>
 <p>The third panel of the graph shows more differences. When the intercept of the smoothed trajectories is ignored, the <code>SEX</code> variable loses all importance. This mirrors the observation from our splineTree, where <code>SEX</code> appeared in the intercept tree but not the no intercept tree. Now that we are using a forest, we can more confidently assert that reported sex is associated with the level of BMI but not the shape of the trajectory over time.</p>
 </div>

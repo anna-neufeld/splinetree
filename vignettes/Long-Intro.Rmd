@@ -67,12 +67,16 @@ This example uses data taken from the National Longitudinal Survey of Youth, 197
 
 Previous research by @clarke2008social suggests that adult BMIs tend to increase steadily throughout early adulthood and flatten out in later adulthood. This type of trajectory can be modeled with a piecewise linear trajectory, so we will define our spline basis with ``degree = 1`` and one internal knot. Since we do not have a particular location in mind for the internal knot, we use the ``df`` parameter rather than the ``knots`` parameter. This will place the knot at the median age. If we include an intercept, we will need to let ``df = 3`` to add one internal knot, but if we do not include an intercept ``df = 2`` will suffice. In this example, we build one tree with an intercept and one tree without an intercept so as to compare the two. The default value in the ``rpart`` package for the ``cp`` parameter, which controls the size of the tree, is 0.01. Here, we set the value of ``cp`` slightly lower to create trees that are large enough to be interesting but small enough to view in a plot.   
 
-```{r, include=FALSE}
+```{r, results="hide"}
 library(splinetree)
 split_formula <- ~ HISP + WHITE + BLACK + SEX + Num_sibs + HGC_FATHER + HGC_MOTHER
 tformula <- BMI ~ AGE
-sample_tree <- splineTree(split_formula, tformula, idvar = "ID", data = nlsySample, degree = 1, df = 2, intercept = FALSE, cp = 0.005)
-sample_tree_intercept <- splineTree(split_formula, tformula, idvar = "ID", data = nlsySample, degree = 1, df = 3, intercept = TRUE, cp = 0.005)
+sample_tree <- splineTree(split_formula, tformula, idvar = "ID", 
+                          data = nlsySample, degree = 1, df = 2, 
+                          intercept = FALSE, cp = 0.005)
+sample_tree_intercept <- splineTree(split_formula, tformula, idvar = "ID", 
+                                    data = nlsySample, degree = 1, df = 3, 
+                                    intercept = TRUE, cp = 0.005)
 ```
 
 After building these two trees, we can view a printed summary or a plot of each. Beginning with the no-intercept tree, we see that non-white individuals are predicted to have more rapid growth in body mass index than white individuals. Among white individuals, those whose fathers did not complete more than 8.5 years of schooling show more rapid BMI growth. Since this tree was built without an intercept, the average starting BMI is added to each average trajectory in the plot. 

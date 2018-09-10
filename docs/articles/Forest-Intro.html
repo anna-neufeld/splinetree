@@ -63,7 +63,14 @@
   </ul>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/anna-neufeld/splinetree">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -78,9 +85,9 @@
       <h1>Forest Building with splinetree</h1>
                         <h4 class="author">Anna Neufeld</h4>
             
-            <h4 class="date">2018-08-21</h4>
+            <h4 class="date">2018-09-10</h4>
       
-      
+      <small class="dont-index">Source: <a href="https://github.com/anna-neufeld/splinetree/blob/master/vignettes/Forest-Intro.Rmd"><code>vignettes/Forest-Intro.Rmd</code></a></small>
       <div class="hidden name"><code>Forest-Intro.Rmd</code></div>
 
     </div>
@@ -196,7 +203,7 @@ oob17 &lt;-<span class="st"> </span>forest$flat_data[forest$oob_indices[[<span c
 <div id="making-predictions-with-a-forest" class="section level1">
 <h1 class="hasAnchor">
 <a href="#making-predictions-with-a-forest" class="anchor"></a>Making predictions with a forest</h1>
-<p>Making a prediction using a spline forest involves averaging predictions over individual trees in the forest. When making predictions for a datapoint that was not in the testset, the only reasonable option is to use all the trees in the forest to make the prediction. Using this method, either coefficients or response values (assuming <code>forest$intercept==TRUE</code>) can be predicted. In predicting coefficients, no value is required for the “AGE” variable, but in predicting responses ages must be specified.</p>
+<p>Making a prediction using a spline forest involves averaging predictions over individual trees in the forest. When making predictions for a datapoint that was not in the training set, the only reasonable option is to use all the trees in the forest to make the prediction. Using this method, either coefficients or response values (assuming <code>forest$intercept==TRUE</code>) can be predicted. In predicting coefficients, no value is required for the “AGE” variable, but in predicting responses ages must be specified.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">newData &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="st">"WHITE"</span> =<span class="st"> </span><span class="dv">0</span>, <span class="st">"BLACK"</span>=<span class="dv">1</span>, <span class="st">"HISP"</span>=<span class="dv">0</span>, <span class="st">"Num_sibs"</span>=<span class="dv">3</span>, <span class="st">"HGC_MOTHER"</span>=<span class="dv">12</span>, <span class="st">"HGC_FATHER"</span>=<span class="dv">12</span>, <span class="st">"SEX"</span>=<span class="dv">1</span>)
 preds &lt;-<span class="st"> </span><span class="kw"><a href="../reference/predictCoeffsForest.html">predictCoeffsForest</a></span>(forest, <span class="dt">testdata =</span> newData)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">AGE &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">16</span>,<span class="dv">18</span>,<span class="dv">20</span>,<span class="dv">22</span>,<span class="dv">25</span>,<span class="dv">30</span>,<span class="dv">37</span>,<span class="dv">39</span>,<span class="dv">50</span>)
