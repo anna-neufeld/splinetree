@@ -11,6 +11,9 @@
 #' \donttest{
 #' imp <- varImpCoeff(forest)[,3]
 #' }
+#' \dontshow{
+#' imp <- importance[[2]][,3]
+#' }
 #' plotImp(imp, main="Standardized Variable Importance")
 plotImp <- function(importance_vector, ...) {
     importance_vector[importance_vector<0]=0

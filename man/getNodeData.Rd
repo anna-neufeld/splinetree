@@ -28,16 +28,11 @@ this node is returned (one row of data per ID, original responses replaced by sp
 }
 \examples{
 \dontrun{
-split_formula <- BMI ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
-  + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
-  + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14
-  + Mother_14 + Father_14 + STABLE_RESIDENCE + URBAN_14 + South_Birth
+split_formula <- BMI ~ HISP + WHITE + BLACK + SEX + Num_sibs
+  + HGC_FATHER + HGC_MOTHER
 tree <- splineTree(split_formula, BMI~AGE, 'ID', nlsySample, degree=1,
   df=3, intercept=TRUE, cp=0.006, minNodeSize=20)
 }
-node10data <- getNodeData(tree, 10, dataType = 'all')
-plot(BMI~AGE, data=node10data)
-NROW(node10data)
-NROW(unique(node10data$ID))
-NROW(getNodeData(tree, 10, dataType= 'flat'))
+node6data <- getNodeData(tree, 6, dataType = 'all')
+plot(BMI~AGE, data=node6data)
 }

@@ -12,12 +12,10 @@
 #' @importFrom stats naprint
 #' @examples
 #' \donttest{
-#' split_formula <- ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
-#'   + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
-#'   + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14
-#'   + Mother_14 + Father_14 + STABLE_RESIDENCE + URBAN_14 + South_Birth
-#'  tree <- splineTree(split_formula, BMI~AGE, 'ID', nlsySample, degree=1,
-#'    df=3, intercept=TRUE, cp=0.006, minNodeSize=20)
+#' split_formula <- ~HISP + WHITE + BLACK + SEX + Num_sibs + HGC_FATHER + HGC_MOTHER
+#' tree <- splineTree(split_formula, tformula, idvar = "ID",
+#'    data = nlsySample, degree = 1, df = 3,
+#'    intercept = TRUE, cp = 0.005)
 #' }
 #' stPrint(tree)
 #' @export
@@ -81,12 +79,10 @@ stPrint <- function(t, cp, digits = getOption("digits"))
 #' the coefficients predicted for each node.
 #' @examples
 #' \donttest{
-#' split_formula <- BMI ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
-#'   + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
-#'   + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14
-#'   + Mother_14 + Father_14 + STABLE_RESIDENCE + URBAN_14 + South_Birth
-#' tree <- splineTree(split_formula, BMI~AGE, 'ID', nlsySample, degree=1,
-#'   df=3, intercept=TRUE, cp=0.006, minNodeSize=20)
+#' split_formula <- ~HISP + WHITE + BLACK + SEX + Num_sibs + HGC_FATHER + HGC_MOTHER
+#' tree <- splineTree(split_formula, tformula, idvar = "ID",
+#'    data = nlsySample, degree = 1, df = 3,
+#'    intercept = TRUE, cp = 0.005)
 #' }
 #' treeSummary(tree)
 #' @export
@@ -112,12 +108,10 @@ treeSummary <- function(model) {
 #' @export
 #' @examples
 #' \donttest{
-#' split_formula <-  ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
-#'   + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
-#'   + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14
-#'   + Mother_14 + Father_14 + STABLE_RESIDENCE + URBAN_14 + South_Birth
-#' tree <- splineTree(split_formula, BMI~AGE, 'ID', nlsySample, degree=1,
-#'   df=3, intercept=TRUE, cp=0.006, minNodeSize=20)
+#' split_formula <- ~HISP + WHITE + BLACK + SEX + Num_sibs + HGC_FATHER + HGC_MOTHER
+#' tree <- splineTree(split_formula, tformula, idvar = "ID",
+#'    data = nlsySample, degree = 1, df = 3,
+#'    intercept = TRUE, cp = 0.005)
 #' }
 #' terminalNodeSummary(tree)
 terminalNodeSummary <- function(tree, node=NULL) {

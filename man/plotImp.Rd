@@ -17,6 +17,11 @@ The importances are scaled to sum to 1. An appropriate input is one column of th
 varImpY() or varImpCoeff().
 }
 \examples{
-standardized_importance <- varImpCoeff(forest)[,3]
-plotImp(standardized_importance, main="Plot of standardized variable importance")
+\donttest{
+imp <- varImpCoeff(forest)[,3]
+}
+\dontshow{
+imp <- importance[[2]][,3]
+}
+plotImp(imp, main="Standardized Variable Importance")
 }

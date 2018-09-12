@@ -41,7 +41,7 @@ library(splinetree)
 ```
 
 ```{r, echo=FALSE}
-nlsySample[c(1:8,13:20),c(1,26,31, 12,14, 27)]
+nlsySample[c(1:8,13:20),c(1,9,11, 2,3, 10)]
 ```
 
 After identifying these different types of varaibles in ``nlsySample``, we are ready to make our first call to ``splineTree()``. 
@@ -50,7 +50,7 @@ After identifying these different types of varaibles in ``nlsySample``, we are r
 data <- nlsySample
 tformula <- BMI ~ AGE
 idvar <- "ID"
-split_formula <- ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14 + Mother_14 + Father_14 + STABLE_RESIDENCE + URBAN_14 + South_Birth
+split_formula <- ~ HISP + WHITE + BLACK + SEX + Num_sibs + HGC_FATHER + HGC_MOTHER
 first_tree <- splineTree(split_formula, tformula, idvar, data)
 ```
 
@@ -167,7 +167,7 @@ second_tree <- splineTree(split_formula, tformula, idvar, data, minNodeSize = 20
 treeSize(second_tree)
 ```
 
-When we lower the ``cp`` to 0.001, the tree has 28 terminal nodes. This tree will be difficult to plot and interpret. Let's try a value in-between and set ``cp`` to be 0.005. 
+When we lower the ``cp`` to 0.001, the tree has 20 terminal nodes. This tree will be difficult to plot and interpret. Let's try a value in-between and set ``cp`` to be 0.005. 
 
 ```{r}
 third_tree <- splineTree(split_formula, tformula, idvar, data, minNodeSize = 20, cp = 0.005)
@@ -176,7 +176,7 @@ stPrint(third_tree)
 stPlot(third_tree, colors = c("red", "green", "blue", "cyan", "magenta", "grey"))
 ```
 
-This tree seems reasonably sized; it is small enough to plot and understand, but gives us a more to work with than our first tree. In general, there is no "best"" size for a tree as there are trade offs. With a larger tree, you gain accuracy at the expense of precision and interpretability. It is also possible to build a large tree and then prune it when plotting for ease of visualization. This is done using the ``prune`` function, which is in the ``rpart`` package. For example, we could have shrunk the size of ``second_tree`` using ``prune(second_tree, cp=0.005)``. 
+This tree seems reasonably sized; it is small enough to plot and understand, but gives us a little more to work with than our first tree. In general, there is no "best"" size for a tree as there are trade offs. With a larger tree, you gain accuracy at the expense of precision and interpretability. It is also possible to build a large tree and then prune it when plotting for ease of visualization. This is done using the ``prune`` function, which is in the ``rpart`` package. For example, we could have shrunk the size of ``second_tree`` using ``prune(second_tree, cp=0.005)``. 
 
 ## Controlling the Evaluation Grid
 
@@ -204,7 +204,7 @@ We can do this in two ways. One way is to set the ``df`` parameter (sets the tot
 
  
 ```{r}
-linear_tree <- splineTree(split_formula, tformula, idvar, data, minNodeSize = 20, cp = 0.007, degree = 1, df = 2) 
+linear_tree <- splineTree(split_formula, tformula, idvar, data, minNodeSize = 20, cp = 0.005, degree = 1, df = 2) 
 stPlot(linear_tree, colors=c("red", "orange", "yellow", "green", "blue"))
 ```
 
@@ -215,7 +215,7 @@ Although choosing a higher degree and more internal knots will allow each projec
 As a final customization, we can add an intercept to our tree. When ``intercept = FALSE``, the splits of the tree are made based solely on the shape of the trajectories, while ignoring the level.  One downside of no-intercept trees is that they can not be used to predict responses. To add an intercept to the linear tree, we must increase the ``df`` to 3, because we now need 3 total coefficients (one for the intercept, one for the 1-degree polynomial, and one for the internal knot).
 
 ```{r}
-linear_tree_intercept <- splineTree(split_formula, tformula, idvar, data, minNodeSize = 20, cp = 0.007, degree = 1, df = 3, intercept = TRUE) 
+linear_tree_intercept <- splineTree(split_formula, tformula, idvar, data, minNodeSize = 20, cp = 0.005, degree = 1, df = 3, intercept = TRUE) 
 stPlot(linear_tree_intercept)
 ```
 
@@ -231,7 +231,7 @@ cor(predictions, nlsySample$BMI)
 plot(predictions, (predictions - nlsySample$BMI), xlab = "Predicted BMI", ylab = "Residual")
 ```
 
-We have far more negative residuals than positive residuals. The maximum BMI in the dataset is 59.04, but the maximum predicted BMI is just 32.89. Although several individuals in the sample have extremely large BMIs, no node in the tree predicts these BMIs. This suggests that no subgroup of the population that can be described using only these baseline split variables isolates individuals with very high BMIs; to form such a subgroup, we would likely need other covariates, such as an average exercise level or a diet description. 
+We have far more negative residuals than positive residuals. The maximum BMI in the dataset is 59.04, but the maximum predicted BMI is just 31.47. Although several individuals in the sample have extremely large BMIs, no node in the tree predicts these BMIs. This suggests that no subgroup of the population that can be described using only these baseline split variables isolates individuals with very high BMIs; to form such a subgroup, we would likely need other covariates, such as an average exercise level or a diet description. 
 
 As a metric of our trees performance, we can also compute an $R^2$ measure of the total percentage of variation in response that is explained by our tree.
 

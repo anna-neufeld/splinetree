@@ -12,12 +12,10 @@
 #' @importFrom grDevices dev.off
 #' @examples
 #' \donttest{
-#' split_formula <- ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
-#'   + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
-#'   + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14
-#'   + Mother_14 + Father_14 + STABLE_RESIDENCE + URBAN_14 + South_Birth
-#' tree <- splineTree(split_formula, BMI~AGE, 'ID', nlsySample, degree=1,
-#'   df=3, intercept=TRUE, cp=0.006, minNodeSize=20)
+#' split_formula <- ~HISP + WHITE + BLACK + SEX + Num_sibs + HGC_FATHER + HGC_MOTHER
+#' tree <- splineTree(split_formula, tformula, idvar = "ID",
+#'    data = nlsySample, degree = 1, df = 3,
+#'    intercept = TRUE, cp = 0.005)
 #' }
 #' stPlot(tree, colors = c("red", "orange", "green", "blue", "cyan", "magenta"))
 #' @export
@@ -244,12 +242,10 @@ nodePlot <- function(model, colors = NULL) {
 #' @importFrom ggplot2 ggplot aes aes_string facet_grid geom_line geom_point scale_color_manual theme
 #' @examples
 #' \donttest{
-#' split_formula <- ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
-#'   + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
-#'   + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14
-#'   + Mother_14 + Father_14 + STABLE_RESIDENCE + URBAN_14 + South_Birth
-#' tree <- splineTree(split_formula, BMI~AGE, 'ID', nlsySample, degree=1,
-#'   df=3, intercept=TRUE, cp=0.006, minNodeSize=20)
+#' split_formula <- ~HISP + WHITE + BLACK + SEX + Num_sibs + HGC_FATHER + HGC_MOTHER
+#' tree <- splineTree(split_formula, tformula, idvar = "ID",
+#'    data = nlsySample, degree = 1, df = 3,
+#'    intercept = TRUE, cp = 0.005)
 #' }
 #' spaghettiPlot(tree)
 spaghettiPlot <- function(model, colors = NULL) {
@@ -343,12 +339,10 @@ spaghettiPlot <- function(model, colors = NULL) {
 #' trajectory be plotted without any regard to the intercept?
 #' @examples
 #' \donttest{
-#' split_formula <- BMI ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
-#'   + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
-#'   + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14
-#'   + Mother_14 + Father_14 + STABLE_RESIDENCE + URBAN_14 + South_Birth
-#' tree <- splineTree(split_formula, BMI~AGE, 'ID', nlsySample, degree=1,
-#'   df=3, intercept=TRUE, cp=0.006, minNodeSize=20)
+#' split_formula <- ~HISP + WHITE + BLACK + SEX + Num_sibs + HGC_FATHER + HGC_MOTHER
+#' tree <- splineTree(split_formula, tformula, idvar = "ID",
+#'    data = nlsySample, degree = 1, df = 3,
+#'    intercept = TRUE, cp = 0.005)
 #' }
 #' plotNode(tree, 10, includeData=TRUE)
 plotNode <-  function(tree, node, includeData = FALSE, estimateIntercept = TRUE) {

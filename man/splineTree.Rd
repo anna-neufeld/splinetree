@@ -58,12 +58,8 @@ projection sum of squares is evaluated. The parameters minNodeSize and cp allow 
 }
 \examples{
 splitForm <- ~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs
-tree1 <- splineTree(splitForm, BMI~AGE, 'ID', nlsySample, degree=1, intercept=FALSE, cp=0.005)
-tree2 <- splineTree(splitForm, BMI~AGE, 'ID', nlsySample, degree=3, intercept=TRUE, cp=0.005)
+tree1 <- splineTree(splitForm, BMI~AGE, 'ID', nlsySample, degree=3, intercept=TRUE, cp=0.005)
 stPrint(tree1)
-stPrint(tree2)
 stPlot(tree1)
-stPlot(tree2)
 projectedR2(tree1)
-projectedR2(tree2)
 }
