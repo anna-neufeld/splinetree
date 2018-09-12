@@ -11,7 +11,7 @@
 #' rainbow color scheme.
 #' @importFrom grDevices dev.off
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' split_formula <- ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
 #'   + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
 #'   + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14
@@ -243,7 +243,7 @@ nodePlot <- function(model, colors = NULL) {
 #' @export
 #' @importFrom ggplot2 ggplot aes aes_string facet_grid geom_line geom_point scale_color_manual theme
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' split_formula <- ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
 #'   + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
 #'   + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14
@@ -342,7 +342,7 @@ spaghettiPlot <- function(model, colors = NULL) {
 #' to give the plot interpretable values? Or should the shape of the
 #' trajectory be plotted without any regard to the intercept?
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' split_formula <- BMI ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
 #'   + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
 #'   + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14

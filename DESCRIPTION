@@ -18,5 +18,4 @@ Suggests: knitr,
     testthat
 VignetteBuilder: knitr
 BugReports: https://github.com/anna-neufeld/splinetree/issues
-url: https://github.com/anna-neufeld/splinetree
 URL: https://github.com/anna-neufeld/splinetree

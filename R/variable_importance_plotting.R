@@ -8,8 +8,10 @@
 #' @param ... additional arguements to plot, such as "main", "cex", etc.
 #' @export
 #' @examples
-#' standardized_importance <- varImpCoeff(forest)[,3]
-#' plotImp(standardized_importance, main="Plot of standardized variable importance")
+#' \donttest{
+#' imp <- varImpCoeff(forest)[,3]
+#' }
+#' plotImp(imp, main="Standardized Variable Importance")
 plotImp <- function(importance_vector, ...) {
     importance_vector[importance_vector<0]=0
     try({

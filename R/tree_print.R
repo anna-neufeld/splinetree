@@ -11,7 +11,7 @@
 #' pruned using the provided cp as the complexity parameter.
 #' @importFrom stats naprint
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' split_formula <- ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
 #'   + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
 #'   + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14
@@ -80,7 +80,7 @@ stPrint <- function(t, cp, digits = getOption("digits"))
 #' this is what the tree building process is supposed to minimize. The "coeffs" attribute displays
 #' the coefficients predicted for each node.
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' split_formula <- BMI ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
 #'   + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
 #'   + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14
@@ -111,7 +111,7 @@ treeSummary <- function(model) {
 #' to a valid terminal node in the tree.
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' split_formula <-  ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
 #'   + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
 #'   + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14

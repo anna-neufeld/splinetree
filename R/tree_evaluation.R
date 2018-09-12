@@ -10,7 +10,7 @@
 #' responses, and SST is sum of squared errors of true responses around population mean. Note that if the tree passed in was built
 #' without an intercept, this function will return NULL.
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' split_formula <-  ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
 #'   + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
 #'   + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14
@@ -46,7 +46,7 @@ yR2 <- function(model) {
 #' @importFrom treeClust rpart.predict.leaves
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' split_formula <-  ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
 #'   + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
 #'   + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14
@@ -165,7 +165,7 @@ projectedR2 <- function(model, includeIntercept = FALSE) {
 #' the spline by the number of units in the test set. The ith column of the matrix holds the predicted
 #' coefficients for the ith row in the testset.
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' split_formula <- ~ HISP + WHITE + BLACK + SEX + Dad_Full_Work
 #'   + Mom_Full_Work   + Age_first_weed + Age_first_smoke + Age_first_alc
 #'   + Num_sibs + HGC_FATHER + HGC_MOTHER + Mag + News + Lib + Two_Adults_14

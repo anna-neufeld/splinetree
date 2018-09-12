@@ -14,6 +14,10 @@
 #' by their standard deviation.
 #' @export
 #' @importFrom mosaic shuffle
+#' @examples
+#' \donttest{
+#' importanceMatrix <- varImpY(forest)
+#' }
 varImpY = function(forest, method = "oob") {
 
     vars = attr(terms(forest$formula), "term.labels")

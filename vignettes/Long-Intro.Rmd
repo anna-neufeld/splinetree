@@ -149,16 +149,6 @@ We build an example spline forest using the same dataset introduced above, using
 forest <- splineForest(split_formula, tformula, idvar = "ID", data = nlsySample, degree = 1, df = 3, intercept = TRUE,ntree = 50, prob = 0.5, cp = 0.005)
 ```
 
-```{r, include=FALSE}
-coeff_imps <- importance[[2]] 
-shape_imps <- importance[[3]]
-Y_imps <- importance[[1]]
-```
-
-```{r, include=FALSE, eval=FALSE}
-save(forest, file = "./data/forest.rda", compress = "xz")
-```
-
 This ``forest`` object contains several important attributes. The individual trees in the forest are saved in ``forest$Trees``. Looking at ``forest$Trees[[1]]``, we see that, due to the bootsrapping and the randomization, new variables appear that did not appear in a single tree. 
 
 ```{r}
@@ -201,7 +191,13 @@ coeff_imps <- varImpCoeff(forest, removeIntercept = FALSE)
 shape_imps <- varImpCoeff(forest, removeIntercept = TRUE)
 ```
 
-```{r, eval=FALSE, include=FALSE}
+```{r, echo=FALSE}
+coeff_imps <- importance[[2]] 
+shape_imps <- importance[[3]]
+Y_imps <- importance[[1]]
+```
+
+```{r, eval=FALSE, echo=FALSE}
 save(Y_imps, coeff_imps, shape_imps, file = 'importance.rda')
 ```
 
