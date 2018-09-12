@@ -73,7 +73,7 @@ stPlot(first_tree)
 
 For an alternate view of the trajectories side by side, we can also use the `spaghettiPlot()`` function to see the three terminal nodes next to each other for comparison.
 
-```{r}
+```{r, eval=FALSE}
 spaghettiPlot(first_tree)
 ```
 
@@ -162,7 +162,7 @@ The tree for the first example is quite small, and more homogeneity might be obt
 
 We also notice that one of our terminal nodes, which only includes individuals with 12 or more siblings, only has 16 people in it. While it is interesting to see that individuals in our sample with 12 or more siblings tend to gain weight much more rapidly than individuals with less than 12 siblings, this finding applies to a very small group and may be unlikely to generalize to a larger population. To avoid forming very small groups that may only be applicable in our sample, we can provide the tree with a minimum node size. We can modify the tree as follows, and the quickly check the tree size, defined as the number of terminal nodes. 
 
-```{r}
+```{r, eval=FALSE}
 second_tree <- splineTree(split_formula, tformula, idvar, data, minNodeSize = 20, cp = 0.001)
 treeSize(second_tree)
 ```
@@ -176,24 +176,20 @@ stPrint(third_tree)
 stPlot(third_tree, colors = c("red", "green", "blue", "cyan", "magenta", "grey"))
 ```
 
-This tree seems reasonably sized; it is small enough to plot and understand, but gives us a more to work with than our first tree. In general, there is no "best"" size for a tree as there are trade offs. With a larger tree, you gain accuracy at the expense of precision and interpretability. It is also possible to build a large tree and then prune it when plotting for ease of visualization. This is done using the ``prune`` function, which is in the ``rpart`` package. For example, we can recover the plot above using:
-
-```{r}
-stPlot(prune(second_tree, cp = 0.005), colors = c("red", "green", "blue", "cyan", "magenta", "grey"))
-```
+This tree seems reasonably sized; it is small enough to plot and understand, but gives us a more to work with than our first tree. In general, there is no "best"" size for a tree as there are trade offs. With a larger tree, you gain accuracy at the expense of precision and interpretability. It is also possible to build a large tree and then prune it when plotting for ease of visualization. This is done using the ``prune`` function, which is in the ``rpart`` package. For example, we could have shrunk the size of ``second_tree`` using ``prune(second_tree, cp=0.005)``. 
 
 ## Controlling the Evaluation Grid
 
-Another way to customize a tree is to change the grid upon which the projection sum of squares split function is evaluated. This can be done through the ``nGrid`` parameter (provide a number of time points to be placed automatically at percentiles of the time variable) or through the ``gridPoints`` parameter (provide a vector of time points). Typically, we want the grid points to cover the domain of interest and an increased number will not effect the tree building process. The default is 7 equally spaced grid points. If we increase this to 50 equally spaced grid points, we get a tree that is quite similar to the previous tree. We can see that ``fourth_tree`` and ``third_tree`` are very similar by prining them out, but we can also use the ``treeSimilarity`` function. The ``treeSimilarity`` function reports the Adjusted Rand Index (see package ``mclust``) between the clusters created by the two trees. This is a useful metric because sometimes, due to highly correlated covariates, two trees that appear to split on different variables may actually define very similar population subgroups. A value close to 1 indicates a very similar clustering, and so we see that our two trees are quite similar in terms of their terminal nodes.  
+Another way to customize a tree is to change the grid upon which the projection sum of squares split function is evaluated. This can be done through the ``nGrid`` parameter (provide a number of time points to be placed automatically at percentiles of the time variable) or through the ``gridPoints`` parameter (provide a vector of time points). Typically, we want the grid points to cover the domain of interest and an increased number will not effect the tree building process. The default is 7 equally spaced grid points. If we increase this to 30 equally spaced grid points, we get a tree that is quite similar to the previous tree. We can see that ``fourth_tree`` and ``third_tree`` are very similar by prining them out, but we can also use the ``treeSimilarity`` function. The ``treeSimilarity`` function reports the Adjusted Rand Index (see package ``mclust``) between the clusters created by the two trees. This is a useful metric because sometimes, due to highly correlated covariates, two trees that appear to split on different variables may actually define very similar population subgroups. A value close to 1 indicates a very similar clustering. In this case, we see that our two trees are quite similar in terms of their terminal nodes.  
 
-```{r}
-fourth_tree <- splineTree(split_formula, tformula, idvar, data, minNodeSize = 20, cp = 0.005, nGrid = 50)
+```{r, eval=FALSE}
+fourth_tree <- splineTree(split_formula, tformula, idvar, data, minNodeSize = 20, cp = 0.005, nGrid = 30)
 treeSimilarity(third_tree, fourth_tree)
 ```
 
 However, if the grid points are concentrated in one area of the trajectory, the tree can change drastically. For example, if we set ``gridPoints = c(18)``, the splits of the tree will be evaluated using only the value of the smoothed BMI trajectories at age 18. This is basically a univariate regression tree built to age-18 BMIs, but it allows individuals who have no measurement for BMI at age 18 to be included by estimating their BMI via their smoothed trajectories. This tree is much less similar to the original tree.  
 
-```{r}
+```{r, eval=FALSE}
 fifth_tree <- splineTree(split_formula, tformula, idvar, data, minNodeSize = 20, cp = 0.005, gridPoints = c(18))
 treeSimilarity(third_tree, fifth_tree)
 ```
@@ -253,7 +249,7 @@ yR2(linear_tree_intercept_big)
 
 The ``yR2()`` function tells us the percentage of variation in actual ``BMI`` that our model explains. This includes both the variation explained by the splits in the tree and the variation explained by the relationship with age that is modeled in the trajectories. Another option is to use the ``projectedR2()`` function, which tells us the percentage of variation in the smoothed ``BMI`` trajectories that the tree can explain.
 
-We note that AGE can explain quite a bit of variation in BMI. But we are interested in how much variation in the trajectories can be explained by the baseline covariates. One advantage of ``projectedR2()`` is that it accounts for the variation explained by the relationship between AGE and BMI. The "total variation" is no longer the total variation of all BMIs around their mean, but rather, it is the total variation of smoothed BMI trajectories around the mean trajectory. Therefore, while performance will appear "worse" with the ``projectedR2()`` metric, the metric more accurately describes the variation explained by the splits of the tree. Furthermore, ``projectedR2()`` can be used on intercept trees and no-intercept trees alike. On trees with intercepts, there is the option to include or ignore the intercept coefficient. When the intercept coefficient is ignored, the metric captures the percentage of variation in trajectory shape that is explained by the splits of the tree. When the intercept is included, the performance includes the percentage of variation in starting level that is explained. 
+We note that AGE can explain quite a bit of variation in BMI. But we are interested in how much variation in the trajectories can be explained by the baseline covariates. One advantage of ``projectedR2()`` is that it accounts for the variation explained by the relationship between AGE and BMI. The "total variation" is no longer the total variation of all BMIs around their mean, but rather the total variation of smoothed BMI trajectories around the mean trajectory. Therefore, the metric more accurately describes the variation explained by the splits of the tree. Furthermore, ``projectedR2()`` can be used on intercept trees and no-intercept trees alike. On trees with intercepts, there is the option to include or ignore the intercept coefficient. When the intercept coefficient is ignored, the metric captures the percentage of variation in trajectory shape that is explained by the splits of the tree. When the intercept is included, the performance includes the percentage of variation in starting level that is explained. 
 
 ```{r}
 projectedR2(linear_tree_intercept, includeIntercept = TRUE)
