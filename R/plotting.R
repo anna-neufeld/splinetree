@@ -344,7 +344,7 @@ spaghettiPlot <- function(model, colors = NULL) {
 #'    data = nlsySample, degree = 1, df = 3,
 #'    intercept = TRUE, cp = 0.005)
 #' }
-#' plotNode(tree, 10, includeData=TRUE)
+#' plotNode(tree, 6, includeData=TRUE)
 plotNode <-  function(tree, node, includeData = FALSE, estimateIntercept = TRUE) {
   nodeIndex <- which(row.names(tree$frame)==toString(node))
   nodeCoeffs <- tree$frame[nodeIndex,]$yval2

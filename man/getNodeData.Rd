@@ -28,8 +28,8 @@ this node is returned (one row of data per ID, original responses replaced by sp
 }
 \examples{
 \dontrun{
-split_formula <- BMI ~ HISP + WHITE + BLACK + SEX + Num_sibs
-  + HGC_FATHER + HGC_MOTHER
+split_formula <- BMI ~ HISP + WHITE + BLACK + SEX +
+  Num_sibs + HGC_FATHER + HGC_MOTHER
 tree <- splineTree(split_formula, BMI~AGE, 'ID', nlsySample, degree=1,
   df=3, intercept=TRUE, cp=0.006, minNodeSize=20)
 }

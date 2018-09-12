@@ -31,5 +31,5 @@ tree <- splineTree(split_formula, tformula, idvar = "ID",
    data = nlsySample, degree = 1, df = 3,
    intercept = TRUE, cp = 0.005)
 }
-plotNode(tree, 10, includeData=TRUE)
+plotNode(tree, 6, includeData=TRUE)
 }

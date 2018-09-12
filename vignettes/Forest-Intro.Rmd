@@ -1,14 +1,13 @@
 ---
 title: "Forest Building with splinetree"
-author: "Anna Neufeld"
+author: "Brianna Heggeseth and Anna Neufeld"
 date: "`r Sys.Date()`"
 bibliography: thesis.bib
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Forest Intro}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{R.rsp::asis}
   %\VignetteEncoding{UTF-8}
-  
+  %\VignetteBuilder: R.rsp
 ---
 
 ```{r setup, include = FALSE}
@@ -209,6 +208,6 @@ The first two panels of the plot look relatively similar. While based on differe
 
 Spline forests are useful tools for understanding which variables may be associated with heterogeneity in longitudninal trajectories in a population. 
 
-
+# References
 
 

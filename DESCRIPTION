@@ -13,9 +13,10 @@ Imports:
     treeClust,
     mclust
 RoxygenNote: 6.0.1.9000
-Suggests: knitr,
+Suggests: R.rsp,
+    knitr,
     rmarkdown,
     testthat
-VignetteBuilder: knitr
+VignetteBuilder: R.rsp
 BugReports: https://github.com/anna-neufeld/splinetree/issues
 URL: https://github.com/anna-neufeld/splinetree
