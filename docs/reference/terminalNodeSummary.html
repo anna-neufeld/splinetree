@@ -85,7 +85,7 @@ terminal node. Otherwise, the summary of just the requested node is printed." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/Forest-Intro.html">Forest Building with splinetree</a>
+      <a href="../articles/Forest-intro.html">Forest Building with splinetree</a>
     </li>
     <li>
       <a href="../articles/Long-Intro.html">Introduction to splinetree</a>
@@ -147,14 +147,10 @@ to a valid terminal node in the tree.</p></td>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>split_formula</span> <span class='kw'>&lt;-</span>  ~ <span class='no'>HISP</span> + <span class='no'>WHITE</span> + <span class='no'>BLACK</span> + <span class='no'>SEX</span> + <span class='no'>Dad_Full_Work</span>
-  + <span class='no'>Mom_Full_Work</span>   + <span class='no'>Age_first_weed</span> + <span class='no'>Age_first_smoke</span> + <span class='no'>Age_first_alc</span>
-  + <span class='no'>Num_sibs</span> + <span class='no'>HGC_FATHER</span> + <span class='no'>HGC_MOTHER</span> + <span class='no'>Mag</span> + <span class='no'>News</span> + <span class='no'>Lib</span> + <span class='no'>Two_Adults_14</span>
-  + <span class='no'>Mother_14</span> + <span class='no'>Father_14</span> + <span class='no'>STABLE_RESIDENCE</span> + <span class='no'>URBAN_14</span> + <span class='no'>South_Birth</span>
-<span class='no'>tree</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='splineTree.html'>splineTree</a></span>(<span class='no'>split_formula</span>, <span class='no'>BMI</span>~<span class='no'>AGE</span>, <span class='st'>'ID'</span>, <span class='no'>nlsySample</span>, <span class='kw'>degree</span><span class='kw'>=</span><span class='fl'>1</span>,
-  <span class='kw'>df</span><span class='kw'>=</span><span class='fl'>3</span>, <span class='kw'>intercept</span><span class='kw'>=</span><span class='fl'>TRUE</span>, <span class='kw'>cp</span><span class='kw'>=</span><span class='fl'>0.006</span>, <span class='kw'>minNodeSize</span><span class='kw'>=</span><span class='fl'>20</span>)
-<span class='co'># }</span><div class='input'><span class='fu'>terminalNodeSummary</span>(<span class='no'>tree</span>)</div><div class='output co'>#&gt; 
+    <pre class="examples"><div class='input'><span class='no'>split_formula</span> <span class='kw'>&lt;-</span> ~<span class='no'>HISP</span> + <span class='no'>WHITE</span> + <span class='no'>BLACK</span> + <span class='no'>SEX</span> + <span class='no'>Num_sibs</span> + <span class='no'>HGC_FATHER</span> + <span class='no'>HGC_MOTHER</span>
+<span class='no'>tree</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='splineTree.html'>splineTree</a></span>(<span class='no'>split_formula</span>, <span class='no'>tformula</span>, <span class='kw'>idvar</span> <span class='kw'>=</span> <span class='st'>"ID"</span>,
+   <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>nlsySample</span>, <span class='kw'>degree</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>df</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+   <span class='kw'>intercept</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>cp</span> <span class='kw'>=</span> <span class='fl'>0.005</span>)</div><div class='output co'>#&gt; <span class='error'>Error in formula(object): object 'tformula' not found</span></div><div class='input'><span class='fu'>terminalNodeSummary</span>(<span class='no'>tree</span>)</div><div class='output co'>#&gt; 
 #&gt;  node number: 4 
 #&gt;    root
 #&gt;    WHITE&lt; 0.5
@@ -164,53 +160,42 @@ to a valid terminal node in the tree.</p></td>
 #&gt;  Coefficients: 23.0892781669265,7.70328941507821,8.38070614243937
 #&gt; ----------
 #&gt; 
-#&gt;  node number: 10 
+#&gt;  node number: 5 
 #&gt;    root
 #&gt;    WHITE&lt; 0.5
 #&gt;    HGC_FATHER&gt;=0.5
-#&gt;    Age_first_weed&lt; 19.5
 #&gt; 
-#&gt;  N: 212
-#&gt;  Coefficients: 21.1948299286121,5.29564932325486,8.16620942045174
+#&gt;  N: 480
+#&gt;  Coefficients: 21.3362159466182,5.7879903529505,9.03876717557183
 #&gt; ----------
 #&gt; 
-#&gt;  node number: 11 
-#&gt;    root
-#&gt;    WHITE&lt; 0.5
-#&gt;    HGC_FATHER&gt;=0.5
-#&gt;    Age_first_weed&gt;=19.5
-#&gt; 
-#&gt;  N: 268
-#&gt;  Coefficients: 21.4480586175783,6.17745415256048,9.72899942962206
-#&gt; ----------
-#&gt; 
-#&gt;  node number: 12 
+#&gt;  node number: 6 
 #&gt;    root
 #&gt;    WHITE&gt;=0.5
 #&gt;    SEX&lt; 1.5
-#&gt;    Age_first_alc&lt; 61.5
 #&gt; 
-#&gt;  N: 236
-#&gt;  Coefficients: 22.4414956835743,3.97316557987453,6.80912312132871
+#&gt;  N: 259
+#&gt;  Coefficients: 22.6936000133576,3.99950986759995,6.89689702760744
 #&gt; ----------
 #&gt; 
-#&gt;  node number: 13 
-#&gt;    root
-#&gt;    WHITE&gt;=0.5
-#&gt;    SEX&lt; 1.5
-#&gt;    Age_first_alc&gt;=61.5
-#&gt; 
-#&gt;  N: 23
-#&gt;  Coefficients: 25.28040965809,4.26982516773896,7.79753363116314
-#&gt; ----------
-#&gt; 
-#&gt;  node number: 7 
+#&gt;  node number: 14 
 #&gt;    root
 #&gt;    WHITE&gt;=0.5
 #&gt;    SEX&gt;=1.5
+#&gt;    HGC_FATHER&lt; 7.5
 #&gt; 
-#&gt;  N: 236
-#&gt;  Coefficients: 20.4572066293522,4.04705667583685,7.44417487303502
+#&gt;  N: 12
+#&gt;  Coefficients: 20.4004082289206,9.02757082718176,9.90302922358699
+#&gt; ----------
+#&gt; 
+#&gt;  node number: 15 
+#&gt;    root
+#&gt;    WHITE&gt;=0.5
+#&gt;    SEX&gt;=1.5
+#&gt;    HGC_FATHER&gt;=7.5
+#&gt; 
+#&gt;  N: 224
+#&gt;  Coefficients: 20.4602494008039,3.78024341772909,7.31245053282688
 #&gt; ----------</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

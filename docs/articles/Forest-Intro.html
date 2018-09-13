@@ -52,7 +52,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/Forest-Intro.html">Forest Building with splinetree</a>
+      <a href="../articles/Forest-intro.html">Forest Building with splinetree</a>
     </li>
     <li>
       <a href="../articles/Long-Intro.html">Introduction to splinetree</a>
@@ -83,12 +83,12 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Forest Building with splinetree</h1>
-                        <h4 class="author">Anna Neufeld</h4>
+                        <h4 class="author">Brianna Heggeseth and Anna Neufeld</h4>
             
-            <h4 class="date">2018-09-10</h4>
+            <h4 class="date">2018-09-12</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/anna-neufeld/splinetree/blob/master/vignettes/Forest-Intro.Rmd"><code>vignettes/Forest-Intro.Rmd</code></a></small>
-      <div class="hidden name"><code>Forest-Intro.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/anna-neufeld/splinetree/blob/master/vignettes/Forest-intro.Rmd"><code>vignettes/Forest-intro.Rmd</code></a></small>
+      <div class="hidden name"><code>Forest-intro.Rmd</code></div>
 
     </div>
 
@@ -260,172 +260,23 @@ predictions &lt;-<span class="st"> </span><span class="kw"><a href="../reference
 <p>The “tree performance” metric involved in the permuation importance could be response-based or projection-based, and the latter metric (in the case of forests that include an intercept) can be modified to either include or exclude the intercept. The function <code><a href="../reference/varImpY.html">varImpY()</a></code> implements response-based projection where the tree performance metric used is the Mean Squared Prediction Error (MSE), as in <span class="citation">Liaw and Wiener (2002)</span>. Alternatively, the <code><a href="../reference/varImpCoeff.html">varImpCoeff()</a></code> funcion uses projection sum of squares, and has an additional arguement <code>removeIntercept</code> to specify whether or not the intercept should be included in the projection sum or squares. As with performance metrics, the variable importance metrics can be calculated according to <code>oob</code>, <code>all</code>, or <code>itb</code> frameworks. The <code>oob</code> method is recommended, because in measuring variable importance it is important to consider which variables are most likely to be associated with the outcome outside of our training sample.</p>
 <p>We can create three different variable importance matrices using our sample forest. We can then compare the response-based importance to the projection-based importances (both including and ignoring the intercept). Each of these importance matrix contains three columns, corresponding to absolute differences in performance, percent differences in performance, and standardized differences in importance. We will use the third column.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Y_imps &lt;-<span class="st"> </span><span class="kw"><a href="../reference/varImpY.html">varImpY</a></span>(forest, <span class="dt">method=</span><span class="st">"oob"</span>)
-## [1] "Working on tree: "
-## [1] 1
-## [1] 2
-## [1] 3
-## [1] 4
-## [1] 5
-## [1] 6
-## [1] 7
-## [1] 8
-## [1] 9
-## [1] 10
-## [1] 11
-## [1] 12
-## [1] 13
-## [1] 14
-## [1] 15
-## [1] 16
-## [1] 17
-## [1] 18
-## [1] 19
-## [1] 20
-## [1] 21
-## [1] 22
-## [1] 23
-## [1] 24
-## [1] 25
-## [1] 26
-## [1] 27
-## [1] 28
-## [1] 29
-## [1] 30
-## [1] 31
-## [1] 32
-## [1] 33
-## [1] 34
-## [1] 35
-## [1] 36
-## [1] 37
-## [1] 38
-## [1] 39
-## [1] 40
-## [1] 41
-## [1] 42
-## [1] 43
-## [1] 44
-## [1] 45
-## [1] 46
-## [1] 47
-## [1] 48
-## [1] 49
-## [1] 50
 coeff_imps &lt;-<span class="st"> </span><span class="kw"><a href="../reference/varImpCoeff.html">varImpCoeff</a></span>(forest, <span class="dt">method=</span><span class="st">"oob"</span>, <span class="dt">removeIntercept=</span><span class="ot">FALSE</span>)
-## [1] "working on tree"
-## [1] 1
-## [1] 2
-## [1] 3
-## [1] 4
-## [1] 5
-## [1] 6
-## [1] 7
-## [1] 8
-## [1] 9
-## [1] 10
-## [1] 11
-## [1] 12
-## [1] 13
-## [1] 14
-## [1] 15
-## [1] 16
-## [1] 17
-## [1] 18
-## [1] 19
-## [1] 20
-## [1] 21
-## [1] 22
-## [1] 23
-## [1] 24
-## [1] 25
-## [1] 26
-## [1] 27
-## [1] 28
-## [1] 29
-## [1] 30
-## [1] 31
-## [1] 32
-## [1] 33
-## [1] 34
-## [1] 35
-## [1] 36
-## [1] 37
-## [1] 38
-## [1] 39
-## [1] 40
-## [1] 41
-## [1] 42
-## [1] 43
-## [1] 44
-## [1] 45
-## [1] 46
-## [1] 47
-## [1] 48
-## [1] 49
-## [1] 50
-shape_imps &lt;-<span class="st"> </span><span class="kw"><a href="../reference/varImpCoeff.html">varImpCoeff</a></span>(forest, <span class="dt">method=</span><span class="st">"oob"</span>, <span class="dt">removeIntercept=</span><span class="ot">TRUE</span>)
-## [1] "working on tree"
-## [1] 1
-## [1] 2
-## [1] 3
-## [1] 4
-## [1] 5
-## [1] 6
-## [1] 7
-## [1] 8
-## [1] 9
-## [1] 10
-## [1] 11
-## [1] 12
-## [1] 13
-## [1] 14
-## [1] 15
-## [1] 16
-## [1] 17
-## [1] 18
-## [1] 19
-## [1] 20
-## [1] 21
-## [1] 22
-## [1] 23
-## [1] 24
-## [1] 25
-## [1] 26
-## [1] 27
-## [1] 28
-## [1] 29
-## [1] 30
-## [1] 31
-## [1] 32
-## [1] 33
-## [1] 34
-## [1] 35
-## [1] 36
-## [1] 37
-## [1] 38
-## [1] 39
-## [1] 40
-## [1] 41
-## [1] 42
-## [1] 43
-## [1] 44
-## [1] 45
-## [1] 46
-## [1] 47
-## [1] 48
-## [1] 49
-## [1] 50</code></pre></div>
+shape_imps &lt;-<span class="st"> </span><span class="kw"><a href="../reference/varImpCoeff.html">varImpCoeff</a></span>(forest, <span class="dt">method=</span><span class="st">"oob"</span>, <span class="dt">removeIntercept=</span><span class="ot">TRUE</span>)</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>))
 <span class="kw"><a href="../reference/plotImp.html">plotImp</a></span>(Y_imps[,<span class="dv">3</span>], <span class="dt">main=</span><span class="st">"Response"</span>)
 <span class="kw"><a href="../reference/plotImp.html">plotImp</a></span>(coeff_imps[,<span class="dv">3</span>], <span class="dt">main =</span> <span class="st">"Coeff w/ Intercept"</span>)
 <span class="kw"><a href="../reference/plotImp.html">plotImp</a></span>(shape_imps[,<span class="dv">3</span>], <span class="dt">main =</span> <span class="st">"Coeff w/out Intercept"</span>)</code></pre></div>
-<p><img src="Forest-Intro_files/figure-html/unnamed-chunk-18-1.png" width="672"></p>
+<p><img src="Forest-Intro_files/figure-html/unnamed-chunk-19-1.png" width="672"></p>
 <p>The first two panels of the plot look relatively similar. While based on different performance metrics, both take into account variability explained by the forest with respect to level of the outcome and shape of the trajectory. The high level of agreement between the first two panels suggests that the projected trajectories are reasonable approximations of the true response; variables that are important in explaining the projected trajectories are also important in explaining the actual responses. The third panel shows more stark differences, as this metric defines performance only in terms of explaining the shape of the trajectory. Sex is far less important when level is ignored, suggesting that sex impacts the level of an individual’s BMI but has almost no bearing on trajectory of BMI over time.</p>
 </div>
 <div id="conclusion" class="section level1">
 <h1 class="hasAnchor">
 <a href="#conclusion" class="anchor"></a>Conclusion</h1>
 <p>Spline forests are useful tools for understanding which variables may be associated with heterogeneity in longitudninal trajectories in a population.</p>
+</div>
+<div id="references" class="section level1 unnumbered">
+<h1 class="hasAnchor">
+<a href="#references" class="anchor"></a>References</h1>
 <div id="refs" class="references">
 <div id="ref-breiman2001random">
 <p>Breiman, Leo. 2001. “Random Forests.” <em>Machine Learning</em> 45 (1). Springer: 5–32.</p>
@@ -451,6 +302,7 @@ shape_imps &lt;-<span class="st"> </span><span class="kw"><a href="../reference/
       <li><a href="#evaluating-a-forest">Evaluating a Forest</a></li>
       <li><a href="#variable-importance">Variable Importance</a></li>
       <li><a href="#conclusion">Conclusion</a></li>
+      <li><a href="#references">References</a></li>
       </ul>
 </div>
       </div>

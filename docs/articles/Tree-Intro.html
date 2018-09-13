@@ -52,7 +52,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/Forest-Intro.html">Forest Building with splinetree</a>
+      <a href="../articles/Forest-intro.html">Forest Building with splinetree</a>
     </li>
     <li>
       <a href="../articles/Long-Intro.html">Introduction to splinetree</a>
@@ -84,7 +84,7 @@
     <div class="page-header toc-ignore">
       <h1>Tree Building with splinetree</h1>
             
-            <h4 class="date">2018-09-10</h4>
+            <h4 class="date">2018-09-12</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/anna-neufeld/splinetree/blob/master/vignettes/Tree-Intro.Rmd"><code>vignettes/Tree-Intro.Rmd</code></a></small>
       <div class="hidden name"><code>Tree-Intro.Rmd</code></div>
@@ -109,28 +109,28 @@
 <li><p>A one-sided split formula specifying the split variables, to be supplied via the <code>splitformula</code> parameter. All split variables should be <em>time constant</em>, meaning that for a given value of the ID varaible, each split variable takes on only one value. These are variables that we suspect might be related to heterogeneity in trajectories in the population. In our example, these are the baseline socioeconomic variables selected from the NLSY.</p></li>
 </ol>
 <p>The data subset below illustrates concepts such as long format, ID variable, and time constant split variable in our dataset. In selecting split variables, we can use <code>HGC_MOTHER</code> and <code>HGC_FATHER</code> because these are baseline variables that were recorded once at the first subject interview and did not change over time. However, <code>HGC</code> (highest grade completed by survey participant) cannot be used as a split variable because the responses for a given individual change as individuals complete more schooling. We will omit <code>HGC</code>, but if we wished to include it we could create a new, time-constant variable using the maximum HGC achieved by each ID.</p>
-<pre><code>##     ID AGE      BMI HGC_MOTHER HGC_FATHER HGC
-## 233 11  21 21.61789         12         12  15
-## 234 11  22 21.61789         12         12  16
-## 237 11  25 21.61789         12         12  16
-## 241 11  30 22.31524         12         12  16
-## 242 11  31 22.73365         12         12  16
-## 244 11  33 20.92054         12         12  16
-## 245 11  34 20.92054         12         12  NA
-## 246 11  35 21.61789         12         12  16
-## 251 11  45 21.61789         12         12  16
-## 302 14  17 20.89355         12         12  11
-## 303 14  18 21.66739         12         12  12
-## 306 14  21 22.44122         12         12  15
-## 307 14  22 23.98889         12         12  16
-## 309 14  24 23.21506         12         12  16
-## 310 14  25 27.85807         12         12  16
-## 311 14  26 27.85807         12         12  16</code></pre>
+<pre><code>##     ID Mag Lib South_Birth URBAN_14 News
+## 233 11   0   1           0        1    0
+## 234 11   0   1           0        1    0
+## 237 11   0   1           0        1    0
+## 241 11   0   1           0        1    0
+## 242 11   0   1           0        1    0
+## 244 11   0   1           0        1    0
+## 245 11   0   1           0        1    0
+## 246 11   0   1           0        1    0
+## 251 11   0   1           0        1    0
+## 302 14   1   1           0        1    1
+## 303 14   1   1           0        1    1
+## 306 14   1   1           0        1    1
+## 307 14   1   1           0        1    1
+## 309 14   1   1           0        1    1
+## 310 14   1   1           0        1    1
+## 311 14   1   1           0        1    1</code></pre>
 <p>After identifying these different types of varaibles in <code>nlsySample</code>, we are ready to make our first call to <code><a href="../reference/splineTree.html">splineTree()</a></code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data &lt;-<span class="st"> </span>nlsySample
 tformula &lt;-<span class="st"> </span>BMI ~<span class="st"> </span>AGE
 idvar &lt;-<span class="st"> "ID"</span>
-split_formula &lt;-<span class="st"> </span><span class="er">~</span><span class="st"> </span>HISP +<span class="st"> </span>WHITE +<span class="st"> </span>BLACK +<span class="st"> </span>SEX +<span class="st"> </span>Dad_Full_Work +<span class="st"> </span>Mom_Full_Work   +<span class="st"> </span>Age_first_weed +<span class="st"> </span>Age_first_smoke +<span class="st"> </span>Age_first_alc +<span class="st"> </span>Num_sibs +<span class="st"> </span>HGC_FATHER +<span class="st"> </span>HGC_MOTHER +<span class="st"> </span>Mag +<span class="st"> </span>News +<span class="st"> </span>Lib +<span class="st"> </span>Two_Adults_14 +<span class="st"> </span>Mother_14 +<span class="st"> </span>Father_14 +<span class="st"> </span>STABLE_RESIDENCE +<span class="st"> </span>URBAN_14 +<span class="st"> </span>South_Birth
+split_formula &lt;-<span class="st"> </span><span class="er">~</span><span class="st"> </span>HISP +<span class="st"> </span>WHITE +<span class="st"> </span>BLACK +<span class="st"> </span>SEX +<span class="st"> </span>Num_sibs +<span class="st"> </span>HGC_FATHER +<span class="st"> </span>HGC_MOTHER
 first_tree &lt;-<span class="st"> </span><span class="kw"><a href="../reference/splineTree.html">splineTree</a></span>(split_formula, tformula, idvar, data)</code></pre></div>
 </div>
 <div id="viewing-and-visualizing-the-first-tree" class="section level2">
@@ -155,7 +155,6 @@ first_tree &lt;-<span class="st"> </span><span class="kw"><a href="../reference/
 <p><img src="Tree-Intro_files/figure-html/unnamed-chunk-5-1.png" width="672"></p>
 <p>For an alternate view of the trajectories side by side, we can also use the `spaghettiPlot()`` function to see the three terminal nodes next to each other for comparison.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/spaghettiPlot.html">spaghettiPlot</a></span>(first_tree)</code></pre></div>
-<p><img src="Tree-Intro_files/figure-html/unnamed-chunk-6-1.png" width="672"></p>
 <p>Because this tree is small, the outputs of <code>stPrint(),</code> <code>stPlot(),</code> and <code><a href="../reference/spaghettiPlot.html">spaghettiPlot()</a></code> are relatively easy to digest. With larger trees, these representations might be harder to decipher. In this case, it might be useful to extract information from the trees in other ways. For example, we can extract the coefficients describing each node directly by using</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/treeSummary.html">treeSummary</a></span>(first_tree)
 ##          var    n       dev  coeffs.1  coeffs.2  coeffs.3
@@ -232,46 +231,37 @@ coeffs &lt;-<span class="st"> </span>node4flatdata$Ydata
 <p>The tree for the first example is quite small, and more homogeneity might be obtained by building a larger tree. The tree size is determined by the value of the <em>complexity parameter</em> (<code>cp</code>). The <em>complexity parameter</em> is passed by <code>splinetree</code> into the internal call to <code>rpart</code> and specifies a minimum improvement in node purity that must occur in order for the tree to make a split. The default <code>cp</code> value of 0.01 typically helps prevent overly large trees. However, since the relationships are fairly weak in the NLSY data, we might consider lowering this number in order to achieve more homogenous nodes.</p>
 <p>We also notice that one of our terminal nodes, which only includes individuals with 12 or more siblings, only has 16 people in it. While it is interesting to see that individuals in our sample with 12 or more siblings tend to gain weight much more rapidly than individuals with less than 12 siblings, this finding applies to a very small group and may be unlikely to generalize to a larger population. To avoid forming very small groups that may only be applicable in our sample, we can provide the tree with a minimum node size. We can modify the tree as follows, and the quickly check the tree size, defined as the number of terminal nodes.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">second_tree &lt;-<span class="st"> </span><span class="kw"><a href="../reference/splineTree.html">splineTree</a></span>(split_formula, tformula, idvar, data, <span class="dt">minNodeSize =</span> <span class="dv">20</span>, <span class="dt">cp =</span> <span class="fl">0.001</span>)
-<span class="kw"><a href="../reference/treeSize.html">treeSize</a></span>(second_tree)
-## [1] 28</code></pre></div>
-<p>When we lower the <code>cp</code> to 0.001, the tree has 28 terminal nodes. This tree will be difficult to plot and interpret. Let’s try a value in-between and set <code>cp</code> to be 0.005.</p>
+<span class="kw"><a href="../reference/treeSize.html">treeSize</a></span>(second_tree)</code></pre></div>
+<p>When we lower the <code>cp</code> to 0.001, the tree has 20 terminal nodes. This tree will be difficult to plot and interpret. Let’s try a value in-between and set <code>cp</code> to be 0.005.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">third_tree &lt;-<span class="st"> </span><span class="kw"><a href="../reference/splineTree.html">splineTree</a></span>(split_formula, tformula, idvar, data, <span class="dt">minNodeSize =</span> <span class="dv">20</span>, <span class="dt">cp =</span> <span class="fl">0.005</span>)
 <span class="kw"><a href="../reference/treeSize.html">treeSize</a></span>(third_tree)  
-## [1] 6
+## [1] 4
 <span class="kw"><a href="../reference/stPrint.html">stPrint</a></span>(third_tree)
 ## n= 1000,  
 ## 
 ## node), split, n , coefficients 
 ##       * denotes terminal node
 ## 
-##  1) root, 1000,  ( 4.2565220, 7.366760,  7.648072) 
-##    2) HGC_MOTHER&lt; 9.5, 257,  ( 6.5815670, 8.587719,  9.165490) 
-##      4) Num_sibs&lt; 8.5, 220,  ( 5.0164670, 8.499161,  8.760898) 
-##        8) Age_first_smoke&lt; 14.5, 25,  (-0.6891532, 8.210705,  2.540081)*
-##        9) Age_first_smoke&gt;=14.5, 195,  ( 5.7479570, 8.536143,  9.558439)*
-##      5) Num_sibs&gt;=8.5, 37,  (15.8875700, 9.114282, 11.571170)*
-##    3) HGC_MOTHER&gt;=9.5, 743,  ( 3.4523010, 6.944437,  7.123205) 
-##      6) BLACK&lt; 0.5, 518,  ( 3.2739180, 5.904564,  6.831089)*
-##      7) BLACK&gt;=0.5, 225,  ( 3.8629780, 9.338454,  7.795720) 
-##       14) Age_first_smoke&lt; 13.5, 22,  (11.1772700, 7.404321, 13.892300)*
-##       15) Age_first_smoke&gt;=13.5, 203,  ( 3.0702950, 9.548064,  7.135008)*
+## 1) root, 1000,  ( 4.256522, 7.366760,  7.648072) 
+##   2) HGC_MOTHER&lt; 9.5, 257,  ( 6.581567, 8.587719,  9.165490) 
+##     4) Num_sibs&lt; 8.5, 220,  ( 5.016467, 8.499161,  8.760898)*
+##     5) Num_sibs&gt;=8.5, 37,  (15.887570, 9.114282, 11.571170)*
+##   3) HGC_MOTHER&gt;=9.5, 743,  ( 3.452301, 6.944437,  7.123205) 
+##     6) BLACK&lt; 0.5, 518,  ( 3.273918, 5.904564,  6.831089)*
+##     7) BLACK&gt;=0.5, 225,  ( 3.862978, 9.338454,  7.795720)*
 <span class="kw"><a href="../reference/stPlot.html">stPlot</a></span>(third_tree, <span class="dt">colors =</span> <span class="kw">c</span>(<span class="st">"red"</span>, <span class="st">"green"</span>, <span class="st">"blue"</span>, <span class="st">"cyan"</span>, <span class="st">"magenta"</span>, <span class="st">"grey"</span>))</code></pre></div>
 <p><img src="Tree-Intro_files/figure-html/unnamed-chunk-17-1.png" width="672"></p>
-<p>This tree seems reasonably sized; it is small enough to plot and understand, but gives us a more to work with than our first tree. In general, there is no “best”" size for a tree as there are trade offs. With a larger tree, you gain accuracy at the expense of precision and interpretability. It is also possible to build a large tree and then prune it when plotting for ease of visualization. This is done using the <code>prune</code> function, which is in the <code>rpart</code> package. For example, we can recover the plot above using:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/stPlot.html">stPlot</a></span>(<span class="kw">prune</span>(second_tree, <span class="dt">cp =</span> <span class="fl">0.005</span>), <span class="dt">colors =</span> <span class="kw">c</span>(<span class="st">"red"</span>, <span class="st">"green"</span>, <span class="st">"blue"</span>, <span class="st">"cyan"</span>, <span class="st">"magenta"</span>, <span class="st">"grey"</span>))</code></pre></div>
-<p><img src="Tree-Intro_files/figure-html/unnamed-chunk-18-1.png" width="672"></p>
+<p>This tree seems reasonably sized; it is small enough to plot and understand, but gives us a little more to work with than our first tree. In general, there is no “best”" size for a tree as there are trade offs. With a larger tree, you gain accuracy at the expense of precision and interpretability. It is also possible to build a large tree and then prune it when plotting for ease of visualization. This is done using the <code>prune</code> function, which is in the <code>rpart</code> package. For example, we could have shrunk the size of <code>second_tree</code> using <code>prune(second_tree, cp=0.005)</code>.</p>
 </div>
 <div id="controlling-the-evaluation-grid" class="section level2">
 <h2 class="hasAnchor">
 <a href="#controlling-the-evaluation-grid" class="anchor"></a>Controlling the Evaluation Grid</h2>
-<p>Another way to customize a tree is to change the grid upon which the projection sum of squares split function is evaluated. This can be done through the <code>nGrid</code> parameter (provide a number of time points to be placed automatically at percentiles of the time variable) or through the <code>gridPoints</code> parameter (provide a vector of time points). Typically, we want the grid points to cover the domain of interest and an increased number will not effect the tree building process. The default is 7 equally spaced grid points. If we increase this to 50 equally spaced grid points, we get a tree that is quite similar to the previous tree. We can see that <code>fourth_tree</code> and <code>third_tree</code> are very similar by prining them out, but we can also use the <code>treeSimilarity</code> function. The <code>treeSimilarity</code> function reports the Adjusted Rand Index (see package <code>mclust</code>) between the clusters created by the two trees. This is a useful metric because sometimes, due to highly correlated covariates, two trees that appear to split on different variables may actually define very similar population subgroups. A value close to 1 indicates a very similar clustering, and so we see that our two trees are quite similar in terms of their terminal nodes.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fourth_tree &lt;-<span class="st"> </span><span class="kw"><a href="../reference/splineTree.html">splineTree</a></span>(split_formula, tformula, idvar, data, <span class="dt">minNodeSize =</span> <span class="dv">20</span>, <span class="dt">cp =</span> <span class="fl">0.005</span>, <span class="dt">nGrid =</span> <span class="dv">50</span>)
-<span class="kw"><a href="../reference/treeSimilarity.html">treeSimilarity</a></span>(third_tree, fourth_tree)
-## [1] 0.802664</code></pre></div>
+<p>Another way to customize a tree is to change the grid upon which the projection sum of squares split function is evaluated. This can be done through the <code>nGrid</code> parameter (provide a number of time points to be placed automatically at percentiles of the time variable) or through the <code>gridPoints</code> parameter (provide a vector of time points). Typically, we want the grid points to cover the domain of interest and an increased number will not effect the tree building process. The default is 7 equally spaced grid points. If we increase this to 30 equally spaced grid points, we get a tree that is quite similar to the previous tree. We can see that <code>fourth_tree</code> and <code>third_tree</code> are very similar by prining them out, but we can also use the <code>treeSimilarity</code> function. The <code>treeSimilarity</code> function reports the Adjusted Rand Index (see package <code>mclust</code>) between the clusters created by the two trees. This is a useful metric because sometimes, due to highly correlated covariates, two trees that appear to split on different variables may actually define very similar population subgroups. A value close to 1 indicates a very similar clustering. In this case, we see that our two trees are quite similar in terms of their terminal nodes.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fourth_tree &lt;-<span class="st"> </span><span class="kw"><a href="../reference/splineTree.html">splineTree</a></span>(split_formula, tformula, idvar, data, <span class="dt">minNodeSize =</span> <span class="dv">20</span>, <span class="dt">cp =</span> <span class="fl">0.005</span>, <span class="dt">nGrid =</span> <span class="dv">30</span>)
+<span class="kw"><a href="../reference/treeSimilarity.html">treeSimilarity</a></span>(third_tree, fourth_tree)</code></pre></div>
 <p>However, if the grid points are concentrated in one area of the trajectory, the tree can change drastically. For example, if we set <code>gridPoints = c(18)</code>, the splits of the tree will be evaluated using only the value of the smoothed BMI trajectories at age 18. This is basically a univariate regression tree built to age-18 BMIs, but it allows individuals who have no measurement for BMI at age 18 to be included by estimating their BMI via their smoothed trajectories. This tree is much less similar to the original tree.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fifth_tree &lt;-<span class="st"> </span><span class="kw"><a href="../reference/splineTree.html">splineTree</a></span>(split_formula, tformula, idvar, data, <span class="dt">minNodeSize =</span> <span class="dv">20</span>, <span class="dt">cp =</span> <span class="fl">0.005</span>, <span class="dt">gridPoints =</span> <span class="kw">c</span>(<span class="dv">18</span>))
-<span class="kw"><a href="../reference/treeSimilarity.html">treeSimilarity</a></span>(third_tree, fifth_tree)
-## [1] 0.3284299</code></pre></div>
+<span class="kw"><a href="../reference/treeSimilarity.html">treeSimilarity</a></span>(third_tree, fifth_tree)</code></pre></div>
 </div>
 <div id="customizing-spline-basis-matrix" class="section level2">
 <h2 class="hasAnchor">
@@ -279,15 +269,15 @@ coeffs &lt;-<span class="st"> </span>node4flatdata$Ydata
 <p>We can also change the spline basis that is used to build our tree using the parameters <code>degree</code>, <code>knots</code>, <code>df</code>, and <code>intercept</code>. By default, the package builds trees using a cubic spline basis (<code>degree = 3</code>) with no internal knots (<code>knots = NULL</code>, df = <code>NULL</code>) and with no intercept (<code>intercept = FALSE</code>). These parameters should be modified to accomodate the complexity of the underyling longitudinal trajectories while balancing the number of observations per person.</p>
 <p><span class="citation">@clarke2008social</span> report that adult BMIs tend to increase steadily throughout early adulthood and then flatten out in later adulthood. This type can be modeled with a quadratic trajectory (<code>degree = 2</code>) or a piecewise linear trajectory (<code>degree = 1</code>). If we choose a linear trajectory, we must add an internal knot.</p>
 <p>We can do this in two ways. One way is to set the <code>df</code> parameter (sets the total number of coefficients) to 2. This will add an internal knot at equally spaced percentiles. In this case, we’d need only one knot and it would be automatically placed at the median age in our dataset.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">linear_tree &lt;-<span class="st"> </span><span class="kw"><a href="../reference/splineTree.html">splineTree</a></span>(split_formula, tformula, idvar, data, <span class="dt">minNodeSize =</span> <span class="dv">20</span>, <span class="dt">cp =</span> <span class="fl">0.007</span>, <span class="dt">degree =</span> <span class="dv">1</span>, <span class="dt">df =</span> <span class="dv">2</span>) 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">linear_tree &lt;-<span class="st"> </span><span class="kw"><a href="../reference/splineTree.html">splineTree</a></span>(split_formula, tformula, idvar, data, <span class="dt">minNodeSize =</span> <span class="dv">20</span>, <span class="dt">cp =</span> <span class="fl">0.005</span>, <span class="dt">degree =</span> <span class="dv">1</span>, <span class="dt">df =</span> <span class="dv">2</span>) 
 <span class="kw"><a href="../reference/stPlot.html">stPlot</a></span>(linear_tree, <span class="dt">colors=</span><span class="kw">c</span>(<span class="st">"red"</span>, <span class="st">"orange"</span>, <span class="st">"yellow"</span>, <span class="st">"green"</span>, <span class="st">"blue"</span>))</code></pre></div>
-<p><img src="Tree-Intro_files/figure-html/unnamed-chunk-21-1.png" width="672"></p>
+<p><img src="Tree-Intro_files/figure-html/unnamed-chunk-20-1.png" width="672"></p>
 <p>If we had compelling evidence about the specific age at which trajectories flatten out, we could use the <code>knots</code> parameter to place the internal knot at a different location. When used, the <code>knots</code> parameter is a list of the locations of the internal knots. Note that, if <code>knots</code> is supplied, the <code>df</code> parameter will be ignored. Regardless of the values of <code>knots</code> and <code>df</code>, the boundary knots of the spline basis are always set to the minimum and maximum of the time variable in the data.</p>
 <p>Although choosing a higher degree and more internal knots will allow each projected trajectory to more closely approximate the true trajectory, if any individual has fewer observations than the specifed degrees of freedom, they will be assigned NA coefficients and will be thrown out by <code>rpart</code> during the splitting process. The <code>nlsySample</code> has already been limited to individuals with non-missing BMI data at at least 10 time points, and so as long as we do not exceed 10 degrees of freedom this will not be a problem. Another concern involves the placement of internal knots. If an individual has many observations but all of these observations are clustered together on one side of an internal knot, then the coefficient describing the part of the trajectory on the other side of the knot may be NA or it may take on an extreme value. Therefore, before choosing internal knots, we must ensure that all of our individuals have data on both sides of the internal knot. In the <code>nlsySample</code>, we have already ensured that the range from first observation to last observation of all individuals is at least 20 years to protect from this problem.</p>
 <p>As a final customization, we can add an intercept to our tree. When <code>intercept = FALSE</code>, the splits of the tree are made based solely on the shape of the trajectories, while ignoring the level. One downside of no-intercept trees is that they can not be used to predict responses. To add an intercept to the linear tree, we must increase the <code>df</code> to 3, because we now need 3 total coefficients (one for the intercept, one for the 1-degree polynomial, and one for the internal knot).</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">linear_tree_intercept &lt;-<span class="st"> </span><span class="kw"><a href="../reference/splineTree.html">splineTree</a></span>(split_formula, tformula, idvar, data, <span class="dt">minNodeSize =</span> <span class="dv">20</span>, <span class="dt">cp =</span> <span class="fl">0.007</span>, <span class="dt">degree =</span> <span class="dv">1</span>, <span class="dt">df =</span> <span class="dv">3</span>, <span class="dt">intercept =</span> <span class="ot">TRUE</span>) 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">linear_tree_intercept &lt;-<span class="st"> </span><span class="kw"><a href="../reference/splineTree.html">splineTree</a></span>(split_formula, tformula, idvar, data, <span class="dt">minNodeSize =</span> <span class="dv">20</span>, <span class="dt">cp =</span> <span class="fl">0.005</span>, <span class="dt">degree =</span> <span class="dv">1</span>, <span class="dt">df =</span> <span class="dv">3</span>, <span class="dt">intercept =</span> <span class="ot">TRUE</span>) 
 <span class="kw"><a href="../reference/stPlot.html">stPlot</a></span>(linear_tree_intercept)</code></pre></div>
-<p><img src="Tree-Intro_files/figure-html/unnamed-chunk-22-1.png" width="672"></p>
+<p><img src="Tree-Intro_files/figure-html/unnamed-chunk-21-1.png" width="672"></p>
 <p>Looking at the difference between this tree and our previous trees is instructive. Our previous trees did not use <code>SEX</code> as a split variable. This suggests that sex may impact the level of an individual’s BMI but not the change in BMI over time.</p>
 </div>
 </div>
@@ -297,30 +287,30 @@ coeffs &lt;-<span class="st"> </span>node4flatdata$Ydata
 <p>Now that we have built a few trees and have seen how to work with them, we might wonder how well the tree explains the variation in longitudinal trajectories. For this, we need measures of tree performance. One way to define performance is to focus on the residuals, or prediction errors. This can only be done with tree with an intercept included. To start, we can make predictions from our tree on a training set and look at how well the predicted BMI values match the actual BMI values. The <code><a href="../reference/predictY.html">predictY()</a></code> function also allows the option of predictions on a distinct test set, and so we could also measure out of sample performance.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">predictions &lt;-<span class="st"> </span><span class="kw"><a href="../reference/predictY.html">predictY</a></span>(linear_tree_intercept)
 <span class="kw">cor</span>(predictions, nlsySample$BMI)
-## [1] 0.4201772
+## [1] 0.4104342
 <span class="kw">plot</span>(predictions, (predictions -<span class="st"> </span>nlsySample$BMI), <span class="dt">xlab =</span> <span class="st">"Predicted BMI"</span>, <span class="dt">ylab =</span> <span class="st">"Residual"</span>)</code></pre></div>
-<p><img src="Tree-Intro_files/figure-html/unnamed-chunk-23-1.png" width="672"></p>
-<p>We have far more negative residuals than positive residuals. The maximum BMI in the dataset is 59.04, but the maximum predicted BMI is just 32.89. Although several individuals in the sample have extremely large BMIs, no node in the tree predicts these BMIs. This suggests that no subgroup of the population that can be described using only these baseline split variables isolates individuals with very high BMIs; to form such a subgroup, we would likely need other covariates, such as an average exercise level or a diet description.</p>
+<p><img src="Tree-Intro_files/figure-html/unnamed-chunk-22-1.png" width="672"></p>
+<p>We have far more negative residuals than positive residuals. The maximum BMI in the dataset is 59.04, but the maximum predicted BMI is just 31.47. Although several individuals in the sample have extremely large BMIs, no node in the tree predicts these BMIs. This suggests that no subgroup of the population that can be described using only these baseline split variables isolates individuals with very high BMIs; to form such a subgroup, we would likely need other covariates, such as an average exercise level or a diet description.</p>
 <p>As a metric of our trees performance, we can also compute an <span class="math inline">\(R^2\)</span> measure of the total percentage of variation in response that is explained by our tree.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/yR2.html">yR2</a></span>(linear_tree_intercept)
-## [1] 0.1764301</code></pre></div>
+## [1] 0.1683372</code></pre></div>
 <p>The <span class="math inline">\(R^2\)</span> value for our tree is relatively low. We already know from above that we are unable to explain extremely high BMIs, and this shortcoming is reflected in the <span class="math inline">\(R^2\)</span> value. We can increase <span class="math inline">\(R^2\)</span> by creating an extremely large tree, but this tree is unlikely to perform well out of sample.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">linear_tree_intercept_big &lt;-<span class="st"> </span><span class="kw"><a href="../reference/splineTree.html">splineTree</a></span>(split_formula, tformula, idvar, data, <span class="dt">minNodeSize =</span> <span class="dv">5</span>, <span class="dt">cp =</span> <span class="fl">0.0001</span>, <span class="dt">degree =</span> <span class="dv">1</span>, <span class="dt">df =</span> <span class="dv">3</span>, <span class="dt">intercept =</span> <span class="ot">TRUE</span>) 
 <span class="kw"><a href="../reference/treeSize.html">treeSize</a></span>(linear_tree_intercept_big)
-## [1] 120
+## [1] 107
 <span class="kw"><a href="../reference/yR2.html">yR2</a></span>(linear_tree_intercept_big)
-## [1] 0.4314036</code></pre></div>
+## [1] 0.3190551</code></pre></div>
 <p>The <code><a href="../reference/yR2.html">yR2()</a></code> function tells us the percentage of variation in actual <code>BMI</code> that our model explains. This includes both the variation explained by the splits in the tree and the variation explained by the relationship with age that is modeled in the trajectories. Another option is to use the <code><a href="../reference/projectedR2.html">projectedR2()</a></code> function, which tells us the percentage of variation in the smoothed <code>BMI</code> trajectories that the tree can explain.</p>
-<p>We note that AGE can explain quite a bit of variation in BMI. But we are interested in how much variation in the trajectories can be explained by the baseline covariates. One advantage of <code><a href="../reference/projectedR2.html">projectedR2()</a></code> is that it accounts for the variation explained by the relationship between AGE and BMI. The “total variation” is no longer the total variation of all BMIs around their mean, but rather, it is the total variation of smoothed BMI trajectories around the mean trajectory. Therefore, while performance will appear “worse” with the <code><a href="../reference/projectedR2.html">projectedR2()</a></code> metric, the metric more accurately describes the variation explained by the splits of the tree. Furthermore, <code><a href="../reference/projectedR2.html">projectedR2()</a></code> can be used on intercept trees and no-intercept trees alike. On trees with intercepts, there is the option to include or ignore the intercept coefficient. When the intercept coefficient is ignored, the metric captures the percentage of variation in trajectory shape that is explained by the splits of the tree. When the intercept is included, the performance includes the percentage of variation in starting level that is explained.</p>
+<p>We note that AGE can explain quite a bit of variation in BMI. But we are interested in how much variation in the trajectories can be explained by the baseline covariates. One advantage of <code><a href="../reference/projectedR2.html">projectedR2()</a></code> is that it accounts for the variation explained by the relationship between AGE and BMI. The “total variation” is no longer the total variation of all BMIs around their mean, but rather the total variation of smoothed BMI trajectories around the mean trajectory. Therefore, the metric more accurately describes the variation explained by the splits of the tree. Furthermore, <code><a href="../reference/projectedR2.html">projectedR2()</a></code> can be used on intercept trees and no-intercept trees alike. On trees with intercepts, there is the option to include or ignore the intercept coefficient. When the intercept coefficient is ignored, the metric captures the percentage of variation in trajectory shape that is explained by the splits of the tree. When the intercept is included, the performance includes the percentage of variation in starting level that is explained.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/projectedR2.html">projectedR2</a></span>(linear_tree_intercept, <span class="dt">includeIntercept =</span> <span class="ot">TRUE</span>)
 ##            [,1]
-## [1,] 0.06304377
+## [1,] 0.05385963
 <span class="kw"><a href="../reference/projectedR2.html">projectedR2</a></span>(linear_tree_intercept, <span class="dt">includeIntercept =</span> <span class="ot">FALSE</span>)
 ##            [,1]
-## [1,] 0.03854126
+## [1,] 0.03834807
 <span class="kw"><a href="../reference/projectedR2.html">projectedR2</a></span>(linear_tree)
 ##            [,1]
-## [1,] 0.05891497</code></pre></div>
+## [1,] 0.04195184</code></pre></div>
 <p>These numbers are quite low, which is not wholly surprising. Most of the variation in BMI that can be explained by AGE. Unfortunately, BMI goes up as we get older, on average. Once the relationship between BMI and AGE is accounted for, without any information about diet or exercise or other habits, there is only a small amount of variation in the trajectory patterns that can be explained by these baseline socioeconomic factors.</p>
 <p>In order to understand the <code>projectedR2</code> performance of a tree, it might be useful to compare predicted coefficients and actual coefficients for a certain individual. To do this, we can use the <code><a href="../reference/predictCoeffs.html">predictCoeffs()</a></code> function. If no test set is provided, <code><a href="../reference/predictCoeffs.html">predictCoeffs(tree)</a></code> uses <code>tree$parms$flat_data</code> as the test set, and so the rows of the data structure returned will correspond to rows in <code>tree$parms$flat_data</code>.</p>
 <p>Suppose that we were really curious about how our linear intercept tree performed for the individual in our dataset with ID=559. We could plot this individual’s actual BMI data along with their smoothed trajectory and their predicted trajectory. In order to view an individual’s own smoothed trajectory, we need to obtain their individual coefficients and reconstruct the appropriate basis matrix. In order to view their predicted trajectory, we could use <code><a href="../reference/predictCoeffs.html">predictCoeffs()</a></code> and a basis matrix, but we could obtain the same results using the <code><a href="../reference/predictY.html">predictY()</a></code> function. Both methods are shown below for the sake of an instructive example.</p>
@@ -345,12 +335,16 @@ predicted &lt;-<span class="st"> </span>basisMat %*%<span class="st"> </span>per
 <span class="kw">points</span>(persondata$AGE, predicted, <span class="dt">type=</span><span class="st">'l'</span>, <span class="dt">col=</span><span class="st">"blue"</span>)
 #### Add the points obtained from "predictY" to show that they match the blue line
 <span class="kw">points</span>(persondata$AGE, <span class="kw"><a href="../reference/predictY.html">predictY</a></span>(linear_tree_intercept, persondata), <span class="dt">col =</span> <span class="st">"blue"</span>, <span class="dt">pch =</span> <span class="dv">19</span>)</code></pre></div>
-<p><img src="Tree-Intro_files/figure-html/unnamed-chunk-27-1.png" width="672"> We see from the plot that using <code><a href="../reference/predictCoeffs.html">predictCoeffs()</a></code> and <code><a href="../reference/predictY.html">predictY()</a></code> eventually yield the same predicted trajectory. We see that the predicted trajectory for the tree node tends to estimate lower body mass index values than the individual trajectory, echoing the finding above that our model does not seem to predict large BMIs very well.</p>
-<div id="conclusion" class="section level2">
-<h2 class="hasAnchor">
-<a href="#conclusion" class="anchor"></a>Conclusion</h2>
+<p><img src="Tree-Intro_files/figure-html/unnamed-chunk-26-1.png" width="672"> We see from the plot that using <code><a href="../reference/predictCoeffs.html">predictCoeffs()</a></code> and <code><a href="../reference/predictY.html">predictY()</a></code> eventually yield the same predicted trajectory. We see that the predicted trajectory for the tree node tends to estimate lower body mass index values than the individual trajectory, echoing the finding above that our model does not seem to predict large BMIs very well.</p>
+</div>
+<div id="conclusion" class="section level1">
+<h1 class="hasAnchor">
+<a href="#conclusion" class="anchor"></a>Conclusion</h1>
 <p>In this vignette, we saw how to build a tree and then customize the tree by altering the tree size, the spline basis, and the projection grid. We also saw how to print or plot a spline tree, work with splinetree components by hand, and evaluate a splinetree using <span class="math inline">\(R^2\)</span> metrics. One aspect of our trees that we have yet to address is variable importance. Different trees that we built throughout this vignette included different sets of split variables. Faced with this inconsistency, how do we know which of the split variables contribute most to the portion of varation in BMI trajectory that we are able to explain? To answer this question most accurately, we must use spline forests. For more information, see the <em>Forest Building with SplineTree</em> Vignette.</p>
 </div>
+<div id="references" class="section level1">
+<h1 class="hasAnchor">
+<a href="#references" class="anchor"></a>References</h1>
 </div>
   </div>
 
@@ -368,11 +362,9 @@ predicted &lt;-<span class="st"> </span>basisMat %*%<span class="st"> </span>per
       <li><a href="#customizing-spline-basis-matrix">Customizing Spline Basis Matrix</a></li>
       </ul>
 </li>
-      <li>
-<a href="#prediction-and-evaluation">Prediction and Evaluation</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#conclusion">Conclusion</a></li>
-      </ul>
-</li>
+      <li><a href="#prediction-and-evaluation">Prediction and Evaluation</a></li>
+      <li><a href="#conclusion">Conclusion</a></li>
+      <li><a href="#references">References</a></li>
       </ul>
 </div>
       </div>

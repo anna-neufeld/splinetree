@@ -85,7 +85,7 @@ returns predictions for the training data. This function is most meaningful if m
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/Forest-Intro.html">Forest Building with splinetree</a>
+      <a href="../articles/Forest-intro.html">Forest Building with splinetree</a>
     </li>
     <li>
       <a href="../articles/Long-Intro.html">Introduction to splinetree</a>
@@ -149,14 +149,10 @@ returns predictions for the training data. This function is most meaningful if m
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>split_formula</span> <span class='kw'>&lt;-</span>  ~ <span class='no'>HISP</span> + <span class='no'>WHITE</span> + <span class='no'>BLACK</span> + <span class='no'>SEX</span> + <span class='no'>Dad_Full_Work</span>
-  + <span class='no'>Mom_Full_Work</span>   + <span class='no'>Age_first_weed</span> + <span class='no'>Age_first_smoke</span> + <span class='no'>Age_first_alc</span>
-  + <span class='no'>Num_sibs</span> + <span class='no'>HGC_FATHER</span> + <span class='no'>HGC_MOTHER</span> + <span class='no'>Mag</span> + <span class='no'>News</span> + <span class='no'>Lib</span> + <span class='no'>Two_Adults_14</span>
-  + <span class='no'>Mother_14</span> + <span class='no'>Father_14</span> + <span class='no'>STABLE_RESIDENCE</span> + <span class='no'>URBAN_14</span> + <span class='no'>South_Birth</span>
-<span class='no'>tree</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='splineTree.html'>splineTree</a></span>(<span class='no'>split_formula</span>, <span class='no'>BMI</span>~<span class='no'>AGE</span>, <span class='st'>'ID'</span>, <span class='no'>nlsySample</span>, <span class='kw'>degree</span><span class='kw'>=</span><span class='fl'>1</span>,
-  <span class='kw'>df</span><span class='kw'>=</span><span class='fl'>3</span>, <span class='kw'>intercept</span><span class='kw'>=</span><span class='fl'>TRUE</span>, <span class='kw'>cp</span><span class='kw'>=</span><span class='fl'>0.006</span>, <span class='kw'>minNodeSize</span><span class='kw'>=</span><span class='fl'>20</span>)
-<span class='co'># }</span><div class='input'><span class='fu'>plot</span>(<span class='fu'>predictY</span>(<span class='no'>tree</span>), <span class='no'>tree</span>$<span class='no'>parms</span>$<span class='no'>data</span><span class='kw'>[[</span><span class='no'>tree</span>$<span class='no'>parms</span>$<span class='no'>yvar</span>]])</div><div class='img'><img src='predictY-1.png' alt='' width='700' height='433' /></div></pre>
+    <pre class="examples"><div class='input'><span class='no'>split_formula</span> <span class='kw'>&lt;-</span> ~<span class='no'>HISP</span> + <span class='no'>WHITE</span> + <span class='no'>BLACK</span> + <span class='no'>SEX</span> + <span class='no'>Num_sibs</span> + <span class='no'>HGC_FATHER</span> + <span class='no'>HGC_MOTHER</span>
+<span class='no'>tree</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='splineTree.html'>splineTree</a></span>(<span class='no'>split_formula</span>, <span class='no'>tformula</span>, <span class='kw'>idvar</span> <span class='kw'>=</span> <span class='st'>"ID"</span>,
+   <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>nlsySample</span>, <span class='kw'>degree</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>df</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+   <span class='kw'>intercept</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>cp</span> <span class='kw'>=</span> <span class='fl'>0.005</span>)</div><div class='output co'>#&gt; <span class='error'>Error in formula(object): object 'tformula' not found</span></div><div class='input'><span class='fu'>plot</span>(<span class='fu'>predictY</span>(<span class='no'>tree</span>), <span class='no'>tree</span>$<span class='no'>parms</span>$<span class='no'>data</span><span class='kw'>[[</span><span class='no'>tree</span>$<span class='no'>parms</span>$<span class='no'>yvar</span>]])</div><div class='img'><img src='predictY-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

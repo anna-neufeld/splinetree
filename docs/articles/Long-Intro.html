@@ -52,7 +52,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/Forest-Intro.html">Forest Building with splinetree</a>
+      <a href="../articles/Forest-intro.html">Forest Building with splinetree</a>
     </li>
     <li>
       <a href="../articles/Long-Intro.html">Introduction to splinetree</a>
@@ -84,7 +84,7 @@
     <div class="page-header toc-ignore">
       <h1>Introduction to splinetree</h1>
             
-            <h4 class="date">2018-09-10</h4>
+            <h4 class="date">2018-09-12</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/anna-neufeld/splinetree/blob/master/vignettes/Long-Intro.Rmd"><code>vignettes/Long-Intro.Rmd</code></a></small>
       <div class="hidden name"><code>Long-Intro.Rmd</code></div>
@@ -256,7 +256,7 @@ shape_imps &lt;-<span class="st"> </span><span class="kw"><a href="../reference/
 <span class="kw"><a href="../reference/plotImp.html">plotImp</a></span>(Y_imps[,<span class="dv">3</span>], <span class="dt">main =</span> <span class="st">"Response"</span>)
 <span class="kw"><a href="../reference/plotImp.html">plotImp</a></span>(coeff_imps[,<span class="dv">3</span>], <span class="dt">main =</span><span class="st">"Coeff w/ Intercept"</span>)
 <span class="kw"><a href="../reference/plotImp.html">plotImp</a></span>(shape_imps[,<span class="dv">3</span>], <span class="dt">main =</span> <span class="st">"Coeff w/out Intercept"</span>)</code></pre></div>
-<p><img src="Long-Intro_files/figure-html/unnamed-chunk-16-1.png" width="672"></p>
+<p><img src="Long-Intro_files/figure-html/unnamed-chunk-15-1.png" width="672"></p>
 <p>Using a splineForest, some new variables have relatively high importance. For example, while HGC_MOTHER did not appear in a splineTree, it has a similar overall imporance to HGC_FATHER. These two variables may be unlikely to appear in the same tree due to their correlation (0.667 among complete cases), but the permutation importance metric shows that both variables are associated with the level and the shape of the outcome. The first two panels of the graph are quite similar because they both take into account level and shape; the difference is that the first panel looks at how influential the variables are for approximating BMI values, whereas the second panel looks at how influential the variables are for approximating the smoothed BMI trajectories. The fact that the panels look similar is good because it suggests that the smoothed trajectories used are reasonable approximations of true BMI.</p>
 <p>The third panel of the graph shows more differences. When the intercept of the smoothed trajectories is ignored, the <code>SEX</code> variable loses all importance. This mirrors the observation from our splineTree, where <code>SEX</code> appeared in the intercept tree but not the no intercept tree. Now that we are using a forest, we can more confidently assert that reported sex is associated with the level of BMI but not the shape of the trajectory over time.</p>
 </div>

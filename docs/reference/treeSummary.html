@@ -86,7 +86,7 @@ node numbers and for extracting coefficeints for a given node." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/Forest-Intro.html">Forest Building with splinetree</a>
+      <a href="../articles/Forest-intro.html">Forest Building with splinetree</a>
     </li>
     <li>
       <a href="../articles/Long-Intro.html">Introduction to splinetree</a>
@@ -153,25 +153,19 @@ the coefficients predicted for each node.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>split_formula</span> <span class='kw'>&lt;-</span> <span class='no'>BMI</span> ~ <span class='no'>HISP</span> + <span class='no'>WHITE</span> + <span class='no'>BLACK</span> + <span class='no'>SEX</span> + <span class='no'>Dad_Full_Work</span>
-  + <span class='no'>Mom_Full_Work</span>   + <span class='no'>Age_first_weed</span> + <span class='no'>Age_first_smoke</span> + <span class='no'>Age_first_alc</span>
-  + <span class='no'>Num_sibs</span> + <span class='no'>HGC_FATHER</span> + <span class='no'>HGC_MOTHER</span> + <span class='no'>Mag</span> + <span class='no'>News</span> + <span class='no'>Lib</span> + <span class='no'>Two_Adults_14</span>
-  + <span class='no'>Mother_14</span> + <span class='no'>Father_14</span> + <span class='no'>STABLE_RESIDENCE</span> + <span class='no'>URBAN_14</span> + <span class='no'>South_Birth</span>
-<span class='no'>tree</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='splineTree.html'>splineTree</a></span>(<span class='no'>split_formula</span>, <span class='no'>BMI</span>~<span class='no'>AGE</span>, <span class='st'>'ID'</span>, <span class='no'>nlsySample</span>, <span class='kw'>degree</span><span class='kw'>=</span><span class='fl'>1</span>,
-  <span class='kw'>df</span><span class='kw'>=</span><span class='fl'>3</span>, <span class='kw'>intercept</span><span class='kw'>=</span><span class='fl'>TRUE</span>, <span class='kw'>cp</span><span class='kw'>=</span><span class='fl'>0.006</span>, <span class='kw'>minNodeSize</span><span class='kw'>=</span><span class='fl'>20</span>)
-<span class='co'># }</span><div class='input'><span class='fu'>treeSummary</span>(<span class='no'>tree</span>)</div><div class='output co'>#&gt;               var    n        dev  coeffs.1  coeffs.2  coeffs.3
-#&gt; 1           WHITE 1000 163603.659 21.524159  4.961796  8.091247
-#&gt; 2      HGC_FATHER  505  86430.024 21.423001  5.882807  9.006190
-#&gt; 4          &lt;leaf&gt;   25   5488.602 23.089278  7.703289  8.380706
-#&gt; 5  Age_first_weed  480  79468.029 21.336216  5.787990  9.038767
-#&gt; 10         &lt;leaf&gt;  212  31908.127 21.194830  5.295649  8.166209
-#&gt; 11         &lt;leaf&gt;  268  46492.235 21.448059  6.177454  9.728999
-#&gt; 3             SEX  495  73724.077 21.627360  4.022179  7.157821
-#&gt; 6   Age_first_alc  259  27679.034 22.693600  3.999510  6.896897
-#&gt; 12         &lt;leaf&gt;  236  21368.254 22.441496  3.973166  6.809123
-#&gt; 13         &lt;leaf&gt;   23   4808.222 25.280410  4.269825  7.797534
-#&gt; 7          &lt;leaf&gt;  236  42156.361 20.457207  4.047057  7.444175</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>split_formula</span> <span class='kw'>&lt;-</span> ~<span class='no'>HISP</span> + <span class='no'>WHITE</span> + <span class='no'>BLACK</span> + <span class='no'>SEX</span> + <span class='no'>Num_sibs</span> + <span class='no'>HGC_FATHER</span> + <span class='no'>HGC_MOTHER</span>
+<span class='no'>tree</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='splineTree.html'>splineTree</a></span>(<span class='no'>split_formula</span>, <span class='no'>tformula</span>, <span class='kw'>idvar</span> <span class='kw'>=</span> <span class='st'>"ID"</span>,
+   <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>nlsySample</span>, <span class='kw'>degree</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>df</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+   <span class='kw'>intercept</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>cp</span> <span class='kw'>=</span> <span class='fl'>0.005</span>)</div><div class='output co'>#&gt; <span class='error'>Error in formula(object): object 'tformula' not found</span></div><div class='input'><span class='fu'>treeSummary</span>(<span class='no'>tree</span>)</div><div class='output co'>#&gt;           var    n        dev  coeffs.1  coeffs.2  coeffs.3
+#&gt; 1       WHITE 1000 163603.659 21.524159  4.961796  8.091247
+#&gt; 2  HGC_FATHER  505  86430.024 21.423001  5.882807  9.006190
+#&gt; 4      &lt;leaf&gt;   25   5488.602 23.089278  7.703289  8.380706
+#&gt; 5      &lt;leaf&gt;  480  79468.029 21.336216  5.787990  9.038767
+#&gt; 3         SEX  495  73724.077 21.627360  4.022179  7.157821
+#&gt; 6      &lt;leaf&gt;  259  27679.034 22.693600  3.999510  6.896897
+#&gt; 7  HGC_FATHER  236  42156.361 20.457207  4.047057  7.444175
+#&gt; 14     &lt;leaf&gt;   12   3158.573 20.400408  9.027571  9.903029
+#&gt; 15     &lt;leaf&gt;  224  37718.119 20.460249  3.780243  7.312451</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
