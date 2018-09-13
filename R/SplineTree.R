@@ -42,8 +42,6 @@ individual_spline <- function(person, idvar, yvar,
 #' @param data The full dataset to be flattened (long form)
 #' @return A wide format dataset with spline coefficients as the responses.
 #' @export
-#' @examples
-#' flatten_predictors('ID', nlsySample)
 #' @keywords internal
 flatten_predictors <- function(idvar, data) {
     ## Assuming that the splitting explanatory
@@ -177,7 +175,6 @@ getBasisMat <- function(yvar, tvar, idvar, data,
 #' tree1 <- splineTree(splitForm, BMI~AGE, 'ID', nlsySample, degree=3, intercept=TRUE, cp=0.005)
 #' stPrint(tree1)
 #' stPlot(tree1)
-#' projectedR2(tree1)
 splineTree <- function(splitFormula, tformula,
     idvar, data, knots = NULL, df = NULL, degree = 3,
     intercept = FALSE, nGrid = 7, gridPoints = NULL, minNodeSize = 10,

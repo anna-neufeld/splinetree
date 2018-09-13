@@ -17,7 +17,4 @@ A wide format dataset with spline coefficients as the responses.
 \description{
 Assumes that splitting explanatory variables do not vary with time. Spline Tree is not meant to handle time-varying covariates.
 }
-\examples{
-flatten_predictors('ID', nlsySample)
-}
 \keyword{internal}

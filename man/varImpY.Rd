@@ -28,5 +28,6 @@ in performance, the "method" parameter is necessary for a variable importance me
 \examples{
 \donttest{
 importanceMatrix <- varImpY(forest)
+plotImp(importanceMatrix[,3])
 }
 }

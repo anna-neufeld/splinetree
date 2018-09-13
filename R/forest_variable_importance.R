@@ -17,6 +17,7 @@
 #' @examples
 #' \donttest{
 #' importanceMatrix <- varImpY(forest)
+#' plotImp(importanceMatrix[,3])
 #' }
 varImpY = function(forest, method = "oob") {
 
@@ -108,7 +109,9 @@ varImpY = function(forest, method = "oob") {
 #' @param method the method to be used. This must be one of "oob" (out of bag), "all", "itb" (in the bag).
 #' @return a matrix of variable importance metrics.
 #' @examples
+#' \donttest{
 #' importanceMatrix <- varImpCoeff(forest, removeIntercept=TRUE)
+#' }
 #' @export
 #' @importFrom mosaic shuffle
 varImpCoeff <- function(forest, removeIntercept = TRUE,
