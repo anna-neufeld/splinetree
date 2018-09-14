@@ -33,7 +33,7 @@ split_formula <- ~HISP+WHITE+BLACK+SEX+Num_sibs+HGC_FATHER+HGC_MOTHER
 tformula <- BMI~AGE
 ```
 
-```{r, eval=FALSE}
+```{r}
 forest <- splineForest(split_formula, tformula, idvar="ID", data=nlsySample, degree=1, df=3, intercept=TRUE,ntree=50, prob=0.5, cp=0.005)
 ```
 

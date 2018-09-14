@@ -3,6 +3,8 @@
 splinetree
 ==========
 
+[![Build Status](https://travis-ci.org/anna-neufeld/splinetree.svg?branch=master)](https://travis-ci.org/anna-neufeld/splinetree)
+
 This package allows users to create, visualize, and evaluate regression trees and random forests for longitudinal or functional data through a spline projection method first suggested by Yu and Lambert (1999).
 
 Installation
@@ -42,7 +44,7 @@ stPrint(tree1)
 stPlot(tree)
 ```
 
-![](README-unnamed-chunk-3-1.png)
+![](https://raw.githubusercontent.com/anna-neufeld/splinetree/master/README-unnamed-chunk-3-1.png)
 
 Example Forest
 --------------
@@ -58,4 +60,4 @@ varImps <- varImpCoeff(forest1)
 plotImp(varImps[,3])
 ```
 
-![](README-unnamed-chunk-5-1.png)
+![](https://raw.githubusercontent.com/anna-neufeld/splinetree/master/README-unnamed-chunk-5-1.png)
