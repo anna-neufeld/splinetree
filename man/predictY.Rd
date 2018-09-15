@@ -21,7 +21,7 @@ returns predictions for the training data. This function is most meaningful if m
 \examples{
 \donttest{
 split_formula <- ~HISP + WHITE + BLACK + SEX + Num_sibs + HGC_FATHER + HGC_MOTHER
-tree <- splineTree(split_formula, tformula, idvar = "ID",
+tree <- splineTree(split_formula, BMI~AGE, idvar = "ID",
    data = nlsySample, degree = 1, df = 3,
    intercept = TRUE, cp = 0.005)
 }
