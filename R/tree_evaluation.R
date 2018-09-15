@@ -11,7 +11,6 @@
 #' without an intercept, this function will return NULL.
 #' @examples
 #' \donttest{
-#' \donttest{
 #' split_formula <- ~HISP + WHITE + BLACK + SEX + Num_sibs + HGC_FATHER + HGC_MOTHER
 #' tree <- splineTree(split_formula, tformula, idvar = "ID",
 #'    data = nlsySample, degree = 1, df = 3,

@@ -108,7 +108,7 @@ varImpY = function(forest, method = "oob") {
 #' @param removeIntercept a boolean value, TRUE if you want to exclude the intercept in the calculations, FALSE otherwise.
 #' @param method the method to be used. This must be one of "oob" (out of bag), "all", "itb" (in the bag).
 #' @return a matrix of variable importance metrics.
-#' @example
+#' @examples
 #' \donttest{
 #' importanceMatrix <- varImpCoeff(forest, removeIntercept=TRUE)
 #' }

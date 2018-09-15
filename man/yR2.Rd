@@ -19,3 +19,12 @@ Computes the percentage of variation in response explained by the spline tree.
 This metric is only meaningful if model$intercept==TRUE.
 If the tree includes an intercept, the measure will be between 0 and 1.
 }
+\examples{
+\donttest{
+split_formula <- ~HISP + WHITE + BLACK + SEX + Num_sibs + HGC_FATHER + HGC_MOTHER
+tree <- splineTree(split_formula, tformula, idvar = "ID",
+   data = nlsySample, degree = 1, df = 3,
+   intercept = TRUE, cp = 0.005)
+}
+yR2(tree)
+}
