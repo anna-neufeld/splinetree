@@ -4,7 +4,7 @@ date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 bibliography: thesis.bib
 vignette: >
-  %\VignetteIndexEntry{Long Intro}
+  %\VignetteIndexEntry{Introduction to splinetree}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

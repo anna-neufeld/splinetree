@@ -7,13 +7,15 @@ test_that("One coefficient tree", {
   R2 = projectedR2(tree1)
   expect_true(R2<1)
   expect_true(R2>0)
-})
-
-test_that("Two coefficient tree", {
   tree1k <- splineTree(BMI~HISP+WHITE+BLACK+HGC_MOTHER+SEX, BMI~AGE, "ID",
                        nlsySample, degree=1, df=2, intercept=FALSE, cp=0.005)
   expect_is(tree1k, "rpart")
   expect_is(tree1k$frame, "data.frame")
+  expect_true(treeSimilarity(tree1, tree1k) < 1)
+})
+
+test_that("Two coefficient tree", {
+
 })
 
 

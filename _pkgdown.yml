@@ -19,7 +19,7 @@ navbar:
       text: Articles
       menu:
       - text: Forest Building with splinetree
-        href: articles/Forest-Intro.html
+        href: articles/Forest-intro.html
       - text: Introduction to splinetree
         href: articles/Long-Intro.html
       - text: Tree Building with splinetree

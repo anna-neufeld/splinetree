@@ -18,7 +18,13 @@ devtools::install_github("anna-neufeld/splinetree")
 Usage
 ------------
 
-For detailed information on using this package, see the package vignettes, which are available at https://anna-neufeld.github.io/splinetree/reference/index.html. 
+Detailed information on using this package can be found in the package vignettes. The package vignettes can be accessed with:
+``` r
+devtools::install_github("anna-neufeld/splinetree", build_vignettes=TRUE)
+browseVignettes(package='splinetree')
+```
+The vignettes are also available on the package website,
+https://anna-neufeld.github.io/splinetree/reference/index.html. 
 
 Example Tree
 ------------

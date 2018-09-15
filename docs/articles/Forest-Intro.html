@@ -152,35 +152,29 @@ preds &lt;-<span class="st"> </span>basisMatrix %*%<span class="st"> </span>mean
 ## node), split, n , coefficients 
 ##       * denotes terminal node
 ## 
-##   1) root, 1000,  (21.60936,  5.115368,  8.337314) 
-##     2) WHITE&lt; 0.5, 519,  (21.45522,  6.147527,  9.303323) 
-##       4) Num_sibs&lt; 5.5, 357,  (21.48675,  5.699979,  9.299943) 
-##         8) HGC_FATHER&lt; 11.5, 149,  (21.73232,  6.300946,  9.540697) 
-##          16) Num_sibs&lt; 3.5, 81,  (22.05022,  7.239676, 10.688970) 
-##            32) HISP&lt; 0.5, 44,  (21.92577,  8.384146, 12.626190) 
-##              64) Num_sibs&lt; 1.5, 18,  (20.68888,  5.907230,  8.830958)*
-##              65) Num_sibs&gt;=1.5, 26,  (22.78207, 10.098930, 15.253660) 
-##               130) Num_sibs&lt; 2.5, 13,  (22.84959, 13.212580, 16.497700)*
-##               131) Num_sibs&gt;=2.5, 13,  (22.71456,  6.985288, 14.009610)*
-##            33) HISP&gt;=0.5, 37,  (22.19821,  5.878685,  8.385259)*
-##          17) Num_sibs&gt;=3.5, 68,  (21.35364,  5.182753,  8.172897)*
-##         9) HGC_FATHER&gt;=11.5, 208,  (21.31084,  5.269479,  9.127479)*
-##       5) Num_sibs&gt;=5.5, 162,  (21.38575,  7.133789,  9.310772) 
-##        10) HGC_MOTHER&lt; 0.5, 13,  (21.90055, 13.428490, 13.628840)*
-##        11) HGC_MOTHER&gt;=0.5, 149,  (21.34084,  6.584587,  8.934028) 
-##          22) SEX&lt; 1.5, 84,  (20.62718,  6.219966,  7.666228)*
-##          23) SEX&gt;=1.5, 65,  (22.26310,  7.055790, 10.572410) 
-##            46) HGC_MOTHER&lt; 11.5, 55,  (22.46468,  7.955327, 11.186020)*
-##            47) HGC_MOTHER&gt;=11.5, 10,  (21.15440,  2.108339,  7.197565)*
-##     3) WHITE&gt;=0.5, 481,  (21.77567,  4.001667,  7.294989) 
-##       6) SEX&lt; 1.5, 248,  (22.94181,  4.224728,  7.096100) 
-##        12) HGC_FATHER&lt; 4.5, 7,  (29.73576,  5.508504,  7.355425)*
-##        13) HGC_FATHER&gt;=4.5, 241,  (22.74448,  4.187440,  7.088567)*
-##       7) SEX&gt;=1.5, 233,  (20.53445,  3.764246,  7.506683) 
-##        14) HGC_FATHER&lt; 8.5, 39,  (20.79033,  5.824313,  8.712418)*
-##        15) HGC_FATHER&gt;=8.5, 194,  (20.48301,  3.350109,  7.264293) 
-##          30) Num_sibs&lt; 5.5, 173,  (20.30595,  3.157936,  6.776692)*
-##          31) Num_sibs&gt;=5.5, 21,  (21.94164,  4.933247, 11.281190)*</code></pre></div>
+##   1) root, 1000,  (21.72044,  4.921239,  7.778585) 
+##     2) Num_sibs&lt; 0.5, 32,  (24.25426,  5.075332,  5.877353)*
+##     3) Num_sibs&gt;=0.5, 968,  (21.63667,  4.916145,  7.841436) 
+##       6) HGC_MOTHER&lt; 10.5, 336,  (21.65032,  6.001674,  8.069025) 
+##        12) HGC_MOTHER&lt; 0.5, 20,  (23.36201,  7.204194, 12.337570)*
+##        13) HGC_MOTHER&gt;=0.5, 316,  (21.54199,  5.925565,  7.798864) 
+##          26) BLACK&lt; 0.5, 216,  (21.68008,  5.079462,  7.382679)*
+##          27) BLACK&gt;=0.5, 100,  (21.24372,  7.753149,  8.697824) 
+##            54) Num_sibs&lt; 2.5, 18,  (20.76172, 13.208060, 12.221360)*
+##            55) Num_sibs&gt;=2.5, 82,  (21.34952,  6.555728,  7.924366)*
+##       7) HGC_MOTHER&gt;=10.5, 632,  (21.62941,  4.339029,  7.720439) 
+##        14) BLACK&lt; 0.5, 467,  (21.72656,  3.898407,  7.080160) 
+##          28) Num_sibs&lt; 5.5, 413,  (21.59877,  3.722543,  6.932977) 
+##            56) SEX&lt; 1.5, 206,  (22.55904,  3.909956,  7.000419)*
+##            57) SEX&gt;=1.5, 207,  (20.64315,  3.536035,  6.865860) 
+##             114) HGC_MOTHER&lt; 11.5, 26,  (19.90763,  6.938583, 10.767110)*
+##             115) HGC_MOTHER&gt;=11.5, 181,  (20.74880,  3.047271,  6.305459)*
+##          29) Num_sibs&gt;=5.5, 54,  (22.70393,  5.243445,  8.205838) 
+##            58) HGC_MOTHER&lt; 12.5, 46,  (23.11512,  5.701495,  8.540350)*
+##            59) HGC_MOTHER&gt;=12.5, 8,  (20.33962,  2.609659,  6.282400)*
+##        15) BLACK&gt;=0.5, 165,  (21.35445,  5.586120,  9.532622) 
+##          30) HGC_FATHER&lt; 15, 157,  (21.39982,  5.267496,  9.166225)*
+##          31) HGC_FATHER&gt;=15, 8,  (20.46403, 11.839110, 16.723160)*</code></pre></div>
 <p>Although we can print any tree in the forest using <code><a href="../reference/stPrint.html">stPrint()</a></code>, it is important to note that these trees are not identical to <code>splineTree</code> objects. These <code>rpart</code> trees do not store all of the extra information that is stored in a typical <code>splinetree</code> object. For example, we can note the difference between a single tree and <code>forest$Trees[[17]]</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sample_tree &lt;-<span class="st"> </span><span class="kw"><a href="../reference/splineTree.html">splineTree</a></span>(split_formula, tformula, <span class="dt">idvar=</span><span class="st">"ID"</span>, 
                           <span class="dt">data=</span>nlsySample, <span class="dt">degree=</span><span class="dv">1</span>, <span class="dt">df=</span><span class="dv">2</span>, <span class="dt">intercept=</span><span class="ot">TRUE</span>, <span class="dt">cp=</span><span class="fl">0.005</span>)
@@ -208,9 +202,9 @@ oob17 &lt;-<span class="st"> </span>forest$flat_data[forest$oob_indices[[<span c
 <p><img src="Forest-Intro_files/figure-html/unnamed-chunk-9-1.png" width="672"></p>
 <p>The bias in splits towards variables with more unique values is exacerbated in forests where each tree is very large; in forests such as these, numeric variables with many unique values will be repeatedly used for successive splits while binary variables are limited. It is sometimes useful to check the size of the average tree in the forest and, if necessary, prune each tree in the forest to reduce the average size.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/avSize.html">avSize</a></span>(forest)
-## [1] 13.3
+## [1] 15.84
 <span class="kw"><a href="../reference/avSize.html">avSize</a></span>(<span class="kw"><a href="../reference/pruneForest.html">pruneForest</a></span>(forest, <span class="dt">cp=</span><span class="fl">0.01</span>))
-## [1] 5.64</code></pre></div>
+## [1] 6.62</code></pre></div>
 </div>
 <div id="making-predictions-with-a-forest" class="section level1">
 <h1 class="hasAnchor">
@@ -225,11 +219,11 @@ predictions &lt;-<span class="st"> </span><span class="kw"><a href="../reference
 <p><img src="Forest-Intro_files/figure-html/unnamed-chunk-12-1.png" width="672"></p>
 <p>When predicting coefficients or responses for a datapoint that was in the training set, we have the option to use one of three different methods, specified by the “methods” parameter in <code>predictYForest</code> and <code>predictCoeffsForest</code>. For a given datapoint, we can either average its prediction over all trees in the forest (<code>method = "all"</code>), over only trees in the forest for which this datapoint was not in the bootstrap sample (<code>method="oob"</code>), or over only trees in the forest for which this datapoint was in the bootstrap sample (<code>method="itb"</code>). The <code>oob</code> method is preferred, as it gives a sense of out-of-sample performance and avoids overfitting the training data. We can compare response predictions for the tree methods in terms of how closely they match the actual responses. As expected, the <code>itb</code> predictions match the actual values much more closely.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cor</span>(nlsySample$BMI, <span class="kw"><a href="../reference/predictYForest.html">predictYForest</a></span>(forest, <span class="dt">method=</span><span class="st">"oob"</span>))
-## [1] 0.40119
+## [1] 0.3976018
 <span class="kw">cor</span>(nlsySample$BMI, <span class="kw"><a href="../reference/predictYForest.html">predictYForest</a></span>(forest, <span class="dt">method=</span><span class="st">"all"</span>))
-## [1] 0.4797273
+## [1] 0.4926619
 <span class="kw">cor</span>(nlsySample$BMI, <span class="kw"><a href="../reference/predictYForest.html">predictYForest</a></span>(forest, <span class="dt">method=</span><span class="st">"itb"</span>))
-## [1] 0.5198</code></pre></div>
+## [1] 0.5419636</code></pre></div>
 </div>
 <div id="evaluating-a-forest" class="section level1">
 <h1 class="hasAnchor">
@@ -238,31 +232,31 @@ predictions &lt;-<span class="st"> </span><span class="kw"><a href="../reference
 <p>Apart from the response vs. projected response choice, we can also measure forest performance using <code>out-of-the-bag</code>, <code>in-the-bag</code>, or all tree predictions. Out of the bag performance metrics are often preferred because they provide a more realistic assesment of how the tree will perform out of sample. Combining these different dimensions of choice, there are 9 different ways that we could evaluate the performance of one single forest with an intercept! We can compare the 9 metrics.</p>
 <p>The response-based <span class="math inline">\(R^2\)</span> measure is the most straightforward. Unsuprisingly, performance is worst using <code>oob</code> predictions and best using <code>itb</code> predictions.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/yR2Forest.html">yR2Forest</a></span>(forest, <span class="dt">method=</span><span class="st">"oob"</span>)
-## [1] 0.1605657
+## [1] 0.1570572
 <span class="kw"><a href="../reference/yR2Forest.html">yR2Forest</a></span>(forest, <span class="dt">method=</span><span class="st">"all"</span>)
-## [1] 0.2264439
+## [1] 0.2386217
 <span class="kw"><a href="../reference/yR2Forest.html">yR2Forest</a></span>(forest, <span class="dt">method=</span><span class="st">"itb"</span>)
-## [1] 0.2607569</code></pre></div>
+## [1] 0.2821948</code></pre></div>
 <p>The projection based <span class="math inline">\(R^2\)</span> metrics follow the same pattern of <code>oob</code> measures performing the worst, but overall performance is much lower because the forest no longer gets credit for explaining variation that could be explained with the population average BMI vs. AGE trajectory.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/projectedR2Forest.html">projectedR2Forest</a></span>(forest, <span class="dt">method=</span><span class="st">"oob"</span>, <span class="dt">removeIntercept =</span> <span class="ot">FALSE</span>)
-##           [,1]
-## [1,] 0.0450382
+##            [,1]
+## [1,] 0.04009352
 <span class="kw"><a href="../reference/projectedR2Forest.html">projectedR2Forest</a></span>(forest, <span class="dt">method=</span><span class="st">"all"</span>, <span class="dt">removeIntercept =</span> <span class="ot">FALSE</span>)
 ##           [,1]
-## [1,] 0.1296753
+## [1,] 0.1455061
 <span class="kw"><a href="../reference/projectedR2Forest.html">projectedR2Forest</a></span>(forest, <span class="dt">method=</span><span class="st">"itb"</span>, <span class="dt">removeIntercept =</span> <span class="ot">FALSE</span>)
 ##           [,1]
-## [1,] 0.1737627</code></pre></div>
+## [1,] 0.2020932</code></pre></div>
 <p>Finally, when we exclude the intercept, the same patterns hold but we see that even less total variation is explained by our model with we do not give the model credit for explaining variation in starting level. These metrics suggest that, moving out of sample, we will only be able to explain aroudn 3% of variation in shape of BMI trajectory.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/projectedR2Forest.html">projectedR2Forest</a></span>(forest, <span class="dt">method=</span><span class="st">"oob"</span>, <span class="dt">removeIntercept =</span> <span class="ot">TRUE</span>)
 ##            [,1]
-## [1,] 0.02944735
+## [1,] 0.02948244
 <span class="kw"><a href="../reference/projectedR2Forest.html">projectedR2Forest</a></span>(forest, <span class="dt">method=</span><span class="st">"all"</span>, <span class="dt">removeIntercept =</span> <span class="ot">TRUE</span>)
-##            [,1]
-## [1,] 0.08809932
+##           [,1]
+## [1,] 0.1002789
 <span class="kw"><a href="../reference/projectedR2Forest.html">projectedR2Forest</a></span>(forest, <span class="dt">method=</span><span class="st">"itb"</span>, <span class="dt">removeIntercept =</span> <span class="ot">TRUE</span>)
-##          [,1]
-## [1,] 0.118361</code></pre></div>
+##         [,1]
+## [1,] 0.13765</code></pre></div>
 </div>
 <div id="variable-importance" class="section level1">
 <h1 class="hasAnchor">

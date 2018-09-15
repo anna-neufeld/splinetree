@@ -171,8 +171,11 @@ getBasisMat <- function(yvar, tvar, idvar, data,
 #' @importFrom graphics barplot layout par plot points rect text
 #' @importFrom stats complete.cases formula lm quantile runif sd terms time
 #' @examples
+#' \dontshow{
+#'   nlsySample_subset <- nlsySample[nlsySample$ID %in% sample(unique(nlsySample$ID), 500),]
+#' }
 #' splitForm <- ~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs
-#' tree1 <- splineTree(splitForm, BMI~AGE, 'ID', nlsySample, degree=3, intercept=TRUE, cp=0.005)
+#' tree1 <- splineTree(splitForm, BMI~AGE, 'ID', nlsySample_subset, degree=3, intercept=TRUE, cp=0.005)
 #' stPrint(tree1)
 #' stPlot(tree1)
 splineTree <- function(splitFormula, tformula,

@@ -5,6 +5,7 @@ date: "`r Sys.Date()`"
 bibliography: thesis.bib
 output: rmarkdown::html_vignette
 vignette: >
+  %\VignetteIndexEntry{Introduction to Forest Building with splinetree}
   %\VignetteEngine{R.rsp::asis}
   %\VignetteEncoding{UTF-8}
   %\VignetteBuilder: R.rsp
