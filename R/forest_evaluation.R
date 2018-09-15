@@ -19,7 +19,9 @@
 #' @export
 #' @examples
 #' projectedR2Forest(forest, method="all", removeIntercept=TRUE)
+#' \donttest{
 #' projectedR2Forest(forest, method="all", removeIntercept=FALSE)
+#' }
 projectedR2Forest <- function(forest, method = "oob", removeIntercept = TRUE) {
     # First, get the predicted spline coefficients for every datapoint using the desired method.
     forest_pred_coeffs <- t(predictCoeffsForest(forest, method))
