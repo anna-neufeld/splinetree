@@ -157,20 +157,24 @@ pruned using the provided cp as the complexity parameter.</p></td>
     <pre class="examples"><div class='input'><span class='no'>split_formula</span> <span class='kw'>&lt;-</span> ~<span class='no'>HISP</span> + <span class='no'>WHITE</span> + <span class='no'>BLACK</span> + <span class='no'>SEX</span> + <span class='no'>Num_sibs</span> + <span class='no'>HGC_FATHER</span> + <span class='no'>HGC_MOTHER</span>
 <span class='no'>tree</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='splineTree.html'>splineTree</a></span>(<span class='no'>split_formula</span>, <span class='no'>tformula</span>, <span class='kw'>idvar</span> <span class='kw'>=</span> <span class='st'>"ID"</span>,
    <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>nlsySample</span>, <span class='kw'>degree</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>df</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-   <span class='kw'>intercept</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>cp</span> <span class='kw'>=</span> <span class='fl'>0.005</span>)</div><div class='output co'>#&gt; <span class='error'>Error in formula(object): object 'tformula' not found</span></div><div class='input'><span class='fu'>stPrint</span>(<span class='no'>tree</span>)</div><div class='output co'>#&gt; n= 1000,  
+   <span class='kw'>intercept</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>cp</span> <span class='kw'>=</span> <span class='fl'>0.005</span>)</div><div class='output co'>#&gt; <span class='error'>Error in formula(object): object 'tformula' not found</span></div><div class='input'><span class='fu'>stPrint</span>(<span class='no'>tree</span>)</div><div class='output co'>#&gt; n= 500,  
 #&gt; 
 #&gt; node), split, n , coefficients 
 #&gt;       * denotes terminal node
 #&gt; 
-#&gt;  1) root, 1000,  (21.52416, 4.961796, 8.091247) 
-#&gt;    2) WHITE&lt; 0.5, 505,  (21.42300, 5.882807, 9.006190) 
-#&gt;      4) HGC_FATHER&lt; 0.5, 25,  (23.08928, 7.703289, 8.380706)*
-#&gt;      5) HGC_FATHER&gt;=0.5, 480,  (21.33622, 5.787990, 9.038767)*
-#&gt;    3) WHITE&gt;=0.5, 495,  (21.62736, 4.022179, 7.157821) 
-#&gt;      6) SEX&lt; 1.5, 259,  (22.69360, 3.999510, 6.896897)*
-#&gt;      7) SEX&gt;=1.5, 236,  (20.45721, 4.047057, 7.444175) 
-#&gt;       14) HGC_FATHER&lt; 7.5, 12,  (20.40041, 9.027571, 9.903029)*
-#&gt;       15) HGC_FATHER&gt;=7.5, 224,  (20.46025, 3.780243, 7.312451)*</div></pre>
+#&gt;  1) root, 500,  (21.71557, 4.764763,  7.914456) 
+#&gt;    2) WHITE&lt; 0.5, 254,  (21.60047, 5.863627,  9.079635) 
+#&gt;      4) HGC_MOTHER&lt; 9.5, 97,  (21.86805, 6.746478,  9.342722) 
+#&gt;        8) Num_sibs&lt; 5.5, 61,  (21.63872, 6.061905,  9.008898)*
+#&gt;        9) Num_sibs&gt;=5.5, 36,  (22.25665, 7.906449,  9.908368)*
+#&gt;      5) HGC_MOTHER&gt;=9.5, 157,  (21.43515, 5.318171,  8.917090) 
+#&gt;       10) Num_sibs&lt; 3.5, 76,  (21.76407, 5.735048,  9.593790) 
+#&gt;         20) HISP&lt; 0.5, 52,  (21.78301, 6.263505, 10.777490)*
+#&gt;         21) HISP&gt;=0.5, 24,  (21.72303, 4.590060,  7.029102)*
+#&gt;       11) Num_sibs&gt;=3.5, 81,  (21.12653, 4.927028,  8.282162)*
+#&gt;    3) WHITE&gt;=0.5, 246,  (21.83441, 3.630164,  6.711386) 
+#&gt;      6) SEX&lt; 1.5, 125,  (23.02273, 3.596603,  6.787565)*
+#&gt;      7) SEX&gt;=1.5, 121,  (20.60680, 3.664835,  6.632688)*</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

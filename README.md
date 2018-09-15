@@ -1,5 +1,3 @@
-
-<!-- README.md is generated from README.Rmd. Please edit that file -->
 splinetree
 ==========
 
@@ -16,6 +14,11 @@ You can install splinetree from github with:
 # install.packages("devtools")
 devtools::install_github("anna-neufeld/splinetree")
 ```
+
+Usage
+------------
+
+For detailed information on using this package, see the package vignettes, which are available at https://anna-neufeld.github.io/splinetree/reference/index.html. 
 
 Example Tree
 ------------

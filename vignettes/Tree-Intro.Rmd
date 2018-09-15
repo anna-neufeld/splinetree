@@ -130,7 +130,9 @@ node4coeffs <- treeSummary(first_tree)["4",]$coeffs
 xvals <- seq(18, 50, length.out=50)
 
 ### Reconstruct basis matrix
-basisMat <- bs(xvals, degree = first_tree$parms$degree, Boundary.knots = first_tree$parms$boundaryKnots, knots = first_tree$parms$innerKnots)
+basisMat <- bs(xvals, degree = first_tree$parms$degree, 
+               Boundary.knots =first_tree$parms$boundaryKnots, 
+               knots = first_tree$parms$innerKnots)
 
 ### Compute predicted trajectory.
 node4preds <- basisMat%*%t(node4coeffs)
@@ -170,7 +172,8 @@ treeSize(second_tree)
 When we lower the ``cp`` to 0.001, the tree has 20 terminal nodes. This tree will be difficult to plot and interpret. Let's try a value in-between and set ``cp`` to be 0.005. 
 
 ```{r}
-third_tree <- splineTree(split_formula, tformula, idvar, data, minNodeSize = 20, cp = 0.005)
+third_tree <- splineTree(split_formula, tformula, idvar, data, 
+                         minNodeSize = 20, cp = 0.005)
 treeSize(third_tree)  
 stPrint(third_tree)
 stPlot(third_tree, colors = c("red", "green", "blue", "cyan", "magenta", "grey"))
@@ -183,14 +186,16 @@ This tree seems reasonably sized; it is small enough to plot and understand, but
 Another way to customize a tree is to change the grid upon which the projection sum of squares split function is evaluated. This can be done through the ``nGrid`` parameter (provide a number of time points to be placed automatically at percentiles of the time variable) or through the ``gridPoints`` parameter (provide a vector of time points). Typically, we want the grid points to cover the domain of interest and an increased number will not effect the tree building process. The default is 7 equally spaced grid points. If we increase this to 30 equally spaced grid points, we get a tree that is quite similar to the previous tree. We can see that ``fourth_tree`` and ``third_tree`` are very similar by prining them out, but we can also use the ``treeSimilarity`` function. The ``treeSimilarity`` function reports the Adjusted Rand Index (see package ``mclust``) between the clusters created by the two trees. This is a useful metric because sometimes, due to highly correlated covariates, two trees that appear to split on different variables may actually define very similar population subgroups. A value close to 1 indicates a very similar clustering. In this case, we see that our two trees are quite similar in terms of their terminal nodes.  
 
 ```{r, eval=FALSE}
-fourth_tree <- splineTree(split_formula, tformula, idvar, data, minNodeSize = 20, cp = 0.005, nGrid = 30)
+fourth_tree <- splineTree(split_formula, tformula, idvar, data, 
+                          minNodeSize = 20, cp = 0.005, nGrid = 30)
 treeSimilarity(third_tree, fourth_tree)
 ```
 
 However, if the grid points are concentrated in one area of the trajectory, the tree can change drastically. For example, if we set ``gridPoints = c(18)``, the splits of the tree will be evaluated using only the value of the smoothed BMI trajectories at age 18. This is basically a univariate regression tree built to age-18 BMIs, but it allows individuals who have no measurement for BMI at age 18 to be included by estimating their BMI via their smoothed trajectories. This tree is much less similar to the original tree.  
 
 ```{r, eval=FALSE}
-fifth_tree <- splineTree(split_formula, tformula, idvar, data, minNodeSize = 20, cp = 0.005, gridPoints = c(18))
+fifth_tree <- splineTree(split_formula, tformula, idvar, data, 
+                         minNodeSize = 20, cp = 0.005, gridPoints = c(18))
 treeSimilarity(third_tree, fifth_tree)
 ```
 
@@ -204,7 +209,8 @@ We can do this in two ways. One way is to set the ``df`` parameter (sets the tot
 
  
 ```{r}
-linear_tree <- splineTree(split_formula, tformula, idvar, data, minNodeSize = 20, cp = 0.005, degree = 1, df = 2) 
+linear_tree <- splineTree(split_formula, tformula, idvar, data, 
+                          minNodeSize = 20, cp = 0.005, degree = 1, df = 2) 
 stPlot(linear_tree, colors=c("red", "orange", "yellow", "green", "blue"))
 ```
 
@@ -215,7 +221,8 @@ Although choosing a higher degree and more internal knots will allow each projec
 As a final customization, we can add an intercept to our tree. When ``intercept = FALSE``, the splits of the tree are made based solely on the shape of the trajectories, while ignoring the level.  One downside of no-intercept trees is that they can not be used to predict responses. To add an intercept to the linear tree, we must increase the ``df`` to 3, because we now need 3 total coefficients (one for the intercept, one for the 1-degree polynomial, and one for the internal knot).
 
 ```{r}
-linear_tree_intercept <- splineTree(split_formula, tformula, idvar, data, minNodeSize = 20, cp = 0.005, degree = 1, df = 3, intercept = TRUE) 
+linear_tree_intercept <- splineTree(split_formula, tformula, idvar, data, 
+                                    minNodeSize = 20, cp = 0.005, degree = 1, df = 3, intercept = TRUE) 
 stPlot(linear_tree_intercept)
 ```
 
@@ -228,7 +235,8 @@ Now that we have built a few trees and have seen how to work with them, we might
 ```{r}
 predictions <- predictY(linear_tree_intercept)
 cor(predictions, nlsySample$BMI)
-plot(predictions, (predictions - nlsySample$BMI), xlab = "Predicted BMI", ylab = "Residual")
+plot(predictions, (predictions - nlsySample$BMI), 
+     xlab = "Predicted BMI", ylab = "Residual")
 ```
 
 We have far more negative residuals than positive residuals. The maximum BMI in the dataset is 59.04, but the maximum predicted BMI is just 31.47. Although several individuals in the sample have extremely large BMIs, no node in the tree predicts these BMIs. This suggests that no subgroup of the population that can be described using only these baseline split variables isolates individuals with very high BMIs; to form such a subgroup, we would likely need other covariates, such as an average exercise level or a diet description. 
@@ -242,7 +250,8 @@ yR2(linear_tree_intercept)
 The $R^2$ value for our tree is relatively low. We already know from above that we are unable to explain extremely high BMIs, and this shortcoming is reflected in the $R^2$ value. We can increase $R^2$ by creating an extremely large tree, but this tree is unlikely to perform well out of sample. 
 
 ```{r}
-linear_tree_intercept_big <- splineTree(split_formula, tformula, idvar, data, minNodeSize = 5, cp = 0.0001, degree = 1, df = 3, intercept = TRUE) 
+linear_tree_intercept_big <- splineTree(split_formula, tformula, 
+                                        idvar, data, minNodeSize = 5, cp = 0.0001, degree = 1, df = 3, intercept = TRUE) 
 treeSize(linear_tree_intercept_big)
 yR2(linear_tree_intercept_big)
 ```
@@ -274,7 +283,9 @@ personcoeffs <- linear_tree_intercept$parms$flat_data[linear_tree_intercept$parm
 personpreds <- predictCoeffs(linear_tree_intercept, persondata[1,])
 
 ### Form a basis matrix. We must append a column of 1s because this tree has an intercept.
-basisMat <- cbind(1, bs(persondata$AGE, degree = linear_tree_intercept$parms$degree, Boundary.knots = linear_tree_intercept$parms$boundaryKnots, knots = linear_tree_intercept$parms$innerKnots))
+basisMat <- cbind(1, bs(persondata$AGE, degree = linear_tree_intercept$parms$degree, 
+                        Boundary.knots = linear_tree_intercept$parms$boundaryKnots,
+                        knots = linear_tree_intercept$parms$innerKnots))
 
 ### Calculate points along the individual smoothed trajectory and predicted trajectory
 smoothed <- basisMat %*% t(personcoeffs)
@@ -284,7 +295,8 @@ plot(BMI ~ AGE, data = persondata, pch = 19)
 points(persondata$AGE, smoothed, type='l', col="red")
 points(persondata$AGE, predicted, type='l', col="blue")
 #### Add the points obtained from "predictY" to show that they match the blue line
-points(persondata$AGE, predictY(linear_tree_intercept, persondata), col = "blue", pch = 19)
+points(persondata$AGE, predictY(linear_tree_intercept, persondata), 
+       col = "blue", pch = 19)
 ```
 We see from the plot that using ``predictCoeffs()`` and ``predictY()`` eventually yield the same predicted trajectory. We see that the predicted trajectory for the tree node tends to estimate lower body mass index values than the individual trajectory, echoing the finding above that our model does not seem to predict large BMIs very well.  
 

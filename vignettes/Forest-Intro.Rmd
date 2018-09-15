@@ -33,8 +33,10 @@ split_formula <- ~HISP+WHITE+BLACK+SEX+Num_sibs+HGC_FATHER+HGC_MOTHER
 tformula <- BMI~AGE
 ```
 
-```{r}
-forest <- splineForest(split_formula, tformula, idvar="ID", data=nlsySample, degree=1, df=3, intercept=TRUE,ntree=50, prob=0.5, cp=0.005)
+```{r, results='hide'}
+forest <- splineForest(split_formula, tformula, idvar="ID", 
+                       data=nlsySample, degree=1, df=3, intercept=TRUE,ntree=50, 
+                       prob=0.5, cp=0.005)
 ```
 
 # Working with a splineforest object
@@ -62,7 +64,8 @@ mean_coeffs <- apply(forest$Ydata, 1, mean)
 times <- sort(unique(forest$data[[forest$tvar]]))
 
 
-basisMatrix <- bs(times, degree=forest$degree, Boundary.knots = forest$boundaryKnots, knots = forest$innerKnots)
+basisMatrix <- bs(times, degree=forest$degree, Boundary.knots = forest$boundaryKnots, 
+                  knots = forest$innerKnots)
 if (forest$intercept) {
   basisMatrix <- cbind(1, basisMatrix)
 }
@@ -81,7 +84,8 @@ stPrint(forest$Trees[[17]])
 Although we can print any tree in the forest using ``stPrint()``, it is important to note that these trees are not identical to ``splineTree`` objects. These ``rpart`` trees do not store all of the extra information that is stored in a typical ``splinetree`` object. For example, we can note the difference between a single tree and ``forest$Trees[[17]]``.
 
 ```{r}
-sample_tree <- splineTree(split_formula, tformula, idvar="ID", data=nlsySample, degree=1, df=2, intercept=TRUE, cp=0.005)
+sample_tree <- splineTree(split_formula, tformula, idvar="ID", 
+                          data=nlsySample, degree=1, df=2, intercept=TRUE, cp=0.005)
 
 ### Try to evaluate both trees
 yR2(sample_tree)

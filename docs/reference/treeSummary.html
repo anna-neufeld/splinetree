@@ -156,16 +156,20 @@ the coefficients predicted for each node.</p>
     <pre class="examples"><div class='input'><span class='no'>split_formula</span> <span class='kw'>&lt;-</span> ~<span class='no'>HISP</span> + <span class='no'>WHITE</span> + <span class='no'>BLACK</span> + <span class='no'>SEX</span> + <span class='no'>Num_sibs</span> + <span class='no'>HGC_FATHER</span> + <span class='no'>HGC_MOTHER</span>
 <span class='no'>tree</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='splineTree.html'>splineTree</a></span>(<span class='no'>split_formula</span>, <span class='no'>tformula</span>, <span class='kw'>idvar</span> <span class='kw'>=</span> <span class='st'>"ID"</span>,
    <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>nlsySample</span>, <span class='kw'>degree</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>df</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-   <span class='kw'>intercept</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>cp</span> <span class='kw'>=</span> <span class='fl'>0.005</span>)</div><div class='output co'>#&gt; <span class='error'>Error in formula(object): object 'tformula' not found</span></div><div class='input'><span class='fu'>treeSummary</span>(<span class='no'>tree</span>)</div><div class='output co'>#&gt;           var    n        dev  coeffs.1  coeffs.2  coeffs.3
-#&gt; 1       WHITE 1000 163603.659 21.524159  4.961796  8.091247
-#&gt; 2  HGC_FATHER  505  86430.024 21.423001  5.882807  9.006190
-#&gt; 4      &lt;leaf&gt;   25   5488.602 23.089278  7.703289  8.380706
-#&gt; 5      &lt;leaf&gt;  480  79468.029 21.336216  5.787990  9.038767
-#&gt; 3         SEX  495  73724.077 21.627360  4.022179  7.157821
-#&gt; 6      &lt;leaf&gt;  259  27679.034 22.693600  3.999510  6.896897
-#&gt; 7  HGC_FATHER  236  42156.361 20.457207  4.047057  7.444175
-#&gt; 14     &lt;leaf&gt;   12   3158.573 20.400408  9.027571  9.903029
-#&gt; 15     &lt;leaf&gt;  224  37718.119 20.460249  3.780243  7.312451</div></pre>
+   <span class='kw'>intercept</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>cp</span> <span class='kw'>=</span> <span class='fl'>0.005</span>)</div><div class='output co'>#&gt; <span class='error'>Error in formula(object): object 'tformula' not found</span></div><div class='input'><span class='fu'>treeSummary</span>(<span class='no'>tree</span>)</div><div class='output co'>#&gt;           var   n       dev  coeffs.1  coeffs.2  coeffs.3
+#&gt; 1       WHITE 500 82129.723 21.715567  4.764763  7.914456
+#&gt; 2  HGC_MOTHER 254 43339.776 21.600470  5.863627  9.079635
+#&gt; 4    Num_sibs  97 18837.124 21.868052  6.746478  9.342722
+#&gt; 8      &lt;leaf&gt;  61  7784.603 21.638717  6.061905  9.008898
+#&gt; 9      &lt;leaf&gt;  36 10402.857 22.256649  7.906449  9.908368
+#&gt; 5    Num_sibs 157 23583.429 21.435148  5.318171  8.917090
+#&gt; 10       HISP  76 12714.977 21.764072  5.735048  9.593790
+#&gt; 20     &lt;leaf&gt;  52 10073.923 21.783013  6.263505 10.777493
+#&gt; 21     &lt;leaf&gt;  24  2206.412 21.723031  4.590060  7.029102
+#&gt; 11     &lt;leaf&gt;  81 10317.506 21.126528  4.927028  8.282162
+#&gt; 3         SEX 246 36185.614 21.834407  3.630164  6.711386
+#&gt; 6      &lt;leaf&gt; 125 14782.485 23.022728  3.596603  6.787565
+#&gt; 7      &lt;leaf&gt; 121 18931.142 20.606803  3.664835  6.632688</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

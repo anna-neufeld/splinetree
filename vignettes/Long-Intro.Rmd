@@ -145,7 +145,7 @@ The ``ntree`` parameter specifies the number of trees in the ensemble; ``ntree``
 
 We build an example spline forest using the same dataset introduced above, using a linear spline basis with one internal knot and an intercept.  
 
-```{r}
+```{r, results='hide'}
 forest <- splineForest(split_formula, tformula, idvar = "ID", data = nlsySample, degree = 1, df = 3, intercept = TRUE,ntree = 50, prob = 0.5, cp = 0.005)
 ```
 

@@ -151,22 +151,56 @@ to a valid terminal node in the tree.</p></td>
 <span class='no'>tree</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='splineTree.html'>splineTree</a></span>(<span class='no'>split_formula</span>, <span class='no'>tformula</span>, <span class='kw'>idvar</span> <span class='kw'>=</span> <span class='st'>"ID"</span>,
    <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>nlsySample</span>, <span class='kw'>degree</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>df</span> <span class='kw'>=</span> <span class='fl'>3</span>,
    <span class='kw'>intercept</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>cp</span> <span class='kw'>=</span> <span class='fl'>0.005</span>)</div><div class='output co'>#&gt; <span class='error'>Error in formula(object): object 'tformula' not found</span></div><div class='input'><span class='fu'>terminalNodeSummary</span>(<span class='no'>tree</span>)</div><div class='output co'>#&gt; 
-#&gt;  node number: 4 
+#&gt;  node number: 8 
 #&gt;    root
 #&gt;    WHITE&lt; 0.5
-#&gt;    HGC_FATHER&lt; 0.5
+#&gt;    HGC_MOTHER&lt; 9.5
+#&gt;    Num_sibs&lt; 5.5
 #&gt; 
-#&gt;  N: 25
-#&gt;  Coefficients: 23.0892781669265,7.70328941507821,8.38070614243937
+#&gt;  N: 61
+#&gt;  Coefficients: 21.638716730493,6.06190454077328,9.00889849472368
 #&gt; ----------
 #&gt; 
-#&gt;  node number: 5 
+#&gt;  node number: 9 
 #&gt;    root
 #&gt;    WHITE&lt; 0.5
-#&gt;    HGC_FATHER&gt;=0.5
+#&gt;    HGC_MOTHER&lt; 9.5
+#&gt;    Num_sibs&gt;=5.5
 #&gt; 
-#&gt;  N: 480
-#&gt;  Coefficients: 21.3362159466182,5.7879903529505,9.03876717557183
+#&gt;  N: 36
+#&gt;  Coefficients: 22.2566488164994,7.90644930497537,9.90836805626332
+#&gt; ----------
+#&gt; 
+#&gt;  node number: 20 
+#&gt;    root
+#&gt;    WHITE&lt; 0.5
+#&gt;    HGC_MOTHER&gt;=9.5
+#&gt;    Num_sibs&lt; 3.5
+#&gt;    HISP&lt; 0.5
+#&gt; 
+#&gt;  N: 52
+#&gt;  Coefficients: 21.7830134187367,6.26350455258489,10.7774926246101
+#&gt; ----------
+#&gt; 
+#&gt;  node number: 21 
+#&gt;    root
+#&gt;    WHITE&lt; 0.5
+#&gt;    HGC_MOTHER&gt;=9.5
+#&gt;    Num_sibs&lt; 3.5
+#&gt;    HISP&gt;=0.5
+#&gt; 
+#&gt;  N: 24
+#&gt;  Coefficients: 21.7230311542365,4.59006024331612,7.02910204466869
+#&gt; ----------
+#&gt; 
+#&gt;  node number: 11 
+#&gt;    root
+#&gt;    WHITE&lt; 0.5
+#&gt;    HGC_MOTHER&gt;=9.5
+#&gt;    Num_sibs&gt;=3.5
+#&gt; 
+#&gt;  N: 81
+#&gt;  Coefficients: 21.1265283315391,4.92702760984196,8.28216178535301
 #&gt; ----------
 #&gt; 
 #&gt;  node number: 6 
@@ -174,28 +208,17 @@ to a valid terminal node in the tree.</p></td>
 #&gt;    WHITE&gt;=0.5
 #&gt;    SEX&lt; 1.5
 #&gt; 
-#&gt;  N: 259
-#&gt;  Coefficients: 22.6936000133576,3.99950986759995,6.89689702760744
+#&gt;  N: 125
+#&gt;  Coefficients: 23.0227281240954,3.59660270648257,6.78756471063505
 #&gt; ----------
 #&gt; 
-#&gt;  node number: 14 
+#&gt;  node number: 7 
 #&gt;    root
 #&gt;    WHITE&gt;=0.5
 #&gt;    SEX&gt;=1.5
-#&gt;    HGC_FATHER&lt; 7.5
 #&gt; 
-#&gt;  N: 12
-#&gt;  Coefficients: 20.4004082289206,9.02757082718176,9.90302922358699
-#&gt; ----------
-#&gt; 
-#&gt;  node number: 15 
-#&gt;    root
-#&gt;    WHITE&gt;=0.5
-#&gt;    SEX&gt;=1.5
-#&gt;    HGC_FATHER&gt;=7.5
-#&gt; 
-#&gt;  N: 224
-#&gt;  Coefficients: 20.4602494008039,3.78024341772909,7.31245053282688
+#&gt;  N: 121
+#&gt;  Coefficients: 20.606803154073,3.66483529507145,6.63268835408635
 #&gt; ----------</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
