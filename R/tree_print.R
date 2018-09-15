@@ -98,7 +98,7 @@ treeSummary <- function(model) {
 
 #' Prints a summary of a terminal node in a tree
 #'
-#' If no arguement is provided for the parameter \code{node}, summaries are printed for every
+#' If no argument is provided for the parameter \code{node}, summaries are printed for every
 #' terminal node. Otherwise, the summary of just the requested node is printed.
 #'
 #' @param tree A splinetree object

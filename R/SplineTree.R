@@ -158,7 +158,7 @@ getBasisMat <- function(yvar, tvar, idvar, data,
 #' @param cp Complexity parameter passed to the rpart building process. Controls tree size. Defaults to
 #' the rpart default of 0.01.
 #' @return An rpart object with additional splinetree-specific information stored in model$parms. The important
-#' attributes of the rpart object include model$frame, model$where, and model$cptable. model$frame holds informatio
+#' attributes of the rpart object include model$frame, model$where, and model$cptable. model$frame holds information
 #' about each node in the tree. The ith entry in model$where tells us which row of model$frame describes the node that
 #' the ith individual in the flattened dataset falls into. model$parms$flat_data holds the flattened dataset that
 #' was used to build the tree. model$cptable displays the complexity parameters that would be needed to prune the tree

@@ -14,7 +14,7 @@ which numbers, see stPrint(tree) or treeSummary(tree). If this parameter is prov
 to a valid terminal node in the tree.}
 }
 \description{
-If no arguement is provided for the parameter \code{node}, summaries are printed for every
+If no argument is provided for the parameter \code{node}, summaries are printed for every
 terminal node. Otherwise, the summary of just the requested node is printed.
 }
 \examples{
