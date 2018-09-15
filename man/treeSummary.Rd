@@ -13,7 +13,7 @@ treeSummary(model)
 A dataframe. The number of rows is the same as the number of nodes in the tree.
 The row names display the node labels of each node. The "var" attribute either displays
 the split variable selected at each node, or <leaf> if this node is a terminal node. The "n"
-attribute displays the number of indivduals in the node. The "dev" attribute reports the
+attribute displays the number of individuals in the node. The "dev" attribute reports the
 projected sum of squares at this node; terminal nodes have the smallest values for "dev" because
 this is what the tree building process is supposed to minimize. The "coeffs" attribute displays
 the coefficients predicted for each node.
@@ -21,7 +21,7 @@ the coefficients predicted for each node.
 \description{
 Provides a similar output to model$frame, but with the redundant information of yval and
 yval2 removed. Also omits the deviance, the complexity, and the weight. Useful for viewing
-node numbers and for extracting coefficeints for a given node.
+node numbers and for extracting coefficients for a given node.
 }
 \examples{
 \donttest{

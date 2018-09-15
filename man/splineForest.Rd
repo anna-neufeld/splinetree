@@ -4,9 +4,10 @@
 \alias{splineForest}
 \title{Build a splineforest object.}
 \usage{
-splineForest(splitFormula, tformula, idvar, data, knots = NULL, df = NULL,
-  degree = 3, intercept = FALSE, nGrid = 7, gridPoints = NULL,
-  ntree = 50, prob = 0.3, cp = 0.001, minNodeSize = 1)
+splineForest(splitFormula, tformula, idvar, data, knots = NULL,
+  df = NULL, degree = 3, intercept = FALSE, nGrid = 7,
+  gridPoints = NULL, ntree = 50, prob = 0.3, cp = 0.001,
+  minNodeSize = 1)
 }
 \arguments{
 \item{splitFormula}{Formula specifying the longitudinal response variable and the time-constant variables that will be used for splitting in the tree.}

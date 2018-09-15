@@ -17,7 +17,7 @@ spline_split(y, wt, x, parms = NULL, continuous)
 In the splinetree package, the parms parameter is used to hold a list of length 1 or 2 containing either just a spline basis matrix (for a tree), or
 a spline basis matrix and the probability that a variable will be selected at a split (for a random forest).}
 
-\item{continuous}{Value is handled internally by rpart - tells us if this covariate is contintuous (TRUE) or categorical (FALSE).}
+\item{continuous}{Value is handled internally by rpart - tells us if this covariate is continuous (TRUE) or categorical (FALSE).}
 }
 \value{
 A list with two components, goodness and direction, describing the goodness of fit and direction for each possible split for this covariate.

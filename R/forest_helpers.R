@@ -4,7 +4,7 @@
 #'
 #' @param forest A splineforest object
 #'
-#' @return The avergae number of terminal nodes in forest
+#' @return The average number of terminal nodes in forest
 #' @export
 #' @examples
 #' avSize(forest)

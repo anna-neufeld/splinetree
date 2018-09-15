@@ -15,7 +15,7 @@ trees for which this data point was "out of the bag" (not in the bootstrap sampl
  If "itb", predictions for a given data point are made using only the trees for which this datapoint
  was in the bag (in the bootstrap sample). If "all", all trees are used for every datapoint.}
 
-\item{testdata}{the Test data to make preditions for. If this is provided, then
+\item{testdata}{the Test data to make predictions for. If this is provided, then
 all trees are used for all datapoints.}
 }
 \value{

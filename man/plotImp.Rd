@@ -9,7 +9,7 @@ plotImp(importance_vector, ...)
 \arguments{
 \item{importance_vector}{a named vector where the names are the variables and the vector stores the importances.}
 
-\item{...}{additional arguements to plot, such as "main", "cex", etc.}
+\item{...}{additional arguments to plot, such as "main", "cex", etc.}
 }
 \description{
 Given a named vector of variable importance measures, this function makes a barplot of the relative importances.

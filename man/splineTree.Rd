@@ -4,9 +4,9 @@
 \alias{splineTree}
 \title{Build a splinetree object}
 \usage{
-splineTree(splitFormula, tformula, idvar, data, knots = NULL, df = NULL,
-  degree = 3, intercept = FALSE, nGrid = 7, gridPoints = NULL,
-  minNodeSize = 10, cp = 0.01)
+splineTree(splitFormula, tformula, idvar, data, knots = NULL,
+  df = NULL, degree = 3, intercept = FALSE, nGrid = 7,
+  gridPoints = NULL, minNodeSize = 10, cp = 0.01)
 }
 \arguments{
 \item{splitFormula}{Formula specifying the longitudinal response variable and the time-constant variables that will be used for splitting in the tree.}
@@ -20,7 +20,7 @@ splineTree(splitFormula, tformula, idvar, data, knots = NULL, df = NULL,
 \item{knots}{Specified locations for internal knots in the spline basis. Defaults to NULL, which corresponds to no internal knots.}
 
 \item{df}{Degrees of freedom of the spline basis. If this is specified but the knots parameter is NULL, then the appropriate number of internal knots
-will be added at quantiles of the training data. If both df and knots are unspecified, the spline basis will have no internal knots. If knots is specifed,
+will be added at quantiles of the training data. If both df and knots are unspecified, the spline basis will have no internal knots. If knots is specified,
 this parameter will be ignored.}
 
 \item{degree}{Specifies degree of spline basis used for projection.}
@@ -29,7 +29,7 @@ this parameter will be ignored.}
 Defaults to FALSE, which means that the tree will split based on trajectory shape, ignoring response level.}
 
 \item{nGrid}{Number of grid points to evaluate projection sum of squares at. If gridPoints
-is not supplied, this arguement will be used and the appropriate number of grid points will be placed at
+is not supplied, this argument will be used and the appropriate number of grid points will be placed at
 equally spaced quantiles of the time variable. The default is 7.}
 
 \item{gridPoints}{Optional. A vector of numbers that will be used as the grid on which to evaluate the
@@ -52,7 +52,7 @@ knots of the spline basis used to build the tree. These are sometimes important 
 }
 \description{
 Builds a regression tree for longitudinal or functional data using the spline projection method. The underlying tree building process uses the rpart package,
-and the splinetree object is an rpart object with additional stored information. The parmaters df, knots, degree, interept allow for flexibility
+and the splinetree object is an rpart object with additional stored information. The parameters df, knots, degree, intercept allow for flexibility
 in customizing the spline basis used for projection. The parameters nGrid and gridPoints allow for flexibility in the grid on which the
 projection sum of squares is evaluated. The parameters minNodeSize and cp allow for flexibility in controlling the size of the final tree.
 }

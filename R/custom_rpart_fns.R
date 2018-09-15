@@ -91,7 +91,7 @@ spline_eval <- function(y, wt = NULL, parms = NULL) {
 #' @param parms rpart's custom split functionality allows optional parameters to be passed through the splitting functions.
 #' In the splinetree package, the parms parameter is used to hold a list of length 1 or 2 containing either just a spline basis matrix (for a tree), or
 #' a spline basis matrix and the probability that a variable will be selected at a split (for a random forest).
-#' @param continuous Value is handled internally by rpart - tells us if this covariate is contintuous (TRUE) or categorical (FALSE).
+#' @param continuous Value is handled internally by rpart - tells us if this covariate is continuous (TRUE) or categorical (FALSE).
 #' @return A list with two components, goodness and direction, describing the goodness of fit and direction for each possible split for this covariate.
 #' The goodness component holds the utility of the split (projected sum of squares) for each possible split.
 #' If the continuous parameter is TRUE, goodness and direction each have length n-1, here n is the length of x.

@@ -2,14 +2,14 @@
 % Please edit documentation in R/plotting.R
 \name{spaghettiPlot}
 \alias{spaghettiPlot}
-\title{Create a facetted spaghetti plot of a splinetree model}
+\title{Create a faceted spaghetti plot of a splinetree model}
 \usage{
 spaghettiPlot(model, colors = NULL)
 }
 \arguments{
 \item{model}{a splinetree object}
 
-\item{colors}{optional arguement specifying colors to be used for each panel.}
+\item{colors}{optional argument specifying colors to be used for each panel.}
 }
 \description{
 Uses ggplot to create a paneled spaghetti plot of the data, where each panel corresponds to a terminal node in the tree.

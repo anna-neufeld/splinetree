@@ -2,7 +2,7 @@
 #'
 #' Computes an R-squared-like evaluation metric for a splineforest object. Goal is to see how well the predicted spline coefficients for each individual
 #' match the spline coefficients obtained when fitting a spline only to this individual's data (we call these coefficients the true coefficients). Computes 1-SSE/SST, where SSE is the total sum of squared projection errors of the true coefficients compared
-#' to the predicted coefficients, and SST is the total sum of squared projection erros of the true coefficients compared to
+#' to the predicted coefficients, and SST is the total sum of squared projection errors of the true coefficients compared to
 #' the population mean coefficients. If this is an intercept forest, have the option to compute these sum of squares either with the intercept included or with the intercept ignored to isolate the shape.
 #'
 #' @param forest A splineforest object
@@ -14,7 +14,7 @@
 #' This will help capture the tree's performance at clustering based on shape, not based on level.
 #' This parameter is only meaningful if this tree was built using an intercept.
 #' @return Returns 1-SSE/SST, where SSE is the total sum of squared projection errors of the true coefficients compared
-#' to the predicted coefficients, and SST is the total sum of squared projection erros of the true coefficients compared to
+#' to the predicted coefficients, and SST is the total sum of squared projection errors of the true coefficients compared to
 #' the population mean coefficients.
 #' @export
 #' @examples
@@ -70,7 +70,7 @@ projectedR2Forest <- function(forest, method = "oob", removeIntercept = TRUE) {
 #' "out of the bag" (not in the bootstrap sample). "all" means that all trees are used in the prediction for every
 #' datapoint. "itb" means that predictions for a datapoint are made using only the trees for which this datapoint was IN the bootstrap sample.
 #' @return Returns 1-SSE/SST, where SSE is the total sum of squared errors of the true responses and predicted responses,
-#' and SST is the total sum of squared erros of the responses around their mean. If this forest was not built with an intercept, returns NULL.
+#' and SST is the total sum of squared errors of the responses around their mean. If this forest was not built with an intercept, returns NULL.
 #' @export
 #' @examples
 #' yR2Forest(forest, method="all")

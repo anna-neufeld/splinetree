@@ -2,7 +2,7 @@
 % Please edit documentation in R/tree_evaluation.R
 \name{predictY}
 \alias{predictY}
-\title{Predictions from a splitted splinetree object}
+\title{Predictions from a splinetree object}
 \usage{
 predictY(model, testData = NULL)
 }

@@ -230,14 +230,14 @@ nodePlot <- function(model, colors = NULL) {
     }
 }
 
-#' Create a facetted spaghetti plot of a splinetree model
+#' Create a faceted spaghetti plot of a splinetree model
 #'
 #' Uses ggplot to create a paneled spaghetti plot of the data, where each panel corresponds to a terminal node in the tree.
 #' Allows users to visualize homogeneity of trajectories within the terminal nodes of the tree while also looking
 #' at the trajectories of different nodes side by side.
 #'
 #' @param model a splinetree object
-#' @param colors optional arguement specifying colors to be used for each panel.
+#' @param colors optional argument specifying colors to be used for each panel.
 #' @export
 #' @importFrom ggplot2 ggplot aes aes_string facet_grid geom_line geom_point scale_color_manual theme
 #' @examples

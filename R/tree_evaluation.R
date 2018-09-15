@@ -33,7 +33,7 @@ yR2 <- function(model) {
 }
 
 
-#' Predictions from a splitted splinetree object
+#' Predictions from a splinetree object
 #'
 #' Returns a vector of predicted responses for the testData. If testData is ommitted,
 #' returns predictions for the training data. This function is most meaningful if model$intercept==TRUE.

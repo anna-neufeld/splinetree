@@ -40,7 +40,7 @@ treeSimilarity <- function(tree1, tree2) {
 #' Retrieve the subset of the data found at a given terminal node
 #'
 #' Given a terminal node number, this function returns the data belonging to
-#' this terminal node. If the dataType arguement is 'all', returns all rows of data from the
+#' this terminal node. If the dataType argument is 'all', returns all rows of data from the
 #' original dataset that fall in this node.  Otherwise, the flattened data that belongs to
 #' this node is returned (one row of data per ID, original responses replaced by spline coefficients).
 #'

@@ -16,9 +16,9 @@ getBasisMat(yvar, tvar, idvar, data, knots = NULL, df, degree, intercept,
 
 \item{data}{Full dataset}
 
-\item{knots}{Knots arguement specified by user. Specifies location of INTERNAL knots.}
+\item{knots}{Knots argument specified by user. Specifies location of INTERNAL knots.}
 
-\item{df}{Degrees of freedom arguement specified by user}
+\item{df}{Degrees of freedom argument specified by user}
 
 \item{degree}{The degree of the spline polynomial}
 

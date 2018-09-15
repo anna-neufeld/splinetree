@@ -4,8 +4,8 @@
 \alias{individual_spline}
 \title{Get spline coefficients for a single person}
 \usage{
-individual_spline(person, idvar, yvar, tvar, data, boundaryKnots, innerKnots,
-  degree, intercept)
+individual_spline(person, idvar, yvar, tvar, data, boundaryKnots,
+  innerKnots, degree, intercept)
 }
 \arguments{
 \item{person}{ID of this person}

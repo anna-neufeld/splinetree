@@ -5,7 +5,7 @@
 #' varImpY() or varImpCoeff().
 #'
 #' @param importance_vector a named vector where the names are the variables and the vector stores the importances.
-#' @param ... additional arguements to plot, such as "main", "cex", etc.
+#' @param ... additional arguments to plot, such as "main", "cex", etc.
 #' @export
 #' @examples
 #' \donttest{

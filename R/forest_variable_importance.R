@@ -1,8 +1,8 @@
 #' Random Forest Variable Importance based on Y
 #'
-#' Returns the random forest variable importance based on the permutation accruacy measure, which is calculated as the difference in mean squared error between the original data and from randomly permutating the values of a variable.
+#' Returns the random forest variable importance based on the permutation accuracy measure, which is calculated as the difference in mean squared error between the original data and from randomly permuting the values of a variable.
 #'
-#' The "method" parameter deals with the way in which forest performance should be measured. Since varaible importance is based on a change
+#' The "method" parameter deals with the way in which forest performance should be measured. Since variable importance is based on a change
 #' in performance, the "method" parameter is necessary for a variable importance measure. The choices are "oob" (out of bag), "all", or "itb" (in the bag).
 #'
 #' @param forest a random forest, generated from splineForest()
@@ -101,7 +101,7 @@ varImpY = function(forest, method = "oob") {
 
 #' Random Forest Variable Importance based on spline coefficients
 #'
-#' Returns the random forest variable importance based on the permutation accruacy measure, which is calculated as the difference in mean squared error between the original data and from randomly permutating the values of a variable.
+#' Returns the random forest variable importance based on the permutation accuracy measure, which is calculated as the difference in mean squared error between the original data and from randomly permuting the values of a variable.
 #'
 #'
 #' @param forest a random forest, generated from splineForest()
