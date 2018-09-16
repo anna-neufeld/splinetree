@@ -16,44 +16,38 @@
 #' @importFrom mosaic shuffle
 #' @examples
 #' \donttest{
-#' importanceMatrix <- varImpY(forest)
+#' importanceMatrix <- varImpY(forest, method="oob")
 #' plotImp(importanceMatrix[,3])
 #' }
-varImpY = function(forest, method = "oob") {
+varImpY <- function(forest, method = "oob") {
 
-    vars = attr(terms(forest$formula), "term.labels")
-    trees = forest$Trees
-    yvar = forest$yvar
-    idvar = forest$idvar
-    data = forest$data
+    vars <- attr(terms(forest$formula), "term.labels")
+    trees <- forest$Trees
+    yvar <- forest$yvar
+    idvar <- forest$idvar
+    data <- forest$data
 
-    varDifs = list()
-    percDifs = list()
+    varDifs <- list()
+    percDifs <- list()
+    empty <- rep(0, length(trees))
     for (v in vars) {
-        varDifs[[v]] = rep(0, length(trees))
-        percDifs[[v]] = rep(0, length(trees))
-    }
-
-    if (method == "all") {
-      indices <- list()
-      for (tree in 1:length(forest$Trees)) {
-        indices[[tree]] <- 1:NROW(forest$flat_data)
-      }
-
+        varDifs[[v]] <- empty
+        percDifs[[v]] <- empty
     }
 
     if (method == "oob") {
       indices = forest$oob_indices
-    }
-
-    if (method == "itb") {
-      indices = forest$index
+    } else {
+      if (method == "itb") {
+        indices = forest$index
+      } else {
+        indices <- rep(list(c(1:NROW(forest$flat_data))), length(forest$Trees))
+      }
     }
 
     full_basis_Mat <- cbind(1, bs(data[[forest$tvar]],
                             knots = forest$innerKnots, Boundary.knots = forest$boundaryKnots,
                             degree = forest$degree))
-
 
     print("Working on tree: ")
     for (i in 1:length(trees)) {
@@ -61,14 +55,14 @@ varImpY = function(forest, method = "oob") {
         tree = trees[[i]]
 
         IDS = forest$flat_data[indices[[i]], ][[idvar]]
-
         ID_indices = which(data[[idvar]] %in% IDS)
         testset = data[ID_indices,]
         basisMat <- full_basis_Mat[ID_indices,]
 
         #### Get the unpermuted predictions.
         wheres <- treeClust::rpart.predict.leaves(tree, testset)
-        preds <- apply(array(1:NROW(testset)), 1, function(x) tree$frame[wheres[x], ]$yval2%*%basisMat[x,])
+        coeffs <- tree$frame[wheres,]$yval2
+        preds <- sapply(c(1:NROW(testset)), function(x) coeffs[x,]%*%basisMat[x,])
 
         MSE_real <- sum((testset[[yvar]] - preds)^2)/NROW(testset)
 
@@ -78,8 +72,8 @@ varImpY = function(forest, method = "oob") {
 
             ### Get the permuted predictions.
             perm_wheres <- treeClust::rpart.predict.leaves(tree, permuted)
-            perm_preds <- apply(array(1:NROW(permuted)), 1, function(x) tree$frame[perm_wheres[x], ]$yval2%*%basisMat[x,])
-
+            perm_coeffs <- tree$frame[perm_wheres,]$yval2
+            perm_preds <- sapply(c(1:NROW(permuted)), function(x) perm_coeffs[x,]%*%basisMat[x,])
 
             MSE_permuted <- sum((permuted[[yvar]] -
                 perm_preds)^2)/NROW(permuted)
@@ -141,27 +135,22 @@ varImpCoeff <- function(forest, removeIntercept = TRUE,
         percDifs[[v]] = rep(0, length(trees))
     }
 
-    cols = 1:NCOL(beta)
     if (intercept == TRUE & removeIntercept ==
         TRUE) {
         cols = 2:NCOL(beta)
         beta = beta[, -1]
+    } else {
+      cols = 1:NCOL(beta)
     }
 
     if (method == "oob") {
       indices = forest$oob_indices
-    }
-
-    if (method == "all") {
-      indices <- list()
-      for (tree in 1:length(forest$Trees)) {
-        indices[[tree]] <- 1:NROW(forest$flat_data)
+    } else {
+      if (method == "itb") {
+        indices = forest$index
+      } else {
+        indices <- rep(list(c(1:NROW(forest$flat_data))), length(forest$Trees))
       }
-
-    }
-
-    if (method == "itb") {
-      indices = forest$index
     }
 
     print("working on tree")
@@ -173,8 +162,7 @@ varImpCoeff <- function(forest, removeIntercept = TRUE,
         testset <- flat_data[flat_data[[idvar]] %in% IDS,]
 
         wheres <- treeClust::rpart.predict.leaves(tree, testset)
-        preds_coeffs <- t(sapply(1:NROW(testset), function(i) tree$frame[wheres[i], ]$yval2))
-
+        preds_coeffs <- tree$frame[wheres, ]$yval2
         real_coeffs <- testset$Ydata
 
         ### Deal with removing intercept if necessary
@@ -197,8 +185,8 @@ varImpCoeff <- function(forest, removeIntercept = TRUE,
             permuted <- testset
             permuted[[var]] <- shuffle(permuted[[var]])
 
-            wheres <- treeClust::rpart.predict.leaves(tree, permuted)
-            perm_preds <- t(sapply(1:NROW(permuted), function(x) tree$frame[wheres[x], ]$yval2))
+            perm_wheres <- treeClust::rpart.predict.leaves(tree, permuted)
+            perm_preds <- tree$frame[perm_wheres, ]$yval2
 
 
             perm_preds <- perm_preds[, cols]

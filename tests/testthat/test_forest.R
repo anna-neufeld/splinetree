@@ -12,7 +12,7 @@ test_that("Building Forests", {
   expect_equal(dim(preds_coeffs), c(3, 300))
   projectedR2Forest(forest2, method="all")
   preds_y <- predictYForest(forest2, method="oob")
-  expect_equal(length(preds_y), length(nlsySample_small))
+  expect_equal(length(preds_y), NROW(nlsySample_small))
   Cimp = varImpCoeff(forest2, method="oob")
   expect_equal(dim(Cimp), c(7, 3))
   Yimp = varImpY(forest2, method="all")
