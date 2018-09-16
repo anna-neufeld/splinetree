@@ -12,7 +12,7 @@ test_that("Testing Trees", {
   expect_true(treeSimilarity(tree1, tree2k) < 1)
 
   expect_true(yR2(tree2k) < 1)
-  expect_true(projectedR2(tree2k, includeIntercept=FALSE) < projectedR2(tree2k, includeIntercept=TRUE))
+  expect_true(projectedR2(tree2k, includeIntercept=FALSE) < 1)
   newdata = data.frame(HISP=0, WHITE=0, BLACK=1, HGC_MOTHER=13, SEX=2, AGE=24)
   pred = predictY(tree2k, newdata)
   expect_true(pred>0)

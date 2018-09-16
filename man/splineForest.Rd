@@ -67,7 +67,8 @@ ensure good results.
 }
 \examples{
 \donttest{
+nlsySubset <- nlsySample[nlsySample$ID \%in\% sample(unique(nlsySample$ID), 400),]
 splitForm <-~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs
-forest <- splineForest(splitForm, BMI~AGE, 'ID', nlsySample, degree=1, cp=0.005, ntree=30)
+sampleForest <- splineForest(splitForm, BMI~AGE, 'ID', nlsySubset, degree=1, cp=0.005, ntree=10)
 }
 }
