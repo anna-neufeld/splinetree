@@ -76,7 +76,6 @@ varImpY = function(forest, method = "oob") {
             permuted <- testset
             permuted[[var]] <- shuffle(permuted[[var]])
 
-
             ### Get the permuted predictions.
             perm_wheres <- treeClust::rpart.predict.leaves(tree, permuted)
             perm_preds <- apply(array(1:NROW(permuted)), 1, function(x) tree$frame[perm_wheres[x], ]$yval2%*%basisMat[x,])

@@ -1,3 +1,10 @@
+## Resubmission
+This is a resubmission. In this version we
+
+* Removed newline from description file
+* Removed newline near DOI citation
+* Shortened length of tests by using smaller test dataset. 
+
 ## Test environments
 * local OS X install, R version 3.5.0
 * Linux using travis-ci
