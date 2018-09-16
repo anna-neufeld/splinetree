@@ -25,9 +25,10 @@ node numbers and for extracting coefficients for a given node.
 }
 \examples{
 \donttest{
+nlsySubset <- nlsySample[nlsySample$ID \%in\% sample(unique(nlsySample$ID), 400),]
 split_formula <- ~HISP + WHITE + BLACK + SEX + Num_sibs + HGC_FATHER + HGC_MOTHER
 tree <- splineTree(split_formula, BMI~AGE, idvar = "ID",
-   data = nlsySample, degree = 1, df = 3,
+   data = nlsySubset, degree = 1, df = 3,
    intercept = TRUE, cp = 0.005)
 }
 treeSummary(tree)

@@ -23,8 +23,9 @@ the population similarly. A value close to 1 indicates a similar clustering.
 \examples{
 \donttest{
 splitForm <- ~SEX+Num_sibs+HGC_MOTHER+HGC_FATHER
-tree1 <- splineTree(splitForm, BMI~AGE, "ID", nlsySample, degree=1, df=2, intercept=FALSE, cp=0.005)
-tree2 <- splineTree(splitForm, BMI~AGE, "ID", nlsySample, degree=1, df=3, intercept=TRUE, cp=0.005)
+nlsySubset <- nlsySample[nlsySample$ID \%in\% sample(unique(nlsySample$ID), 400),]
+tree1 <- splineTree(splitForm, BMI~AGE, "ID", nlsySubset, degree=1, df=2, intercept=FALSE, cp=0.005)
+tree2 <- splineTree(splitForm, BMI~AGE, "ID", nlsySubset, degree=1, df=3, intercept=TRUE, cp=0.005)
 treeSimilarity(tree1, tree2)
 }
 }
