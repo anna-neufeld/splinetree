@@ -1,9 +1,7 @@
 ## Resubmission
 This is a resubmission. In this version we
 
-* Removed newline from description file
-* Removed newline near DOI citation
-* Shortened length of tests by using smaller test dataset, and also by improving efficiency of one long running function. 
+* Fixed typesetting errors in vignettes. 
 
 ## Test environments
 * local OS X install, R version 3.5.0
@@ -18,4 +16,4 @@ On local OS X and on travis-ci, there are no NOTEs.
 On win-builder, there is 1 NOTE because this is a new submission.
 
 ## Reverse Dependencies
-This is a new package, there are no reverse dependencies. 
+There are no reverse dependencies. 
