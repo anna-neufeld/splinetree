@@ -7,6 +7,8 @@ test_that("Building Forests", {
   nlsySample_small <- nlsySample[nlsySample$ID %in% sample(unique(nlsySample$ID), 300),]
   sample_forest <- splineForest(BMI~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs, BMI~AGE, "ID", nlsySample_small, degree=1, df=2, intercept=FALSE, cp=0.001, ntree=10)
   forest2 <- splineForest(BMI~HISP+WHITE+BLACK+HGC_FATHER+Num_sibs+HGC_MOTHER+SEX, BMI~AGE, "ID", nlsySample_small, degree=1, df=3, intercept=TRUE, cp=0.001, ntree=10)
+  sample_forest_bootstrap = splineForest(BMI~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs, BMI~AGE, "ID", nlsySample_small, degree=1, df=2, intercept=FALSE, cp=0.001, ntree=10, bootstrap=TRUE)
+  expect_equal(length(forest2$index[[1]]), 189)
   expect_is(forest2, "list")
   preds_coeffs = predictCoeffsForest(forest2, method="all")
   expect_equal(dim(preds_coeffs), c(3, 300))

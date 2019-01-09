@@ -6,8 +6,8 @@
 #' probability of selecting a given variable for split consideration at a node. This method may take several minutes to run- saving the forest after
 #' building it is recommended.
 #'
-#' The ensemble method is highly similar to the random forest methodology of Breiman (2001). Each tree in the ensemble is fit to a bootstrap sample
-#' of the data. At each node of each tree, only a subset of the split variables are considered candidates for the split. In our methodology,
+#' The ensemble method is highly similar to the random forest methodology of Breiman (2001). Each tree in the ensemble is fit to a random sample
+#' of 63.5% of the data (sampled without replacement). At each node of each tree, only a subset of the split variables are considered candidates for the split. In our methodology,
 #' the subset of variables considered at each node is determined by a random process. The prob parameter specifies the probability that a given variable
 #' will be selected at a certain node. Because the method is based on probability, the same number of variables are not considered for splitting at each node
 #' (as in the randomForest package). Note that if prob is small and the number of variables in the splitFormula is also small, there is a high probability that
@@ -33,6 +33,9 @@
 #' @param cp Complexity parameter passed to the rpart building process. Default is the rpart default of 0.01
 #' @param ntree Number of trees in the forest.
 #' @param prob Probability of selecting a variable to included as a candidate for each split.
+#' @param bootstrap Boolean specifying whether bootstrap sampling should be used when choosing data to
+#' use for each tree. When set to FALSE (the default), sampling without replacement is used and 63.5% of the data
+#' is used for each tree. When set to TRUE, a bootstrap sample is used for each tree.
 #' @return A splineforest object, which stores a list of tree (in model$Trees), along with information about the
 #' spline basis used (model$intercept, model$innerKnots, model$boundaryKnots, etc.), and information about which datapoints were
 #' used to build each tree (model$oob_indices and model$index). Note that each element in model$Trees is an rpart object but
@@ -52,7 +55,7 @@
 splineForest <- function(splitFormula, tformula,
     idvar, data, knots = NULL, df = NULL, degree = 3,
     intercept = FALSE, nGrid = 7, gridPoints = NULL, ntree = 50, prob = 0.3,
-    cp = 0.001, minNodeSize=1) {
+    cp = 0.001, minNodeSize=1, bootstrap=FALSE) {
     #### Once per forest, need to do all of the
     #### preprocessing spline steps.
     yvar <- attr(terms(getResponseFormula(tformula)),
@@ -115,7 +118,8 @@ splineForest <- function(splitFormula, tformula,
         "term.labels"), collapse = "+")))
 
     #### Now preprocessing done: begin forest building.
-    sampleSize = NROW(flat_data)
+    if (bootstrap) {sampleSize = NROW(flat_data)}
+    else {sampleSize = 0.632*NROW(flat_data)}
 
     myForest = list()
     itbIndices = list()
@@ -125,13 +129,15 @@ splineForest <- function(splitFormula, tformula,
     print("Building Tree:")
     for (j in c(1:ntree)) {
         print(j)
+
         indices = sample(1:NROW(flat_data), sampleSize,
-            replace = TRUE)
-        bootstrap_sample = flat_data[indices, ]
+            replace = bootstrap)
+        print(length(indices))
+        sample = flat_data[indices, ]
 
         #### Since data is already processed, just
         #### directly build rpart tree.
-        fit <- rpart(form, data = bootstrap_sample,
+        fit <- rpart(form, data = sample,
             method = ulist, control = control,
             maxcompete = 0, parms = list(basisMatrix,
                 prob))

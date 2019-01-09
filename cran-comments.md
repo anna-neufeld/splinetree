@@ -1,7 +1,7 @@
 ## Resubmission
 This is a resubmission. In this version we
 
-* Fixed typesetting errors in vignettes. 
+* Added an additional parameter to the ``splineForest()`` function to allow users to build spline forests using either bootstrap sampling or sampling without replacement. Previous versions of the package always used bootstrap sampling, but previous research has shown that sampling  without replacement is preferable. 
 
 ## Test environments
 * local OS X install, R version 3.5.0
