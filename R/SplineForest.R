@@ -132,7 +132,6 @@ splineForest <- function(splitFormula, tformula,
 
         indices = sample(1:NROW(flat_data), sampleSize,
             replace = bootstrap)
-        print(length(indices))
         sample = flat_data[indices, ]
 
         #### Since data is already processed, just
