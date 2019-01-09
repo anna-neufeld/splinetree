@@ -302,7 +302,7 @@ We see from the plot that using ``predictCoeffs()`` and ``predictY()`` eventuall
 
 # Conclusion
 
-In this vignette, we saw how to build a tree and then customize the tree by altering the tree size, the spline basis, and the projection grid. We also saw how to print or plot a spline tree, work with splinetree components by hand, and evaluate a splinetree using $R^2$ metrics. One aspect of our trees that we have yet to address is variable importance. Different trees that we built throughout this vignette included different sets of split variables. Faced with this inconsistency, how do we know which of the split variables contribute most to the portion of varation in BMI trajectory that we are able to explain? To answer this question most accurately, we must use spline forests. For more information, see the *Forest Building with SplineTree* Vignette. 
+In this vignette, we saw how to build a tree and then customize the tree by altering the tree size, the spline basis, and the projection grid. We also saw how to print or plot a spline tree, work with splinetree components by hand, and evaluate a splinetree using $R^2$ metrics. One aspect of our trees that we have yet to address is variable importance. Different trees that we built throughout this vignette included different sets of split variables. Faced with this inconsistency, how do we know which of the split variables contribute most to the portion of varation in BMI trajectory that we are able to explain? To answer this question most accurately, we must use spline des. For more information, see the *Forest Building with SplineTree* Vignette. 
 
 # References
 
