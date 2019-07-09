@@ -316,9 +316,14 @@ spaghettiPlot <- function(model, colors = NULL) {
         plotDat$colors[i] = colors[match(plotDat$where[i],
             leaves)]
     }
-    p1 + geom_line() + facet_grid(. ~ where) +
+    plotDat$where2 <- rownames(model$frame)[plotDat$where]
+    newDat$where2 <- rownames(model$frame)[newDat$where]
+
+    p1 <- ggplot(data = newDat, aes_string(x = tvar,
+                                           y = yvar, group = idvar))
+    p1 + geom_line() + facet_grid(. ~ where2) +
         geom_point(mapping = aes_string(x = "time", y = "response",
-            group = 1, color = as.factor(plotDat$where)),
+            group = 1, color = as.factor(plotDat$where2)),
             data = plotDat) + scale_color_manual(values = colors) +
         theme(legend.position = "none")
 }
