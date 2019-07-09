@@ -26,7 +26,7 @@ projectedR2Forest <- function(forest, method = "oob", removeIntercept = TRUE) {
     # First, get the predicted spline coefficients for every datapoint using the desired method.
     forest_pred_coeffs <- t(predictCoeffsForest(forest, method))
     # Goal will be to compare these to the true spline coefficients for every datapoint.
-    true_coeffs <- forest$flat_data$Ydata ### Note to self- change this to flat_data to be consistent with tree.
+    true_coeffs <- forest$flat_data$Ydata
 
     ### Goal is to see how closely the forest_pred_coeffs approximate the true_coeffs.
     ### To measure this, we use the projected sum of squares.

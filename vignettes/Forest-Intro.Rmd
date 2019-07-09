@@ -57,10 +57,10 @@ forest$yvar
 forest$tvar
 ```
 
-Other components allow us reconstruct the spline basis that was used to build the tree. These are useful for converting coefficients into smoothed trajectories without using built-in functions. The attribute ``forest$flat_data`` contains the flattened dataset used to build the trees, including the individually projected coefficients for each individual. We can access the individually projected coefficients more quickly in ``forest$Ydata``.  We can use the average of all the individual coefficients as well as the information that is stored about the spline basis in ``forest$innerKnots``, ``forest$degree``, ``forest$intercept``, and ``forest$boundaryKnots`` to reconstruct the population average trajectory. 
+Other components allow us reconstruct the spline basis that was used to build the tree. These are useful for converting coefficients into smoothed trajectories without using built-in functions. The attribute ``forest$flat_data`` contains the flattened dataset used to build the trees, including the individually projected coefficients for each individual. We can access the individually projected coefficients in ``forest$flat_data$Ydata``.  We can use the average of all the individual coefficients as well as the information that is stored about the spline basis in ``forest$innerKnots``, ``forest$degree``, ``forest$intercept``, and ``forest$boundaryKnots`` to reconstruct the population average trajectory. 
 
 ```{r}
-mean_coeffs <- apply(forest$Ydata, 1, mean)
+mean_coeffs <- apply(forest$flat_data$Ydata, 1, mean)
 
 times <- sort(unique(forest$data[[forest$tvar]]))
 

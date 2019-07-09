@@ -57,9 +57,7 @@ in customizing the spline basis used for projection. The parameters nGrid and gr
 projection sum of squares is evaluated. The parameters minNodeSize and cp allow for flexibility in controlling the size of the final tree.
 }
 \examples{
-\dontshow{
-  nlsySample_subset <- nlsySample[nlsySample$ID \%in\% sample(unique(nlsySample$ID), 500),]
-}
+nlsySample_subset <- nlsySample[nlsySample$ID \%in\% sample(unique(nlsySample$ID), 500),]
 splitForm <- ~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs
 tree1 <- splineTree(splitForm, BMI~AGE, 'ID', nlsySample_subset, degree=3, intercept=TRUE, cp=0.005)
 stPrint(tree1)

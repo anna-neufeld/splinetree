@@ -85,11 +85,16 @@ splineForest <- function(splitFormula, tformula,
     Ydata <- sapply(unique(data[[idvar]]), individual_spline,
         idvar, yvar, tvar, data, boundaryKnots,
         innerKnots, degree, intercept)
-    if (is.vector(Ydata)) {
-        flat_data$Ydata <- Ydata
-    } else {
-        flat_data$Ydata <- t(Ydata)
+    intercept_coeffs <- Ydata[1,]
+    if (!intercept) {
+      Ydata <- Ydata[-1,]
     }
+    if (is.vector(Ydata)) {
+      flat_data$Ydata <- Ydata
+    } else {
+      flat_data$Ydata <- t(Ydata)
+    }
+    flat_data$intercept_coeffs <- intercept_coeffs
 
     ### In new data frame, remove the original y data
     flat_data <- flat_data[, names(flat_data) !=
@@ -153,11 +158,11 @@ splineForest <- function(splitFormula, tformula,
 
     results = list(myForest, itbIndices, splits, data,
         flat_data, splitFormula, oobIndices, degree,
-        intercept, Ydata, df, boundaryKnots, innerKnots,
+        intercept, df, boundaryKnots, innerKnots,
         idvar, yvar, tvar)
     names(results) = c("Trees", "index", "splits",
         "data", "flat_data", "formula", "oob_indices",
-        "degree", "intercept", "Ydata", "df", "boundaryKnots",
+        "degree", "intercept", "df", "boundaryKnots",
         "innerKnots", "idvar", "yvar", "tvar")
     results
 }

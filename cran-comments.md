@@ -1,7 +1,9 @@
 ## Resubmission
 This is a resubmission. In this version we
 
-* Added an additional parameter to the ``splineForest()`` function to allow users to build spline forests using either bootstrap sampling or sampling without replacement. Previous versions of the package always used bootstrap sampling, but previous research has shown that sampling  without replacement is preferable. 
+* Modified the method of "adding the baseline" back into a model that was built with no intercept. Previously, individual-specific baseline responses were added to each trajectory. This may be inappropriate when the trajectories do not begin near 0. Now, smoothed coefficients are added back in instead. 
+
+* Eliminated redundant information return by a call to splineForest. Previously, individual smoothing coefficients were in the named attribute Ydata even though they are also included in the named attribute flat_data. The named attribute Ydata no longer exists. 
 
 ## Test environments
 * local OS X install, R version 3.5.0

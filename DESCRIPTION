@@ -12,7 +12,7 @@ Imports:
     ggplot2,
     treeClust,
     mclust
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
 Suggests: R.rsp,
     knitr,
     rmarkdown,

@@ -54,6 +54,7 @@ splineTreePlot <- function(model, colors = NULL) {
     intercept = model$parms$intercept
     boundaryKnots = model$parms$boundaryKnots
     innerKnots = model$parms$innerKnots
+    flat_data = model$parms$flat_data
 
     ### Code largely copied from the longRpart github page
     indexes = rpartco(model)
@@ -105,10 +106,8 @@ splineTreePlot <- function(model, colors = NULL) {
 
         ### Add mean intercept if this model was a no-intercept model
         if (intercept == FALSE) {
-            mean_int = mean(personData[(personData[[tvar]] -
-                min(personData[[tvar]])) < 1, ][[yvar]])
-            preds <- newxmat %*% t(realcoeffs) +
-                mean_int
+            mean_int = mean(flat_data$intercept_coeffs[flat_data[[idvar]] %in% nodeMembers])
+            preds <- newxmat %*% t(realcoeffs) + mean_int
         } else {
             preds <- newxmat %*% t(realcoeffs)
         }
@@ -170,6 +169,7 @@ nodePlot <- function(model, colors = NULL) {
     tvar = model$parms$tvar
     yvar = model$parms$yvar
     idvar = model$parms$idvar
+    flat_data = model$parms$flat_data
     degree = model$parms$degree
     df = model$parms$df
     intercept = model$parms$intercept
@@ -198,8 +198,9 @@ nodePlot <- function(model, colors = NULL) {
             newxmat <- bs(newx, knots = innerKnots,
                 Boundary.knots = boundaryKnots,
                 degree = degree)
-            mean_int = mean(personData[(personData[[tvar]] -
-                                          min(personData[[tvar]])) < 1, ][[yvar]])
+            mean_int = mean(flat_data$intercept_coeffs[flat_data[[idvar]] %in% nodeMembers])
+            #mean_int = mean(personData[(personData[[tvar]] -
+             #                             min(personData[[tvar]])) < 1, ][[yvar]])
         }
 
         realcoeffs = model$frame[leaves[i], ]$yval2
@@ -368,8 +369,7 @@ plotNode <-  function(tree, node, includeData = FALSE, estimateIntercept = TRUE)
                   Boundary.knots = tree$parms$boundaryKnots,
                   degree = tree$parms$degree)
     if (estimateIntercept) {
-      mean_int = mean(tree$parms$data[(tree$parms$data[[tree$parms$tvar]] -
-                                         min(tree$parms$data[[tree$parms$tvar]])) < 1, ][[tree$parms$yvar]])
+      mean_int <- mean(flat_node_data$intercept_coeffs)
     }
     else {mean_int=0}
     preds <- newxmat %*% t(nodeCoeffs) + mean_int
