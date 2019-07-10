@@ -11,9 +11,9 @@ predictCoeffsForest(forest, method = "oob", testdata = NULL)
 
 \item{method}{A string; either "oob", "itb", or "all".
 If "oob" (the default), predictions for a given data point are made only using trees for which this
-data point was "out of the bag" (not in the bootstrap sample). If "itb", predictions for
+data point was "out of the bag" (not in the random subsample). If "itb", predictions for
 a given data point are made using only the trees for which this datapoint was "in the bag"
-(in the bootstrap sample). If "all", all trees are used for every datapoint.}
+(in the random subsample). If "all", all trees are used for every datapoint.}
 
 \item{testdata}{The test data to make predictions for. If this is provided, then
 all trees are used for all datapoints.}

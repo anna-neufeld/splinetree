@@ -11,9 +11,9 @@ predictYForest(forest, method = "oob", testdata = NULL)
 
 \item{method}{A string. Must be either "oob", "itb", or "all". Only relevant when testdata is NULL.
 The default value is "oob". If "oob", predictions for a given data point are made only using
-trees for which this data point was "out of the bag" (not in the bootstrap sample).
+trees for which this data point was "out of the bag" (not in the random subsample).
  If "itb", predictions for a given data point are made using only the trees for which this datapoint
- was in the bag (in the bootstrap sample). If "all", all trees are used for every datapoint.}
+ was in the bag (in the random subsample). If "all", all trees are used for every datapoint.}
 
 \item{testdata}{the Test data to make predictions for. If this is provided, then
 all trees are used for all datapoints.}

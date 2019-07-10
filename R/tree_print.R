@@ -5,7 +5,7 @@
 #' and the predicted spline coefficients for each node. This code is primarily taken from rpart base code for print.rpart. It has been modified to
 #' ensure that the full vector of coefficients is printed for each node.
 #'
-#' @param t A splinetree object
+#' @param t A model returned by splineTree()
 #' @param digits Specifies how many digits of each coefficient should be printed
 #' @param cp Optional- if provided, a pruned version of the tree will be printed. The tree will be
 #' pruned using the provided cp as the complexity parameter.

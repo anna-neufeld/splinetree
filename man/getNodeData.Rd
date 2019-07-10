@@ -7,7 +7,7 @@
 getNodeData(tree, node, dataType = "all")
 }
 \arguments{
-\item{tree}{a splinetree object}
+\item{tree}{a model returned from splineTree()}
 
 \item{node}{The number of the node to retrieve data from. Must be valid
 number of a terminal node. Node numbers can be seen using stPrint(tree)

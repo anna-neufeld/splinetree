@@ -7,7 +7,7 @@
 treeSize(model)
 }
 \arguments{
-\item{model}{A splinetree object, or any rpart object}
+\item{model}{A model returned by splineTree(). Also works on any rpart object}
 }
 \value{
 The number of terminal nodes in the tree

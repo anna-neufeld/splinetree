@@ -2,7 +2,7 @@
 % Please edit documentation in R/tree_print.R
 \name{treeSummary}
 \alias{treeSummary}
-\title{Prints the tree frame.}
+\title{Returns the tree frame.}
 \usage{
 treeSummary(model)
 }

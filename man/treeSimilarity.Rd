@@ -7,9 +7,9 @@
 treeSimilarity(tree1, tree2)
 }
 \arguments{
-\item{tree1}{a splinetree object}
+\item{tree1}{a model returned from splineTree()}
 
-\item{tree2}{a splinetree object}
+\item{tree2}{a model returned from splineTree()}
 }
 \value{
 The Adjusted Rand Index of the clusterings created by the two trees.

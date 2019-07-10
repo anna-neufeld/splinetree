@@ -7,16 +7,16 @@
 projectedR2Forest(forest, method = "oob", removeIntercept = TRUE)
 }
 \arguments{
-\item{forest}{A splineforest object}
+\item{forest}{The output of a call to splineForest()}
 
 \item{method}{How would you like to compute this metric? The choices are "oob", "itb", or "all".
 "oob" means that predictions for a datapoint can only be made using trees for which that datapoint was
-"out of the bag" (not in the bootstrap sample). "all" means that all trees are used in the prediction for every
-datapoint. "itb" means that predictions for a datapoint are made using only the trees for which this datapoint was IN the bootstrap sample.}
+"out of the bag" (not in the random subsample). "all" means that all trees are used in the prediction for every
+datapoint. "itb" means that predictions for a datapoint are made using only the trees for which this datapoint was IN the random subsample.}
 
 \item{removeIntercept}{If true, the projection sum of squared error is computed while ignoring the intercept coefficient.
 This will help capture the tree's performance at clustering based on shape, not based on level.
-This parameter is only meaningful if this tree was built using an intercept.}
+This parameter is only meaningful if this forest was built using an intercept.}
 }
 \value{
 Returns 1-SSE/SST, where SSE is the total sum of squared projection errors of the true coefficients compared
@@ -24,8 +24,9 @@ to the predicted coefficients, and SST is the total sum of squared projection er
 the population mean coefficients.
 }
 \description{
-Computes an R-squared-like evaluation metric for a splineforest object. Goal is to see how well the predicted spline coefficients for each individual
-match the spline coefficients obtained when fitting a spline only to this individual's data (we call these coefficients the true coefficients). Computes 1-SSE/SST, where SSE is the total sum of squared projection errors of the true coefficients compared
+Computes an R-squared-like evaluation metric for a spline forest. Goal is to see how well the predicted spline coefficients for each individual
+match the spline coefficients obtained when fitting a spline only to this individual's data (we call these coefficients the true coefficients). Computes 1-SSE/SST, where SSE is the total
+sum of squared projection errors of the true coefficients compared
 to the predicted coefficients, and SST is the total sum of squared projection errors of the true coefficients compared to
 the population mean coefficients. If this is an intercept forest, have the option to compute these sum of squares either with the intercept included or with the intercept ignored to isolate the shape.
 }

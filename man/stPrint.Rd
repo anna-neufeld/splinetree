@@ -2,12 +2,12 @@
 % Please edit documentation in R/tree_print.R
 \name{stPrint}
 \alias{stPrint}
-\title{Print a spline tree object in the style of print.rpart}
+\title{Print a spline tree in the style of print.rpart}
 \usage{
 stPrint(t, cp, digits = getOption("digits"))
 }
 \arguments{
-\item{t}{A splinetree object}
+\item{t}{A model returned by splineTree()}
 
 \item{cp}{Optional- if provided, a pruned version of the tree will be printed. The tree will be
 pruned using the provided cp as the complexity parameter.}

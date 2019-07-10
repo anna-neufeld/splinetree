@@ -7,7 +7,7 @@
 nodePlot(model, colors = NULL)
 }
 \arguments{
-\item{model}{A splinetree object}
+\item{model}{A model returned from splineTree()}
 
 \item{colors}{A list of colors to use. By default, uses colors drawn from a rainbow.}
 }

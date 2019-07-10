@@ -2,12 +2,12 @@
 % Please edit documentation in R/tree_evaluation.R
 \name{predictCoeffs}
 \alias{predictCoeffs}
-\title{Predict spline coefficients for a testset using a splinetree object}
+\title{Predict spline coefficients for a testset using a spline tree}
 \usage{
 predictCoeffs(tree, testset = tree$parms$flat_data)
 }
 \arguments{
-\item{tree}{A splinetree object}
+\item{tree}{A model created with splineTree()}
 
 \item{testset}{The dataset to predict coefficients for. Default is the flattened dataset used to make the tree.}
 }

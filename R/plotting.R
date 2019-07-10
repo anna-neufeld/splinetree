@@ -1,12 +1,12 @@
 #' Plots a splinetree.
 #'
-#' Creates a two paneled plot of a splinetree object that shows both the tree and the trajectories side by side.
+#' Creates a two paneled plot of a splinetree that shows both the tree and the trajectories side by side.
 #' Note that this function has trouble when the plot window is not wide enough. If nothing shows up in RStudio,
 #' try increasing the size of the plot window and trying again. For a tree without an intercept, intercepts are
 #' estimated after-the-fact for each node using the average starting value in the data so that the plotted
 #' trajectories have reasonable response values.
 #'
-#' @param model A splinetree object
+#' @param model A model returned from splineTree()
 #' @param colors A list of colors that will be used for the trajectories (if NULL, will automatically select colors from
 #' rainbow color scheme.
 #' @importFrom grDevices dev.off
@@ -34,12 +34,12 @@ stPlot <- function(model, colors = NULL) {
 
 
 
-#' Creates a tree plot of a splinetree object.
+#' Creates a tree plot of a spline tree.
 #'
-#' Creates a tree plot of a splinetree object. This corresponds to plotting only the first panel of
+#' Creates a tree plot of a spline tree. This corresponds to plotting only the first panel of
 #' stPlot(). Code for this function was borrowed from the longRPart package on github.
 #'
-#' @param model a splinetree object
+#' @param model a model returned from splineTree()
 #' @param colors a list of colors that will be used for the terminal nodes (if NULL, will use a rainbow)
 #' @export
 #' @importFrom grDevices dev.cur gray rainbow
@@ -161,7 +161,7 @@ splineTreePlot <- function(model, colors = NULL) {
 #' intercepts are added to each trajectory so that the trajectories are plotted at the level of reasonable
 #' response values.
 #'
-#' @param model A splinetree object
+#' @param model A model returned from splineTree()
 #' @param colors A list of colors to use. By default, uses colors drawn from a rainbow.
 #' @export
 nodePlot <- function(model, colors = NULL) {
@@ -237,7 +237,7 @@ nodePlot <- function(model, colors = NULL) {
 #' Allows users to visualize homogeneity of trajectories within the terminal nodes of the tree while also looking
 #' at the trajectories of different nodes side by side.
 #'
-#' @param model a splinetree object
+#' @param model a model returned from splineTree()
 #' @param colors optional argument specifying colors to be used for each panel.
 #' @export
 #' @importFrom ggplot2 ggplot aes aes_string facet_grid geom_line geom_point scale_color_manual theme
@@ -335,8 +335,8 @@ spaghettiPlot <- function(model, colors = NULL) {
 #'
 #' @importFrom ggplot2 ggplot xlab ylab
 #' @export
-#' @param tree A splinetree object
-#' @param node A node number. Must be a valid terminal node for the given splinetree object.
+#' @param tree A model returned from splineTree()
+#' @param node A node number. Must be a valid terminal node for the given spline tree.
 #' To view valid terminal node numbers, use stPrint() or treeSummary().
 #' @param includeData Would you like to see the data from the node
 #' plotted along with the predicted trajectory?

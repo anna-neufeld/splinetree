@@ -7,9 +7,9 @@
 plotNode(tree, node, includeData = FALSE, estimateIntercept = TRUE)
 }
 \arguments{
-\item{tree}{A splinetree object}
+\item{tree}{A model returned from splineTree()}
 
-\item{node}{A node number. Must be a valid terminal node for the given splinetree object.
+\item{node}{A node number. Must be a valid terminal node for the given spline tree.
 To view valid terminal node numbers, use stPrint() or treeSummary().}
 
 \item{includeData}{Would you like to see the data from the node
