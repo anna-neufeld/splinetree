@@ -1,4 +1,4 @@
-#' Print a spline tree object in the style of print.rpart
+#' Print a spline tree in the style of print.rpart
 #'
 #' The printout provides numbered labels for the terminal nodes,
 #' a description of the split at each node, the number of observations found at each node,
@@ -63,7 +63,7 @@ stPrint <- function(t, cp, digits = getOption("digits"))
   invisible(t)
 }
 
-#' Prints the tree frame.
+#' Returns the tree frame.
 #'
 #' Provides a similar output to model$frame, but with the redundant information of yval and
 #' yval2 removed. Also omits the deviance, the complexity, and the weight. Useful for viewing

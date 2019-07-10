@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-This vignette is meant for users who are familiar with regression trees and the spline projection method but who are unfamiliar with working with ``splinetree`` objects. For a more detailed introduction to package and the spline projection method, see the *Introduction to splinetree* vignette.
+This vignette is meant for users who are familiar with regression trees and the spline projection method but who are unfamiliar with working with the ``splinetree`` package. For a more detailed introduction to package and the spline projection method, see the *Introduction to splinetree* vignette.
 
 This guide walks through examples of building trees, plotting trees, and evaluating trees. The data used for these examples comes from the National Longitudinal Survey of Youth 1979 (NLSY) and we study the relationship between baseline socioeconomic variables (measured during teenage years) and body mass index (BMI) trajectories over time throughout adulthood. We wish to study the relationship between BMI trajectories and variables such as HISP, WHITE, BLACK (indicator variables for subject's race), SEX (indicator for subject's sex), Num_sibs (number of siblings),  and HGC_FATHER and HGC_MOTHER (highest grade completed by subject's father and subject's mother). We randomly sampled 1,000 individuals from the NLSY out of those who have non-missing BMI data at at least 10 timepoints spread out over at least 20 years. 
 
@@ -55,6 +55,8 @@ first_tree <- splineTree(split_formula, tformula, idvar, data)
 ```
 
 ## Viewing and visualizing the first tree
+
+The value returned by ``splineTree()`` is an object of class ``rpart", but it differs from an ``rpart" in that it stores additional information relevant to the spline splitting process. This additional information is all stored in the ``parms`` attribute of the ``rpart" object, and will be discussed further below. 
 
 We can examine our first tree by printing a summary with ``stPrint`` or creating a visual summary with ``stPlot``.  Let's start with the summary. 
 
@@ -121,7 +123,7 @@ plotNode(first_tree, node = 4, includeData = FALSE, estimateIntercept = TRUE)
 ```
 
 
-Before we move on to customizing our tree building process, it is useful to see how we might reproduce the plot above from scratch. Most of the information needed is stored in the ``parms`` attribute of the ``splinetree`` object. 
+Before we move on to customizing our tree building process, it is useful to see how we might reproduce the plot above from scratch. Most of the information needed is stored in the ``parms`` attribute of the ``rpart`` object returned by ``splineTree()``. 
 
 ```{r}
 node4coeffs <- treeSummary(first_tree)["4",]$coeffs

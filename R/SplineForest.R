@@ -97,24 +97,20 @@ splineForest <- function(splitFormula, tformula,
     flat_data$intercept_coeffs <- intercept_coeffs
 
     ### In new data frame, remove the original y data
-    flat_data <- flat_data[, names(flat_data) !=
-        yvar]
+    flat_data <- flat_data[, names(flat_data) != yvar]
 
 
     ### Another step of data processing - get rid of
     ### any row that has NA coeffs in the Y variable
     ### If we don't, RPART will do it for us, but our
     ### data structures will not match later
-    flat_data <- flat_data[complete.cases(Ydata),
-        ]
-    Ydata <- as.matrix(Ydata)[complete.cases(Ydata),
-        ]
-    data <- data[data[[idvar]] %in% flat_data[[idvar]],
-        ]
+    flat_data <- flat_data[complete.cases(Ydata),]
+    Ydata <- as.matrix(Ydata)[complete.cases(Ydata),]
+    data <- data[data[[idvar]] %in% flat_data[[idvar]],]
 
 
-    #### Now all forest stuff happens with respect to
-    #### the flat data dataframe
+    #### Now all forest computation happens with respect to
+    #### the flat_data dataframe
     ulist <- list(eval = spline_eval, split = splineforest_split,
         init = spline_init)
 

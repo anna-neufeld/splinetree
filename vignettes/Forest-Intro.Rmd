@@ -22,9 +22,9 @@ This guide is meant for users who are familiar with regression trees, random for
 
 # Building a Forest
 
-For users familiar with building trees in ``splinetree`` (see *Introduction to Tree Building with splinetree*), then building a forest is straightforward. The majority of the parameters needed to use the ``splineForest()`` function are identical to those used in the ``splineTree()`` function; the processed used to project the longitudinal data onto smoothed trajectories is identical. There are just two additional parameters for the ``splineForest`` function.
+For users familiar with building trees in ``splinetree`` (see *Introduction to Tree Building with splinetree*), building a forest is straightforward. The majority of the parameters needed to use the ``splineForest()`` function are identical to those used in the ``splineTree()`` function. The process used to project the longitudinal data onto smoothed trajectories and then make splits is identical. There are just two additional parameters for the ``splineForest`` function.
 
-The ``nTree`` parameter specifies the number of trees in the forest. The default value is $50$. Large forests provide additional stability over smaller forests, but on large datasets building a large spline forest may take several minutes. The ``prob`` parameter specifies the probability that a variable will be in consideration as a split variable at a given node. To avoid a situation where no variables are considered at a certain node, we recommend that that ``prob`` is relatively large when the number of split variables is small. If only 6 split variables are in consideration, then setting ``prob=1/3`` leaves around an 8\% chance $\left( (2/3)^6 \right)$ that no variable will be selected for a split at the root node. Increasing ``prob`` to ``1/2`` reduces this probability to under 2\%. The ``bootstrap`` parameter specifies whether the data subsample used for each tree will be a bootstrap sample (drawn with replacement, size equal to original dataset) or a random sample of 63.2% of the original dataset drawn without replacement. The choice of 63.2% was made because this is how much of the data will be included in a bootstrap sample, on average. Following the work of @strobl2007bias, who show that sampling without replacement is preferable to the traditional random forest bootstrap sampling, we use ``bootstrap=FALSE`` as the default setting. 
+The ``nTree`` parameter specifies the number of trees in the forest. The default value is $50$. Large forests provide additional stability over smaller forests, but on large datasets building a large spline forest may take several minutes. The ``prob`` parameter specifies the probability that a variable will be in consideration as a split variable at a given node. To avoid a situation where no variables are considered at a certain node, we recommend that that ``prob`` is relatively large when the number of split variables is small. If only 6 split variables are in consideration, then setting ``prob=1/3`` leaves around an 8\% chance $\left( (2/3)^6 \right)$ that no variable will be selected for a split at the root node. Increasing ``prob`` to ``1/2`` reduces this probability to under 2\%. The ``bootstrap`` parameter specifies whether the data subsample used for each tree will be a bootstrap sample (drawn with replacement, size equal to original dataset) or a random sample of 63.2% of the original dataset drawn without replacement. The choice of 63.2% was made because this is how much of the data will be included in a bootstrap sample, on average. Following the work of @strobl2007bias, who show that sampling without replacement is preferable to the traditional random forest bootstrap sampling, ``bootstrap=FALSE`` is the default setting. 
 
 We will build a forest of 50 trees using a probability of 0.5. As split variables, we will include indicators for the subject's race and sex as well as the subject's number of siblings and the highest grade completed (HGC) by the subject's mother and father. We will use a spline basis with 1 degree and 1 internal knot; this choice is based on the knowledge that adult BMI trajectories tend to be steeper in early adulthood before flattening out in late adulthood (@clarke2008social). We will build both a forest with an intercept for the sake of demonstrating a few functions (such as prediction responses) that are not available for forests without an intercept. 
 
@@ -35,20 +35,21 @@ tformula <- BMI~AGE
 ```
 
 ```{r, results='hide'}
+set.seed(123)
 forest <- splineForest(split_formula, tformula, idvar="ID", 
-                       data=nlsySample, degree=1, df=3, intercept=TRUE,ntree=50, 
-                       prob=0.5, cp=0.005)
+                    data=nlsySample, degree=1, df=3,
+                    intercept=TRUE,ntree=50, prob=0.5, cp=0.005)
 ```
 
 # Working with a splineforest object
 
-This newly built ``splineforest`` object is a named list with 16 components.
+This newly built ``splineforest`` object is a named list with 15 components.
 
 ```{r}
 names(forest)
 ```
 
-A few of these 16 components have unsurprising values. For example, ``forest$data`` holds a copy of the original dataset, and ``forest$formula``, ``forest$idvar``, ``forest$yvar``, and ``forest$tvar`` each hold pieces of information about the call to the ``splineTree()`` function. 
+A few of these 15 components have unsurprising values. For example, ``forest$data`` holds a copy of the original dataset, and ``forest$formula``, ``forest$idvar``, ``forest$yvar``, and ``forest$tvar`` each hold pieces of information about the call to the ``splineTree()`` function. 
 
 ```{r}
 forest$formula
@@ -60,7 +61,7 @@ forest$tvar
 Other components allow us reconstruct the spline basis that was used to build the tree. These are useful for converting coefficients into smoothed trajectories without using built-in functions. The attribute ``forest$flat_data`` contains the flattened dataset used to build the trees, including the individually projected coefficients for each individual. We can access the individually projected coefficients in ``forest$flat_data$Ydata``.  We can use the average of all the individual coefficients as well as the information that is stored about the spline basis in ``forest$innerKnots``, ``forest$degree``, ``forest$intercept``, and ``forest$boundaryKnots`` to reconstruct the population average trajectory. 
 
 ```{r}
-mean_coeffs <- apply(forest$flat_data$Ydata, 1, mean)
+mean_coeffs <- apply(forest$flat_data$Ydata, 2, mean)
 
 times <- sort(unique(forest$data[[forest$tvar]]))
 
@@ -86,7 +87,7 @@ Although we can print any tree in the forest using ``stPrint()``, it is importan
 
 ```{r}
 sample_tree <- splineTree(split_formula, tformula, idvar="ID", 
-                          data=nlsySample, degree=1, df=2, intercept=TRUE, cp=0.005)
+                          data=nlsySample, degree=1,  df=2, intercept=TRUE, cp=0.005)
 
 ### Try to evaluate both trees
 yR2(sample_tree)
@@ -98,7 +99,7 @@ sample_tree$parms$degree
 forest$Trees[[17]]$parms$degree
 ```
 
-The remaining components of ``forest`` include ``forest$index``, ``forest$oob_indices``, and ``forest$splits``. The ``index`` component let's us access the data that was used to build each tree. For example, ``forest$index[[17]]`` stores the indices of each row in ``forest$flat_data`` that was used to build the 17th tree. On the other hand, ``forest$oob_indices[[17]]`` stores a list of indices that correpond to rows in ``forest$flat_data`` that were NOT used to build tree 17 (these rows were "out of the bag", or "oob"). Storing both of these pieces of information may seem redundant, but both are accessed frequently in the forest prediction and evaluation functions. If we want to uncover datapoints that are "in the bag"" and "out of the bag" for tree 17, we can use:
+The remaining components of ``forest`` include ``forest$index``, ``forest$oob_indices``, and ``forest$splits``. The ``index`` component let's us access the data that was used to build each tree. For example, ``forest$index[[17]]`` stores the indices of each row in ``forest$flat_data`` that was used to build the 17th tree. On the other hand, ``forest$oob_indices[[17]]`` stores a list of indices that correpond to rows in ``forest$flat_data`` that were NOT used to build tree 17 (these rows were "out of the bag", or "oob"). Storing both of these pieces of information may seem redundant, but both are accessed frequently in the forest prediction and evaluation functions. If we want to uncover datapoints that are "in the bag" and "out of the bag" for tree 17, we can use:
 
 ```{r, eval=FALSE}
 itb17 <- forest$flat_data[forest$index[[17]],]
@@ -107,15 +108,15 @@ oob17 <- forest$flat_data[forest$oob_indices[[17]],]
 
 The ``in the bag`` dataset is around twice as large as the ``out of bag`` dataset since each tree has 63.2% of the data ``in the bag``.  
 
-The final component of a forest object is accessed in ``forest$splits``.  This very long list stores every variable selected as a split throughout the entire forest. It might be useful to compare the frequency with which different variables are selected. It is important to note that these frequecies should $not$ be used as a variable importance metric. The barplot below shows that HGC_FATHER, HGC_MOTHER, and Num_Sibs are the most frequently selected varaibles throughout the forest. These three variables are the only numeric variables in the dataset; the rest are binary, meaning that they can never be used consecutively in the same branch of a tree. More appropriate measures of variable importance will be discussed below. 
+The final component of a forest object is accessed in ``forest$splits``. This very long vector stores the string name of every variable selected as a split throughout the entire forest. It might be useful to compare the frequency with which different variables are selected. It is important to note that these frequecies should $not$ be used as a variable importance metric. The barplot below shows that HGC_FATHER, HGC_MOTHER, and Num_Sibs are the most frequently selected varaibles throughout the forest. These three variables are the only numeric variables in the dataset; the rest are binary, meaning that they can never be used consecutively in the same branch of a tree. More appropriate measures of variable importance will be discussed below. 
 
 ```{r}
 freqs <- table(forest$splits)/sum(table(forest$splits))
 par(las = 2)
-barplot(freqs)
+barplot(freqs, cex.names = 0.5)
 ```
 
-The bias in splits towards variables with more unique values is exacerbated in forests where each tree is very large; in forests such as these, numeric variables with many unique values will be repeatedly used for successive splits while binary variables are limited. It is sometimes useful to check the size of the average tree in the forest and, if necessary, prune each tree in the forest to reduce the average size. 
+The bias in splits towards variables with more unique values is exacerbated in forests where each tree is very large; in forests such as these, numeric variables with many unique values will be repeatedly used for successive splits while binary variables are limited to one split per tree branch. It is sometimes useful to check the size of the average tree in the forest and, if necessary, prune each tree in the forest to reduce the average size. 
 
 ```{r}
 avSize(forest)
@@ -148,7 +149,7 @@ cor(nlsySample$BMI, predictYForest(forest, method="itb"))
 
 # Evaluating a Forest
 
-As with a single tree, we can evaluate a forest with respect to how well it predicts actual responses or with respect to how well it predicts individually-projected trajectories.  In many cases, it makes more sense to look at how well the forest is predicting actual responses; a forest that is excellent at predicting individually projected trajectories may be mostly useless if the individual trajectories do not approximate the actual responses (due to a poorly chosen basis). However, there are also advantages to evaluating a forest with respect to projected trajectories. The projectedion-based metrics can be used whether or not the forest includes an intercept. Furthermore, they do not give the forest credit for the portion of variation that is explained simply by the population average trend of BMI and AGE; they only give the forest credit for explaining additional variation. Furthermore, when used on a no-intercept forest or when used with the arguement ``removeIntercept=TRUE``, these metrics tell us how well we explain variation in shape of trajectory, regardless of what is happening with level. When our goal is to explain variation in shape, this metric may be more useful than the prediction metric.  
+As with a single tree, we can evaluate a forest with respect to how well it predicts actual responses or with respect to how well it predicts individually-smoothed trajectories.  In many cases, it makes more sense to look at how well the forest is predicting actual responses; a forest that is excellent at predicting individually projected trajectories may be mostly useless if the individual trajectories do not approximate the actual responses (due to a poorly chosen basis). However, there are also advantages to evaluating a forest with respect to projected trajectories. The projectedion-based metrics can be used whether or not the forest includes an intercept. Furthermore, they do not give the forest credit for the portion of variation that is explained simply by the population average trend of BMI and AGE; they only give the forest credit for explaining additional variation through covariates. Furthermore, when used on a no-intercept forest or when used with the arguement ``removeIntercept=TRUE``, these metrics tell us how well we explain variation in shape of trajectory, regardless of what is happening with level. When our goal is to explain variation in shape, this metric may be more useful than the prediction metric.  
 
 Apart from the response vs. projected response choice, we can also measure forest performance using ``out-of-the-bag``, ``in-the-bag``, or all tree predictions. Out of the bag performance metrics are often preferred because they provide a more realistic assesment of how the tree will perform out of sample. Combining these different dimensions of choice, there are 9 different ways that we could evaluate the performance of one single forest with an intercept! We can compare the 9 metrics. 
 
