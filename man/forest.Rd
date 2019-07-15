@@ -4,7 +4,7 @@
 \name{forest}
 \alias{forest}
 \title{Sample forest used in vignettes}
-\format{An object of class \code{list} of length 16.}
+\format{An object of class \code{list} of length 15.}
 \usage{
 forest
 }

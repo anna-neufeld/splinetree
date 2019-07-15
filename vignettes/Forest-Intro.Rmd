@@ -41,9 +41,9 @@ forest <- splineForest(split_formula, tformula, idvar="ID",
                     intercept=TRUE,ntree=50, prob=0.5, cp=0.005)
 ```
 
-# Working with a splineforest object
+# Working with a spline forest
 
-This newly built ``splineforest`` object is a named list with 15 components.
+This newly built spline forest is a named list with 15 components.
 
 ```{r}
 names(forest)
@@ -77,13 +77,13 @@ preds <- basisMatrix %*% mean_coeffs
 plot(times, preds, type='l', main="Population Average Trajectory")
 ```
 
-Apart from all of the information that is stored about the function call and the spline basis, the ``splineforest`` object contains information about the forest itself.  Most important of all is the component ``forest$Trees``, which stores a list of ``rpart`` objects. This ensemble of trees is the fucntional part of the forest model. We can view any individual tree using ``stPrint()``.
+Apart from all of the information that is stored about the function call and the spline basis, the ``splineforest`` model contains information about the forest itself.  Most important of all is the component ``forest$Trees``, which stores a list of ``rpart`` objects. This ensemble of trees is the fucntional part of the forest model. We can view any individual tree using ``stPrint()``.
 
 ```{r}
 stPrint(forest$Trees[[17]])
 ```
 
-Although we can print any tree in the forest using ``stPrint()``, it is important to note that these trees are not identical to ``splineTree`` objects. These ``rpart`` trees do not store all of the extra information that is stored in a typical ``splinetree`` object. For example, we can note the difference between a single tree and ``forest$Trees[[17]]``.
+Although we can print any tree in the forest using ``stPrint()``, it is important to note that these trees are not identical to trees returned by ``splineTree()``. These ``rpart`` trees do not store all of the extra information that is stored in a typical ``splineTree()`` model. For example, we can note the difference between a single tree and ``forest$Trees[[17]]``.
 
 ```{r}
 sample_tree <- splineTree(split_formula, tformula, idvar="ID", 
@@ -108,7 +108,7 @@ oob17 <- forest$flat_data[forest$oob_indices[[17]],]
 
 The ``in the bag`` dataset is around twice as large as the ``out of bag`` dataset since each tree has 63.2% of the data ``in the bag``.  
 
-The final component of a forest object is accessed in ``forest$splits``. This very long vector stores the string name of every variable selected as a split throughout the entire forest. It might be useful to compare the frequency with which different variables are selected. It is important to note that these frequecies should $not$ be used as a variable importance metric. The barplot below shows that HGC_FATHER, HGC_MOTHER, and Num_Sibs are the most frequently selected varaibles throughout the forest. These three variables are the only numeric variables in the dataset; the rest are binary, meaning that they can never be used consecutively in the same branch of a tree. More appropriate measures of variable importance will be discussed below. 
+The final component of a forest is accessed in ``forest$splits``. This very long vector stores the string name of every variable selected as a split throughout the entire forest. It might be useful to compare the frequency with which different variables are selected. It is important to note that these frequecies should $not$ be used as a variable importance metric. The barplot below shows that HGC_FATHER, HGC_MOTHER, and Num_Sibs are the most frequently selected varaibles throughout the forest. These three variables are the only numeric variables in the dataset; the rest are binary, meaning that they can never be used consecutively in the same branch of a tree. More appropriate measures of variable importance will be discussed below. 
 
 ```{r}
 freqs <- table(forest$splits)/sum(table(forest$splits))
