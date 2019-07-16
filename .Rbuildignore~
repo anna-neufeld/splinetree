@@ -1,0 +1,11 @@
+^CRAN-RELEASE$
+^Meta$
+^doc$
+^.*\.Rproj$
+^\.Rproj\.user$
+^\.travis\.yml$
+^README\.Rmd$
+^README-.*\.png$
+\_pkgdown\.yml
+docs
+cran-comments.md
