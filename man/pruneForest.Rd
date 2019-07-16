@@ -7,12 +7,12 @@
 pruneForest(forest, cp)
 }
 \arguments{
-\item{forest}{A spline forest object}
+\item{forest}{A model returned by splineForest()}
 
 \item{cp}{The complexity parameter that will be used to prune each tree (see rpart package documentation for detailed description of complexity parameter)}
 }
 \value{
-A new splineforest object where each tree has been pruned to the desired level.
+A new spline forest model (named list) where each tree has been pruned to the desired level.
 }
 \description{
 Prunes each tree in the list forest$Trees according to the provided complexity parameter. Returns a new forest.

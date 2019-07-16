@@ -7,7 +7,7 @@
 predictCoeffsForest(forest, method = "oob", testdata = NULL)
 }
 \arguments{
-\item{forest}{A splineforest object}
+\item{forest}{A model returned from splineForest()}
 
 \item{method}{A string; either "oob", "itb", or "all".
 If "oob" (the default), predictions for a given data point are made only using trees for which this

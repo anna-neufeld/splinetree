@@ -7,7 +7,7 @@
 #' "oob", "itb", or "all". This parameter specifies which trees are used in making a prediction for a certain datapoint.
 #' This parameter is not relevant when predicting for a testset that is distinct from the training set.
 #'
-#' @param forest A splineforest object
+#' @param forest A model returned from splineForest()
 #' @param method A string; either "oob", "itb", or "all".
 #' If "oob" (the default), predictions for a given data point are made only using trees for which this
 #' data point was "out of the bag" (not in the random subsample). If "itb", predictions for
@@ -99,7 +99,7 @@ predictCoeffsForest = function(forest, method = "oob", testdata=NULL) {
 #' be set to "oob", "itb", or "all") determines the method used for prediction. If the testdata parameter is not
 #' null, the methods parameter is ignored and all trees are used for the prediction of every datapoint.
 #'
-#' @param forest A splineforest object
+#' @param forest A model returned from splineForest()
 #' @param method A string. Must be either "oob", "itb", or "all". Only relevant when testdata is NULL.
 #' The default value is "oob". If "oob", predictions for a given data point are made only using
 #' trees for which this data point was "out of the bag" (not in the random subsample).

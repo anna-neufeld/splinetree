@@ -7,7 +7,7 @@
 predictYForest(forest, method = "oob", testdata = NULL)
 }
 \arguments{
-\item{forest}{A splineforest object}
+\item{forest}{A model returned from splineForest()}
 
 \item{method}{A string. Must be either "oob", "itb", or "all". Only relevant when testdata is NULL.
 The default value is "oob". If "oob", predictions for a given data point are made only using

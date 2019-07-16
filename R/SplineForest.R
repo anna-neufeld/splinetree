@@ -36,7 +36,8 @@
 #' @param bootstrap Boolean specifying whether bootstrap sampling should be used when choosing data to
 #' use for each tree. When set to FALSE (the default), sampling without replacement is used and 63.5% of the data
 #' is used for each tree. When set to TRUE, a bootstrap sample is used for each tree.
-#' @return A spline forest model, which stores a list of trees (in model$Trees), along with information about the
+#' @return A spline forest model, which is a named list with 15 components.
+#' The list stores a list of trees (in model$Trees), along with information about the
 #' spline basis used (model$intercept, model$innerKnots, model$boundaryKnots, etc.), and information about which datapoints were
 #' used to build each tree (model$oob_indices and model$index). Note that each element in model$Trees is an rpart object but
 #' it is not the same as a model returned from splineTree() because it does not store all relevant information in model$parms.
