@@ -1,8 +1,8 @@
 pandoc: 1.17.2
-pkgdown: 1.1.0
+pkgdown: 1.3.0
 pkgdown_sha: ~
 articles:
-  Forest-intro: Forest-intro.html
+  Forest-Intro: Forest-Intro.html
   Long-Intro: Long-Intro.html
   Tree-Intro: Tree-Intro.html
 

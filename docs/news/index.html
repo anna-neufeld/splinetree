@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Custom rpart eval function. — spline_eval • splinetree</title>
+<title>Changelog • splinetree</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,12 +30,7 @@
 
 
 
-<meta property="og:title" content="Custom rpart eval function. — spline_eval" />
-
-<meta property="og:description" content="The eval function is required for custom rpart functionality. The split criterion is the total sum of squared errors of the projected or smoothed outcome values around their mean.
-Note that this is the node purity measure introduced by Yu and Lambert, 1999.
-The calling of this function is always handled internally by rpart; the user will never directly call this function." />
-<meta name="twitter:card" content="summary" />
+<meta property="og:title" content="Changelog" />
 
 
 
@@ -52,7 +47,7 @@ The calling of this function is always handled internally by rpart; the user wil
   </head>
 
   <body>
-    <div class="container template-reference-topic">
+    <div class="container template-news">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -122,56 +117,46 @@ The calling of this function is always handled internally by rpart; the user wil
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Custom rpart eval function.</h1>
-    <small class="dont-index">Source: <a href='https://github.com/anna-neufeld/splinetree/blob/master/R/custom_rpart_fns.R'><code>R/custom_rpart_fns.R</code></a></small>
-    <div class="hidden name"><code>spline_eval.Rd</code></div>
+      <h1>Changelog <small></small></h1>
+      <small>Source: <a href='https://github.com/anna-neufeld/splinetree/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div class="ref-description">
-    
-    <p>The eval function is required for custom rpart functionality. The split criterion is the total sum of squared errors of the projected or smoothed outcome values around their mean.
-Note that this is the node purity measure introduced by Yu and Lambert, 1999.
-The calling of this function is always handled internally by rpart; the user will never directly call this function.</p>
-    
-    </div>
-
-    <pre class="usage"><span class='fu'>spline_eval</span>(<span class='no'>y</span>, <span class='kw'>wt</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>parms</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>y</th>
-      <td><p>the responses at this node, which will be estimated spline coefficients for individuals in the node.</p></td>
-    </tr>
-    <tr>
-      <th>wt</th>
-      <td><p>Used to weight observations differently. Required by rpart, but not supported by splinetree, so its value will always be NULL.</p></td>
-    </tr>
-    <tr>
-      <th>parms</th>
-      <td><p>rpart's custom split functionality allows optional parameters to be passed through the splitting functions.
-In the splinetree package, the parms parameter is used to hold a list of length 1 or 2 containing either just a spline basis matrix (for a tree), or
-a spline basis matrix and the probability that a variable will be selected at a split (for a random forest).</p></td>
-    </tr>
-    </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>A description for the node. This description includes the label, which is the mean response at the node,
-and the deviance, which in this case is the total projected sum of squares.</p>
-    
-
+    <div id="splinetree-0-1-1" class="section level1">
+<h1 class="page-header">
+<a href="#splinetree-0-1-1" class="anchor"></a>splinetree 0.1.1<small> 2019-01-07 </small>
+</h1>
+<p>This is a minor release. Typesetting issues in vignettes have been fixed.</p>
+</div>
+    <div id="splinetree-0-1-2" class="section level1">
+<h1 class="page-header">
+<a href="#splinetree-0-1-2" class="anchor"></a>splinetree 0.1.2<small> Unreleased </small>
+</h1>
+<p>This is a minor release. An optional boolean parameter, <code>bootstrap</code> has been added to the <code>splineForest</code> function. This parameter allows users to specify whether they would like to build an ensemble of regression trees using different bootstrap samples of the data or different random samples drawn without replacement from the population. The previous version of the package always used bootstrap samples, but the work of Strobl et al (2007) suggests that samples drawn without replacement are preferable. No functionality of the package has changed; all old code will still run but will produce slightly different results.</p>
+</div>
+    <div id="splinetree-0-2-1" class="section level1">
+<h1 class="page-header">
+<a href="#splinetree-0-2-1" class="anchor"></a>splinetree 0.2.1<small> Unreleased </small>
+</h1>
+<p>This is a minor release. The following changes were made:</p>
+<ul>
+<li><p>Modified the method of plotting trajectories for trees built without an intercept. Previously, the intercept-less trajectories were shifted by the average individual baseline response to put them in the range of reasonable response values. This is inappropriate when the “baseline” does not correspond to a value of 0 of the time variable. Now, average individual estimated intercept coefficients are used instead.</p></li>
+<li><p>Eliminated redundant information return by a call to splineForest. Previously, individual smoothing coefficients were in the named attribute Ydata even though they are also included in the named attribute flat_data. The named attribute Ydata no longer exists.</p></li>
+<li><p>Fixed an issue with node labeling in the “spaghettiPlot” function. Now the panel labels match the node labels in the tree printout.</p></li>
+</ul>
+</div>
   </div>
+
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-          </ul>
-
+    <div id="tocnav">
+      <h2>Contents</h2>
+      <ul class="nav nav-pills nav-stacked">
+        <li><a href="#splinetree-0-1-1">0.1.1</a></li>
+        <li><a href="#splinetree-0-1-2">0.1.2</a></li>
+        <li><a href="#splinetree-0-2-1">0.2.1</a></li>
+      </ul>
+    </div>
   </div>
+
 </div>
 
       <footer>
