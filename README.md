@@ -8,7 +8,7 @@ This package allows users to create, visualize, and evaluate regression trees an
 Installation
 ------------
 
-You can install splinetree from github with:
+You can install splinetree from CRAN or from github with:
 
 ``` r
 # install.packages("devtools")
@@ -19,10 +19,11 @@ Usage
 ------------
 
 Detailed information on using this package can be found in the package vignettes. The package vignettes can be accessed with:
+
 ``` r
-devtools::install_github("anna-neufeld/splinetree", build_vignettes=TRUE)
 browseVignettes(package='splinetree')
 ```
+
 The vignettes are also available on the package website,
 https://anna-neufeld.github.io/splinetree/reference/index.html. 
 
