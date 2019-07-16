@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Build a splineforest object. — splineForest • splinetree</title>
+<title>Build a spline random forest. — splineForest • splinetree</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,10 @@
 
 
 
-<meta property="og:title" content="Build a splineforest object. — splineForest" />
+<meta property="og:title" content="Build a spline random forest. — splineForest" />
 
-<meta property="og:description" content="Builds an ensemble of regression trees for longitudinal or functional data using the spline projection method. The resulting object
-contains a list of splinetree objects along with some additional information. All parameters are used in the same way that they are used in
+<meta property="og:description" content="Builds an ensemble of regression trees for longitudinal or functional data using the spline projection method. The resulting model
+contains a list of spline trees along with some additional information. All parameters are used in the same way that they are used in
 the splineTree() function. The additional parameter ntree specifies how many trees should be in the ensemble, and prob controls the
 probability of selecting a given variable for split consideration at a node. This method may take several minutes to run- saving the forest after
 building it is recommended." />
@@ -124,15 +124,15 @@ building it is recommended." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Build a splineforest object.</h1>
+    <h1>Build a spline random forest.</h1>
     <small class="dont-index">Source: <a href='https://github.com/anna-neufeld/splinetree/blob/master/R/splineForest.R'><code>R/splineForest.R</code></a></small>
     <div class="hidden name"><code>splineForest.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Builds an ensemble of regression trees for longitudinal or functional data using the spline projection method. The resulting object
-contains a list of splinetree objects along with some additional information. All parameters are used in the same way that they are used in
+    <p>Builds an ensemble of regression trees for longitudinal or functional data using the spline projection method. The resulting model
+contains a list of spline trees along with some additional information. All parameters are used in the same way that they are used in
 the splineTree() function. The additional parameter ntree specifies how many trees should be in the ensemble, and prob controls the
 probability of selecting a given variable for split consideration at a node. This method may take several minutes to run- saving the forest after
 building it is recommended.</p>
@@ -218,10 +218,10 @@ is used for each tree. When set to TRUE, a bootstrap sample is used for each tre
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A splineforest object, which stores a list of tree (in model$Trees), along with information about the
+    <p>A spline forest model, which stores a list of trees (in model$Trees), along with information about the
 spline basis used (model$intercept, model$innerKnots, model$boundaryKnots, etc.), and information about which datapoints were
 used to build each tree (model$oob_indices and model$index). Note that each element in model$Trees is an rpart object but
-it is not the same as a splinetree object because it does not store all relevant information in model$parms.</p>
+it is not the same as a model returned from splineTree() because it does not store all relevant information in model$parms.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 

@@ -131,10 +131,10 @@ getBasisMat <- function(yvar, tvar, idvar, data,
 
 }
 
-#' Build a splinetree object
+#' Build a splinetree model.
 #'
 #' Builds a regression tree for longitudinal or functional data using the spline projection method. The underlying tree building process uses the rpart package,
-#' and the splinetree object is an rpart object with additional stored information. The parameters df, knots, degree, intercept allow for flexibility
+#' and the resulting spline tree is an rpart object with additional stored information. The parameters df, knots, degree, intercept allow for flexibility
 #' in customizing the spline basis used for projection. The parameters nGrid and gridPoints allow for flexibility in the grid on which the
 #' projection sum of squares is evaluated. The parameters minNodeSize and cp allow for flexibility in controlling the size of the final tree.
 #'

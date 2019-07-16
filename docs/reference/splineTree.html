@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Build a splinetree object — splineTree • splinetree</title>
+<title>Build a splinetree model. — splineTree • splinetree</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,10 @@
 
 
 
-<meta property="og:title" content="Build a splinetree object — splineTree" />
+<meta property="og:title" content="Build a splinetree model. — splineTree" />
 
 <meta property="og:description" content="Builds a regression tree for longitudinal or functional data using the spline projection method. The underlying tree building process uses the rpart package,
-and the splinetree object is an rpart object with additional stored information. The parameters df, knots, degree, intercept allow for flexibility
+and the resulting spline tree is an rpart object with additional stored information. The parameters df, knots, degree, intercept allow for flexibility
 in customizing the spline basis used for projection. The parameters nGrid and gridPoints allow for flexibility in the grid on which the
 projection sum of squares is evaluated. The parameters minNodeSize and cp allow for flexibility in controlling the size of the final tree." />
 <meta name="twitter:card" content="summary" />
@@ -123,7 +123,7 @@ projection sum of squares is evaluated. The parameters minNodeSize and cp allow 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Build a splinetree object</h1>
+    <h1>Build a splinetree model.</h1>
     <small class="dont-index">Source: <a href='https://github.com/anna-neufeld/splinetree/blob/master/R/splineTree.R'><code>R/splineTree.R</code></a></small>
     <div class="hidden name"><code>splineTree.Rd</code></div>
     </div>
@@ -131,7 +131,7 @@ projection sum of squares is evaluated. The parameters minNodeSize and cp allow 
     <div class="ref-description">
     
     <p>Builds a regression tree for longitudinal or functional data using the spline projection method. The underlying tree building process uses the rpart package,
-and the splinetree object is an rpart object with additional stored information. The parameters df, knots, degree, intercept allow for flexibility
+and the resulting spline tree is an rpart object with additional stored information. The parameters df, knots, degree, intercept allow for flexibility
 in customizing the spline basis used for projection. The parameters nGrid and gridPoints allow for flexibility in the grid on which the
 projection sum of squares is evaluated. The parameters minNodeSize and cp allow for flexibility in controlling the size of the final tree.</p>
     
@@ -222,27 +222,21 @@ knots of the spline basis used to build the tree. These are sometimes important 
 #&gt; node), split, n , coefficients 
 #&gt;       * denotes terminal node
 #&gt; 
-#&gt;  1) root, 500,  (21.31696,  4.166258,  7.711438,  7.068400) 
-#&gt;    2) WHITE&lt; 0.5, 252,  (21.39483,  4.687439,  9.170001,  7.671418) 
-#&gt;      4) Num_sibs&lt; 3.5, 108,  (21.86173,  5.012240,  8.435603,  9.337205) 
-#&gt;        8) HGC_FATHER&lt; 11.5, 47,  (21.71648,  7.578891,  9.874441, 10.498810) 
-#&gt;         16) Num_sibs&lt; 1.5, 16,  (20.59042,  7.764852,  5.394127, 11.158280)*
-#&gt;         17) Num_sibs&gt;=1.5, 31,  (22.29767,  7.482911, 12.186860, 10.158430) 
-#&gt;           34) HGC_FATHER&lt; 7.5, 14,  (21.93419,  2.724053, 10.829330,  5.553413)*
-#&gt;           35) HGC_FATHER&gt;=7.5, 17,  (22.59701, 11.401970, 13.304830, 13.950800)*
-#&gt;        9) HGC_FATHER&gt;=11.5, 61,  (21.97364,  3.034658,  7.326991,  8.442199)*
-#&gt;      5) Num_sibs&gt;=3.5, 144,  (21.04466,  4.443838,  9.720800,  6.422078) 
-#&gt;       10) HGC_MOTHER&lt; 9.5, 68,  (20.09657,  7.593267,  9.866433,  8.581839) 
-#&gt;         20) HGC_MOTHER&lt; 5.5, 30,  (17.82749, 11.662080,  6.643965, 11.122680)*
-#&gt;         21) HGC_MOTHER&gt;=5.5, 38,  (21.88795,  4.381045, 12.410490,  6.575911)*
-#&gt;       11) HGC_MOTHER&gt;=9.5, 76,  (21.89294,  1.625928,  9.590496,  4.489660)*
-#&gt;    3) WHITE&gt;=0.5, 248,  (21.23784,  3.636672,  6.229350,  6.455657) 
-#&gt;      6) SEX&lt; 1.5, 127,  (22.23721,  4.431730,  5.717419,  6.443561) 
-#&gt;       12) HGC_MOTHER&lt; 15.5, 115,  (22.47111,  4.420602,  5.851314,  6.276248)*
-#&gt;       13) HGC_MOTHER&gt;=15.5, 12,  (19.99567,  4.538375,  4.434258,  8.046976)*
-#&gt;      7) SEX&gt;=1.5, 121,  (20.18892,  2.802189,  6.766666,  6.468352) 
-#&gt;       14) Num_sibs&lt; 5.5, 106,  (19.99264,  3.084804,  6.142535,  6.684741)*
-#&gt;       15) Num_sibs&gt;=5.5, 15,  (21.57596,  0.805043, 11.177190,  4.939205)*</div><div class='input'><span class='fu'><a href='stPlot.html'>stPlot</a></span>(<span class='no'>tree1</span>)</div><div class='img'><img src='splineTree-1.png' alt='' width='700' height='433' /></div></pre>
+#&gt;  1) root, 500,  (21.46013,  4.0552900, 7.153639,  7.341742) 
+#&gt;    2) WHITE&lt; 0.5, 242,  (21.03874,  5.6282150, 8.895810,  8.144596) 
+#&gt;      4) HGC_FATHER&lt; 0.5, 15,  (20.43773, 14.3085200, 7.333401, 11.883230)*
+#&gt;      5) HGC_FATHER&gt;=0.5, 227,  (21.07846,  5.0546260, 8.999053,  7.897551)*
+#&gt;    3) WHITE&gt;=0.5, 258,  (21.85539,  2.5799100, 5.519510,  6.588677) 
+#&gt;      6) SEX&lt; 1.5, 137,  (22.73525,  3.3813550, 5.517115,  7.342290) 
+#&gt;       12) HGC_MOTHER&lt; 13.5, 108,  (22.91297,  4.0432710, 5.609483,  7.528207)*
+#&gt;       13) HGC_MOTHER&gt;=13.5, 29,  (22.07340,  0.9162879, 5.173127,  6.649911)*
+#&gt;      7) SEX&gt;=1.5, 121,  (20.85918,  1.6724900, 5.522222,  5.735412) 
+#&gt;       14) HGC_MOTHER&lt; 14.5, 106,  (21.09507,  1.5462340, 6.043849,  5.757517) 
+#&gt;         28) HGC_FATHER&lt; 15.5, 92,  (21.10598,  1.0854990, 5.628914,  5.910522) 
+#&gt;           56) HGC_MOTHER&lt; 11.5, 30,  (21.75568,  1.6616190, 6.913787,  6.584619)*
+#&gt;           57) HGC_MOTHER&gt;=11.5, 62,  (20.79161,  0.8067319, 5.007201,  5.584346)*
+#&gt;         29) HGC_FATHER&gt;=15.5, 14,  (21.02338,  4.5739200, 8.770563,  4.752059)*
+#&gt;       15) HGC_MOTHER&gt;=14.5, 15,  (19.19220,  2.5646940, 1.836060,  5.579204)*</div><div class='input'><span class='fu'><a href='stPlot.html'>stPlot</a></span>(<span class='no'>tree1</span>)</div><div class='img'><img src='splineTree-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

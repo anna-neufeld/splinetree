@@ -7,7 +7,7 @@
 treeSummary(model)
 }
 \arguments{
-\item{model}{A splinetree object.}
+\item{model}{A model built with splineTree()}
 }
 \value{
 A dataframe. The number of rows is the same as the number of nodes in the tree.

@@ -142,7 +142,7 @@ node numbers and for extracting coefficients for a given node.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>model</th>
-      <td><p>A splinetree object.</p></td>
+      <td><p>A model built with splineTree()</p></td>
     </tr>
     </table>
     
@@ -162,30 +162,28 @@ the coefficients predicted for each node.</p>
 <span class='no'>split_formula</span> <span class='kw'>&lt;-</span> ~<span class='no'>HISP</span> + <span class='no'>WHITE</span> + <span class='no'>BLACK</span> + <span class='no'>SEX</span> + <span class='no'>Num_sibs</span> + <span class='no'>HGC_FATHER</span> + <span class='no'>HGC_MOTHER</span>
 <span class='no'>tree</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='splineTree.html'>splineTree</a></span>(<span class='no'>split_formula</span>, <span class='no'>BMI</span>~<span class='no'>AGE</span>, <span class='kw'>idvar</span> <span class='kw'>=</span> <span class='st'>"ID"</span>,
    <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>nlsySubset</span>, <span class='kw'>degree</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>df</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-   <span class='kw'>intercept</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>cp</span> <span class='kw'>=</span> <span class='fl'>0.005</span>)</div><div class='input'><span class='fu'>treeSummary</span>(<span class='no'>tree</span>)</div><div class='output co'>#&gt;            var   n        dev  coeffs.1  coeffs.2  coeffs.3
-#&gt; 1   HGC_MOTHER 400 66922.0962 21.761225  4.674187  7.798282
-#&gt; 2   HGC_FATHER 102 24761.3721 22.421210  5.934618  8.996117
-#&gt; 4   HGC_FATHER  63 17143.6409 22.709094  6.150662  8.830353
-#&gt; 8     Num_sibs  51 11956.1155 22.379939  5.632652  8.777104
-#&gt; 16  HGC_MOTHER  39  7756.3283 21.943195  4.995032  8.729627
-#&gt; 32      &lt;leaf&gt;  13  1208.1379 20.784155  4.210422  8.001371
-#&gt; 33      &lt;leaf&gt;  26  6101.0421 22.522715  5.387337  9.093755
-#&gt; 17      &lt;leaf&gt;  12  3295.7425 23.799356  7.704916  8.931404
-#&gt; 9       &lt;leaf&gt;  12  4285.1237 24.108000  8.352207  9.056660
-#&gt; 5     Num_sibs  39  7421.2543 21.956169  5.585624  9.263889
-#&gt; 10      &lt;leaf&gt;  14  2052.8739 22.272771  7.607496 10.614828
-#&gt; 11      &lt;leaf&gt;  25  4797.9106 21.778872  4.453377  8.507363
-#&gt; 3          SEX 298 39326.1838 21.535323  4.242764  7.388285
-#&gt; 6       &lt;leaf&gt; 153 14165.2037 22.302053  4.408201  7.273237
-#&gt; 7        BLACK 145 23528.1360 20.726291  4.068198  7.509681
-#&gt; 14    Num_sibs 106 16320.3235 20.521299  3.558911  6.929814
-#&gt; 28    Num_sibs  96 12819.6493 20.535435  3.355437  6.291725
-#&gt; 56  HGC_MOTHER  78 11360.1570 20.900960  3.439726  6.298122
-#&gt; 112     &lt;leaf&gt;  66 10271.4865 21.077042  3.667877  6.793804
-#&gt; 113     &lt;leaf&gt;  12   561.5043 19.932504  2.184896  3.571875
-#&gt; 57      &lt;leaf&gt;  18   937.0544 18.951495  2.990188  6.264001
-#&gt; 29      &lt;leaf&gt;  10  3034.1502 20.385589  5.512257 13.055470
-#&gt; 15      &lt;leaf&gt;  39  6038.0258 21.283450  5.452415  9.085731</div></pre>
+   <span class='kw'>intercept</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>cp</span> <span class='kw'>=</span> <span class='fl'>0.005</span>)</div><div class='input'><span class='fu'>treeSummary</span>(<span class='no'>tree</span>)</div><div class='output co'>#&gt;           var   n        dev  coeffs.1  coeffs.2  coeffs.3
+#&gt; 1  HGC_MOTHER 400 64450.4439 21.393698  5.003756  8.032485
+#&gt; 2  HGC_FATHER 114 27795.0601 21.590622  6.830836  9.698794
+#&gt; 4      &lt;leaf&gt;  25  7355.1108 23.471714  7.973191  8.979239
+#&gt; 5    Num_sibs  89 18985.2254 21.062226  6.509950  9.900916
+#&gt; 10     &lt;leaf&gt;  14   951.9451 20.366114  3.182837  6.884965
+#&gt; 11   Num_sibs  75 16622.1721 21.192166  7.131011 10.463894
+#&gt; 22 HGC_FATHER  43 11430.4577 22.500530  6.528283 10.573071
+#&gt; 44     &lt;leaf&gt;  26  9340.0127 23.252525  7.034976 11.486118
+#&gt; 45     &lt;leaf&gt;  17  1367.1894 21.350422  5.753342  9.176645
+#&gt; 23 HGC_MOTHER  32  4572.0868 19.434052  7.940926 10.317188
+#&gt; 46     &lt;leaf&gt;  12  1235.4147 20.179409  5.402133  6.772917
+#&gt; 47     &lt;leaf&gt;  20  2950.8757 18.986838  9.464202 12.443751
+#&gt; 3         SEX 286 33299.9476 21.315204  4.275479  7.368292
+#&gt; 6      &lt;leaf&gt; 156 13203.6442 22.089508  4.049237  6.798008
+#&gt; 7  HGC_FATHER 130 19390.7995 20.386038  4.546969  8.052632
+#&gt; 14     &lt;leaf&gt;  17  3145.0034 20.720018  6.382532  7.685711
+#&gt; 15      BLACK 113 15912.3913 20.335793  4.270823  8.107833
+#&gt; 30   Num_sibs  85 10824.7490 19.987021  4.168940  7.665536
+#&gt; 60     &lt;leaf&gt;  41  4567.8368 20.880103  4.222726  7.554083
+#&gt; 61     &lt;leaf&gt;  44  5796.7687 19.154830  4.118821  7.769390
+#&gt; 31     &lt;leaf&gt;  28  4491.2508 21.394566  4.580110  9.450518</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

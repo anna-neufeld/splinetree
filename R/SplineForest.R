@@ -1,7 +1,7 @@
-#' Build a splineforest object.
+#' Build a spline random forest.
 #'
-#' Builds an ensemble of regression trees for longitudinal or functional data using the spline projection method. The resulting object
-#' contains a list of splinetree objects along with some additional information. All parameters are used in the same way that they are used in
+#' Builds an ensemble of regression trees for longitudinal or functional data using the spline projection method. The resulting model
+#' contains a list of spline trees along with some additional information. All parameters are used in the same way that they are used in
 #' the splineTree() function. The additional parameter ntree specifies how many trees should be in the ensemble, and prob controls the
 #' probability of selecting a given variable for split consideration at a node. This method may take several minutes to run- saving the forest after
 #' building it is recommended.
@@ -36,10 +36,10 @@
 #' @param bootstrap Boolean specifying whether bootstrap sampling should be used when choosing data to
 #' use for each tree. When set to FALSE (the default), sampling without replacement is used and 63.5% of the data
 #' is used for each tree. When set to TRUE, a bootstrap sample is used for each tree.
-#' @return A splineforest object, which stores a list of tree (in model$Trees), along with information about the
+#' @return A spline forest model, which stores a list of trees (in model$Trees), along with information about the
 #' spline basis used (model$intercept, model$innerKnots, model$boundaryKnots, etc.), and information about which datapoints were
 #' used to build each tree (model$oob_indices and model$index). Note that each element in model$Trees is an rpart object but
-#' it is not the same as a splinetree object because it does not store all relevant information in model$parms.
+#' it is not the same as a model returned from splineTree() because it does not store all relevant information in model$parms.
 #' @export
 #' @import nlme
 #' @import rpart

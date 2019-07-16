@@ -109,6 +109,9 @@
 ## Loading required package: rpart
 ## Loading required package: nlme
 ## Loading required package: splines
+## Registered S3 method overwritten by 'mosaic':
+##   method                           from   
+##   fortify.SpatialPolygonsDataFrame ggplot2
 split_formula &lt;-<span class="st"> </span><span class="er">~</span>HISP+WHITE+BLACK+SEX+Num_sibs+HGC_FATHER+HGC_MOTHER
 tformula &lt;-<span class="st"> </span>BMI~AGE</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">123</span>)
@@ -123,8 +126,8 @@ forest &lt;-<span class="st"> </span><span class="kw"><a href="../reference/spli
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/names">names</a></span>(forest)
 ##  [1] "Trees"         "index"         "splits"        "data"         
 ##  [5] "flat_data"     "formula"       "oob_indices"   "degree"       
-##  [9] "intercept"     "df"            "boundaryKnots" "innerKnots"   
-## [13] "idvar"         "yvar"          "tvar"</code></pre></div>
+##  [9] "intercept"     "Ydata"         "df"            "boundaryKnots"
+## [13] "innerKnots"    "idvar"         "yvar"          "tvar"</code></pre></div>
 <p>A few of these 15 components have unsurprising values. For example, <code>forest$data</code> holds a copy of the original dataset, and <code>forest$formula</code>, <code>forest$idvar</code>, <code>forest$yvar</code>, and <code>forest$tvar</code> each hold pieces of information about the call to the <code><a href="../reference/splineTree.html">splineTree()</a></code> function.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">forest$formula
 ## ~HISP + WHITE + BLACK + SEX + Num_sibs + HGC_FATHER + HGC_MOTHER
@@ -152,28 +155,36 @@ preds &lt;-<span class="st"> </span>basisMatrix %*%<span class="st"> </span>mean
 <p><img src="Forest-intro_files/figure-html/unnamed-chunk-5-1.png" width="672"></p>
 <p>Apart from all of the information that is stored about the function call and the spline basis, the <code>splineforest</code> model contains information about the forest itself. Most important of all is the component <code>forest$Trees</code>, which stores a list of <code>rpart</code> objects. This ensemble of trees is the fucntional part of the forest model. We can view any individual tree using <code><a href="../reference/stPrint.html">stPrint()</a></code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/stPrint.html">stPrint</a></span>(forest$Trees[[<span class="dv">17</span>]])
-## n= 632,  
+## n= 1000,  
 ## 
 ## node), split, n , coefficients 
 ##       * denotes terminal node
 ## 
-##  1) root, 632,  (21.71538, 4.893005,  7.979274) 
-##    2) HGC_MOTHER&lt; 9.5, 154,  (21.68522, 6.356182,  9.042350) 
-##      4) HGC_MOTHER&lt; 0.5, 9,  (24.08324, 8.698686, 12.340970)*
-##      5) HGC_MOTHER&gt;=0.5, 145,  (21.53638, 6.210785,  8.837609) 
-##       10) HGC_FATHER&lt; 0.5, 8,  (24.19461, 9.357496,  9.022228)*
-##       11) HGC_FATHER&gt;=0.5, 137,  (21.38115, 6.027035,  8.826828) 
-##         22) BLACK&lt; 0.5, 101,  (21.42788, 5.209842,  8.300523) 
-##           44) Num_sibs&lt; 4.5, 65,  (22.09055, 5.140403,  8.592675)*
-##           45) Num_sibs&gt;=4.5, 36,  (20.23139, 5.335220,  7.773026)*
-##         23) BLACK&gt;=0.5, 36,  (21.25006, 8.319715, 10.303410)*
-##    3) HGC_MOTHER&gt;=9.5, 478,  (21.72509, 4.421605,  7.636777) 
-##      6) SEX&lt; 1.5, 251,  (22.49986, 4.351190,  7.233788)*
-##      7) SEX&gt;=1.5, 227,  (20.86841, 4.499464,  8.082373) 
-##       14) Num_sibs&lt; 5.5, 198,  (20.73521, 4.487243,  7.807870) 
-##         28) BLACK&lt; 0.5, 133,  (20.50786, 3.712275,  6.932147)*
-##         29) BLACK&gt;=0.5, 65,  (21.20039, 6.072946,  9.599734)*
-##       15) Num_sibs&gt;=5.5, 29,  (21.77788, 4.582906,  9.956567)*</code></pre></div>
+##   1) root, 1000,  (21.62303,  4.982506,  8.038752) 
+##     2) HGC_MOTHER&lt; 0.5, 16,  (23.44158, 11.715850, 14.183390)*
+##     3) HGC_MOTHER&gt;=0.5, 984,  (21.59346,  4.873021,  7.938839) 
+##       6) HGC_FATHER&lt; 0.5, 15,  (24.98985,  8.193877,  8.650266)*
+##       7) HGC_FATHER&gt;=0.5, 969,  (21.54089,  4.821615,  7.927826) 
+##        14) BLACK&lt; 0.5, 666,  (21.65346,  4.166869,  7.091630) 
+##          28) HGC_MOTHER&lt; 13.5, 551,  (21.73827,  4.305655,  7.319602) 
+##            56) SEX&lt; 1.5, 288,  (22.59460,  4.414204,  6.871505)*
+##            57) SEX&gt;=1.5, 263,  (20.80053,  4.186787,  7.810295)*
+##          29) HGC_MOTHER&gt;=13.5, 115,  (21.24710,  3.501903,  5.999343) 
+##            58) HGC_FATHER&lt; 12.5, 26,  (20.63508,  5.974623,  7.238479)*
+##            59) HGC_FATHER&gt;=12.5, 89,  (21.42590,  2.779536,  5.637348) 
+##             118) SEX&lt; 1.5, 48,  (22.95062,  3.176560,  6.913923)*
+##             119) SEX&gt;=1.5, 41,  (19.64086,  2.314726,  4.142821)*
+##        15) BLACK&gt;=0.5, 303,  (21.29345,  6.260759,  9.765803) 
+##          30) Num_sibs&lt; 2.5, 75,  (21.32622,  7.222988, 11.335140) 
+##            60) HGC_FATHER&lt; 10.5, 26,  (22.56510,  8.349429, 11.815170) 
+##             120) HGC_FATHER&lt; 7, 8,  (20.08254,  5.295346, 12.139360)*
+##             121) HGC_FATHER&gt;=7, 18,  (23.66847,  9.706799, 11.671080)*
+##            61) HGC_FATHER&gt;=10.5, 49,  (20.66886,  6.625285, 11.080430)*
+##          31) Num_sibs&gt;=2.5, 228,  (21.28267,  5.944236,  9.249573) 
+##            62) HGC_MOTHER&lt; 9.5, 56,  (21.28358,  7.155775, 10.189010) 
+##             124) HGC_FATHER&lt; 7.5, 16,  (23.14779,  8.928809,  9.779965)*
+##             125) HGC_FATHER&gt;=7.5, 40,  (20.53789,  6.446562, 10.352620)*
+##            63) HGC_MOTHER&gt;=9.5, 172,  (21.28238,  5.549781,  8.943711)*</code></pre></div>
 <p>Although we can print any tree in the forest using <code><a href="../reference/stPrint.html">stPrint()</a></code>, it is important to note that these trees are not identical to trees returned by <code><a href="../reference/splineTree.html">splineTree()</a></code>. These <code>rpart</code> trees do not store all of the extra information that is stored in a typical <code><a href="../reference/splineTree.html">splineTree()</a></code> model. For example, we can note the difference between a single tree and <code>forest$Trees[[17]]</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sample_tree &lt;-<span class="st"> </span><span class="kw"><a href="../reference/splineTree.html">splineTree</a></span>(split_formula, tformula, <span class="dt">idvar=</span><span class="st">"ID"</span>, 
                           <span class="dt">data=</span>nlsySample, <span class="dt">degree=</span><span class="dv">1</span>,  <span class="dt">df=</span><span class="dv">2</span>, <span class="dt">intercept=</span><span class="ot">TRUE</span>, <span class="dt">cp=</span><span class="fl">0.005</span>)
@@ -201,9 +212,9 @@ oob17 &lt;-<span class="st"> </span>forest$flat_data[forest$oob_indices[[<span c
 <p><img src="Forest-intro_files/figure-html/unnamed-chunk-9-1.png" width="672"></p>
 <p>The bias in splits towards variables with more unique values is exacerbated in forests where each tree is very large; in forests such as these, numeric variables with many unique values will be repeatedly used for successive splits while binary variables are limited to one split per tree branch. It is sometimes useful to check the size of the average tree in the forest and, if necessary, prune each tree in the forest to reduce the average size.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/avSize.html">avSize</a></span>(forest)
-## [1] 9.3
+## [1] 14.56
 <span class="kw"><a href="../reference/avSize.html">avSize</a></span>(<span class="kw"><a href="../reference/pruneForest.html">pruneForest</a></span>(forest, <span class="dt">cp=</span><span class="fl">0.01</span>))
-## [1] 4.62</code></pre></div>
+## [1] 5.48</code></pre></div>
 </div>
 <div id="making-predictions-with-a-forest" class="section level1">
 <h1 class="hasAnchor">
@@ -218,11 +229,11 @@ predictions &lt;-<span class="st"> </span><span class="kw"><a href="../reference
 <p><img src="Forest-intro_files/figure-html/unnamed-chunk-12-1.png" width="672"></p>
 <p>When predicting coefficients or responses for a datapoint that was in the training set, we have the option to use one of three different methods, specified by the “methods” parameter in <code>predictYForest</code> and <code>predictCoeffsForest</code>. For a given datapoint, we can either average its prediction over all trees in the forest (<code>method = "all"</code>), over only trees in the forest for which this datapoint was not in the random subsample (<code>method="oob"</code>), or over only trees in the forest for which this datapoint was in the random subsample (<code>method="itb"</code>). The <code>oob</code> method is preferred, as it gives a sense of out-of-sample performance and avoids overfitting the training data. We can compare response predictions for the tree methods in terms of how closely they match the actual responses. As expected, the <code>itb</code> predictions match the actual values much more closely.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/cor">cor</a></span>(nlsySample$BMI, <span class="kw"><a href="../reference/predictYForest.html">predictYForest</a></span>(forest, <span class="dt">method=</span><span class="st">"oob"</span>))
-## [1] 0.399546
+## [1] 0.3974635
 <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/cor">cor</a></span>(nlsySample$BMI, <span class="kw"><a href="../reference/predictYForest.html">predictYForest</a></span>(forest, <span class="dt">method=</span><span class="st">"all"</span>))
-## [1] 0.4570001
+## [1] 0.4853658
 <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/cor">cor</a></span>(nlsySample$BMI, <span class="kw"><a href="../reference/predictYForest.html">predictYForest</a></span>(forest, <span class="dt">method=</span><span class="st">"itb"</span>))
-## [1] 0.4868128</code></pre></div>
+## [1] 0.5286476</code></pre></div>
 </div>
 <div id="evaluating-a-forest" class="section level1">
 <h1 class="hasAnchor">
@@ -231,31 +242,31 @@ predictions &lt;-<span class="st"> </span><span class="kw"><a href="../reference
 <p>Apart from the response vs. projected response choice, we can also measure forest performance using <code>out-of-the-bag</code>, <code>in-the-bag</code>, or all tree predictions. Out of the bag performance metrics are often preferred because they provide a more realistic assesment of how the tree will perform out of sample. Combining these different dimensions of choice, there are 9 different ways that we could evaluate the performance of one single forest with an intercept! We can compare the 9 metrics.</p>
 <p>The response-based <span class="math inline">\(R^2\)</span> measure is the most straightforward. Unsuprisingly, performance is worst using <code>oob</code> predictions and best using <code>itb</code> predictions.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/yR2Forest.html">yR2Forest</a></span>(forest, <span class="dt">method=</span><span class="st">"oob"</span>)
-## [1] 0.1591171
+## [1] 0.1569579
 <span class="kw"><a href="../reference/yR2Forest.html">yR2Forest</a></span>(forest, <span class="dt">method=</span><span class="st">"all"</span>)
-## [1] 0.2073862
+## [1] 0.232049
 <span class="kw"><a href="../reference/yR2Forest.html">yR2Forest</a></span>(forest, <span class="dt">method=</span><span class="st">"itb"</span>)
-## [1] 0.2325781</code></pre></div>
+## [1] 0.2698334</code></pre></div>
 <p>The projection based <span class="math inline">\(R^2\)</span> metrics follow the same pattern of <code>oob</code> measures performing the worst, but overall performance is much lower because the forest no longer gets credit for explaining variation that could be explained with the population average BMI vs. AGE trajectory.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/projectedR2Forest.html">projectedR2Forest</a></span>(forest, <span class="dt">method=</span><span class="st">"oob"</span>, <span class="dt">removeIntercept =</span> <span class="ot">FALSE</span>)
-##           [,1]
-## [1,] 0.0428582
+##            [,1]
+## [1,] 0.04032947
 <span class="kw"><a href="../reference/projectedR2Forest.html">projectedR2Forest</a></span>(forest, <span class="dt">method=</span><span class="st">"all"</span>, <span class="dt">removeIntercept =</span> <span class="ot">FALSE</span>)
-##           [,1]
-## [1,] 0.1049721
+##          [,1]
+## [1,] 0.137282
 <span class="kw"><a href="../reference/projectedR2Forest.html">projectedR2Forest</a></span>(forest, <span class="dt">method=</span><span class="st">"itb"</span>, <span class="dt">removeIntercept =</span> <span class="ot">FALSE</span>)
 ##           [,1]
-## [1,] 0.1371232</code></pre></div>
+## [1,] 0.1857872</code></pre></div>
 <p>Finally, when we exclude the intercept, the same patterns hold but we see that even less total variation is explained by our model with we do not give the model credit for explaining variation in starting level. These metrics suggest that, moving out of sample, we will only be able to explain aroudn 3% of variation in shape of BMI trajectory.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/projectedR2Forest.html">projectedR2Forest</a></span>(forest, <span class="dt">method=</span><span class="st">"oob"</span>, <span class="dt">removeIntercept =</span> <span class="ot">TRUE</span>)
 ##            [,1]
-## [1,] 0.03176001
+## [1,] 0.02416968
 <span class="kw"><a href="../reference/projectedR2Forest.html">projectedR2Forest</a></span>(forest, <span class="dt">method=</span><span class="st">"all"</span>, <span class="dt">removeIntercept =</span> <span class="ot">TRUE</span>)
-##           [,1]
-## [1,] 0.0730511
-<span class="kw"><a href="../reference/projectedR2Forest.html">projectedR2Forest</a></span>(forest, <span class="dt">method=</span><span class="st">"itb"</span>, <span class="dt">removeIntercept =</span> <span class="ot">TRUE</span>)
 ##            [,1]
-## [1,] 0.09379064</code></pre></div>
+## [1,] 0.09459692
+<span class="kw"><a href="../reference/projectedR2Forest.html">projectedR2Forest</a></span>(forest, <span class="dt">method=</span><span class="st">"itb"</span>, <span class="dt">removeIntercept =</span> <span class="ot">TRUE</span>)
+##           [,1]
+## [1,] 0.1305949</code></pre></div>
 </div>
 <div id="variable-importance" class="section level1">
 <h1 class="hasAnchor">

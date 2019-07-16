@@ -139,7 +139,10 @@
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(splinetree)
 ## Loading required package: rpart
 ## Loading required package: nlme
-## Loading required package: splines</code></pre></div>
+## Loading required package: splines
+## Registered S3 method overwritten by 'mosaic':
+##   method                           from   
+##   fortify.SpatialPolygonsDataFrame ggplot2</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">split_formula &lt;-<span class="st"> </span><span class="er">~</span>HISP +<span class="st"> </span>WHITE +<span class="st"> </span>BLACK +<span class="st"> </span>SEX +<span class="st"> </span>Num_sibs +<span class="st"> </span>HGC_FATHER +<span class="st"> </span>HGC_MOTHER
 tformula &lt;-<span class="st"> </span>BMI ~<span class="st"> </span>AGE
 sample_tree &lt;-<span class="st"> </span><span class="kw"><a href="../reference/splineTree.html">splineTree</a></span>(split_formula, tformula, <span class="dt">idvar =</span> <span class="st">"ID"</span>, 
@@ -205,24 +208,56 @@ imp_small=sample_tree_intercept$variable.importance</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">forest &lt;-<span class="st"> </span><span class="kw"><a href="../reference/splineForest.html">splineForest</a></span>(split_formula, tformula, <span class="dt">idvar =</span> <span class="st">"ID"</span>, <span class="dt">data =</span> nlsySample, <span class="dt">degree =</span> <span class="dv">1</span>, <span class="dt">df =</span> <span class="dv">3</span>, <span class="dt">intercept =</span> <span class="ot">TRUE</span>,<span class="dt">ntree =</span> <span class="dv">50</span>, <span class="dt">prob =</span> <span class="fl">0.5</span>, <span class="dt">cp =</span> <span class="fl">0.005</span>)</code></pre></div>
 <p>This model returned by this function is a named list with 15 components. The individual trees in the forest are saved in <code>forest$Trees</code>. Looking at <code>forest$Trees[[1]]</code>, we see that, due to the bootsrapping and the randomization, new variables appear that did not appear in a single tree.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="../reference/stPrint.html">stPrint</a></span>(forest$Trees[[<span class="dv">1</span>]])
-## n= 632,  
+## n= 1000,  
 ## 
 ## node), split, n , coefficients 
 ##       * denotes terminal node
 ## 
-##  1) root, 632,  (21.64528, 4.787193,  8.000699) 
-##    2) HGC_MOTHER&lt; 9.5, 166,  (21.65323, 6.015235,  9.129890) 
-##      4) HGC_FATHER&lt; 11.5, 140,  (21.61799, 6.331730,  9.582940) 
-##        8) BLACK&lt; 0.5, 100,  (21.50187, 5.808061,  9.268297) 
-##         16) HISP&lt; 0.5, 33,  (21.72981, 4.495059,  8.801145)*
-##         17) HISP&gt;=0.5, 67,  (21.38961, 6.454764,  9.498386) 
-##           34) HGC_FATHER&lt; 7.5, 44,  (20.61722, 5.810081,  8.481129)*
-##           35) HGC_FATHER&gt;=7.5, 23,  (22.86721, 7.688072, 11.444440)*
-##        9) BLACK&gt;=0.5, 40,  (21.90828, 7.640900, 10.369550)*
-##      5) HGC_FATHER&gt;=11.5, 26,  (21.84300, 4.311033,  6.690391)*
-##    3) HGC_MOTHER&gt;=9.5, 466,  (21.64245, 4.349736,  7.598456) 
-##      6) BLACK&lt; 0.5, 323,  (21.69656, 4.028888,  7.059810)*
-##      7) BLACK&gt;=0.5, 143,  (21.52024, 5.074447,  8.815116)*</code></pre></div>
+##    1) root, 1000,  (21.79393, 4.678556,  7.824212) 
+##      2) WHITE&lt; 0.5, 517,  (21.85118, 5.569960,  8.706281) 
+##        4) Num_sibs&lt; 12.5, 508,  (21.81356, 5.530624,  8.725613) 
+##          8) HGC_MOTHER&lt; 0.5, 16,  (23.07494, 8.321416, 10.661900)*
+##          9) HGC_MOTHER&gt;=0.5, 492,  (21.77254, 5.439867,  8.662644) 
+##           18) HGC_FATHER&lt; 0.5, 22,  (23.36593, 7.826643,  7.631799)*
+##           19) HGC_FATHER&gt;=0.5, 470,  (21.69796, 5.328145,  8.710896) 
+##             38) Num_sibs&lt; 6.5, 384,  (21.82488, 5.361388,  9.043570) 
+##               76) HGC_MOTHER&lt; 4.5, 16,  (18.31566, 5.750864,  9.099454)*
+##               77) HGC_MOTHER&gt;=4.5, 368,  (21.97746, 5.344454,  9.041140) 
+##                154) HGC_MOTHER&lt; 9.5, 87,  (22.60552, 6.353934,  9.505225)*
+##                155) HGC_MOTHER&gt;=9.5, 281,  (21.78301, 5.031911,  8.897456) 
+##                  310) HGC_MOTHER&lt; 11.5, 108,  (21.75840, 4.402823,  7.330930) 
+##                    620) BLACK&lt; 0.5, 30,  (21.26634, 3.309389,  7.113831)*
+##                    621) BLACK&gt;=0.5, 78,  (21.94765, 4.823375,  7.414430) 
+##                     1242) Num_sibs&lt; 2.5, 8,  (22.68261, 9.461628, 10.220040)*
+##                     1243) Num_sibs&gt;=2.5, 70,  (21.86366, 4.293289,  7.093789)*
+##                  311) HGC_MOTHER&gt;=11.5, 173,  (21.79837, 5.424636,  9.875402) 
+##                    622) HGC_FATHER&lt; 6.5, 10,  (26.55450, 7.418122, 15.195420)*
+##                    623) HGC_FATHER&gt;=6.5, 163,  (21.50658, 5.302336,  9.549021) 
+##                     1246) HGC_FATHER&lt; 11.5, 43,  (20.81896, 7.333363, 12.394540) 
+##                       2492) Num_sibs&lt; 3.5, 27,  (20.84073, 9.003370, 14.611160)*
+##                       2493) Num_sibs&gt;=3.5, 16,  (20.78223, 4.515227,  8.653982)*
+##                     1247) HGC_FATHER&gt;=11.5, 120,  (21.75298, 4.574551,  8.529377) 
+##                       2494) HISP&lt; 0.5, 77,  (21.72430, 3.913582,  8.046138) 
+##                         4988) HGC_FATHER&lt; 15, 70,  (21.73704, 3.497615,  7.317151)*
+##                         4989) HGC_FATHER&gt;=15, 7,  (21.59688, 8.073242, 15.336010)*
+##                       2495) HISP&gt;=0.5, 43,  (21.80434, 5.758147,  9.394714) 
+##                         4990) Num_sibs&lt; 2.5, 20,  (20.11449, 5.922336,  8.038326)*
+##                         4991) Num_sibs&gt;=2.5, 23,  (23.27377, 5.615375, 10.574180) 
+##                           9982) SEX&lt; 1.5, 10,  (24.68472, 7.106722, 13.650140)*
+##                           9983) SEX&gt;=1.5, 13,  (22.18842, 4.468184,  8.208056)*
+##             39) Num_sibs&gt;=6.5, 86,  (21.13122, 5.179714,  7.225471)*
+##        5) Num_sibs&gt;=12.5, 9,  (23.97460, 7.790258,  7.615129)*
+##      3) WHITE&gt;=0.5, 483,  (21.73264, 3.724403,  6.880051) 
+##        6) HGC_MOTHER&lt; 13.5, 366,  (21.91970, 3.785274,  7.021402) 
+##         12) SEX&lt; 1.5, 203,  (22.86291, 3.635643,  6.717186)*
+##         13) SEX&gt;=1.5, 163,  (20.74502, 3.971623,  7.400273) 
+##           26) HGC_MOTHER&lt; 12.5, 153,  (20.52129, 3.902018,  7.600595) 
+##             52) HGC_FATHER&lt; 7.5, 11,  (18.83556, 8.758248, 12.131630)*
+##             53) HGC_FATHER&gt;=7.5, 142,  (20.65187, 3.525831,  7.249599) 
+##              106) Num_sibs&lt; 5.5, 129,  (20.47774, 3.173621,  6.844988)*
+##              107) Num_sibs&gt;=5.5, 13,  (22.37980, 7.020841, 11.264580)*
+##           27) HGC_MOTHER&gt;=12.5, 10,  (24.16820, 5.036584,  4.335356)*
+##        7) HGC_MOTHER&gt;=13.5, 117,  (21.14748, 3.533985,  6.437874)*</code></pre></div>
 <p>While each tree within <code>forest$Trees</code> is an <code>rpart</code> object that can be printed with <code>stPrint</code>, these trees are not the same as <code>splinetree</code> model. A single <code>splinetree</code> tree stores information about the spline basis used and the flattened dataset within it. For the sake of eliminating redundancy in already large <code>splineforest</code> models, this information is not stored in every tree in a forest; it is only saved once at the forest level (see, for example, <code>forest$innerKnots</code> and <code>forest$flat_data</code>). Many <code>splinetree</code> functions, including <code><a href="../reference/stPlot.html">stPlot()</a></code>, expect this additional information to be stored at the tree level, and therefore <code><a href="../reference/stPlot.html">stPlot(forest$Trees[[1]])</a></code> will result in an error.</p>
 <p>To determine which data points were used in the making of the first tree in the forest, we can use <code>forest$index[[1]]</code>. The indices found in this vector refer to rows of <code>forest$flat_data</code>. It is important to know which data points were used in the making of each tree because this can determine the predictions from the forest. In obtaining predicted responses for a datapoint that was in the training sample, we can average the predictions from each individual tree in the dataset, or we can only average predictions across trees in the forest for which this datapoint was “out-of-the-bag,” meaning that it was not in the boostrap sample. “Out-of-the-bag”" (or “oob”) predictions are suggested by <span class="citation">Breiman (2001)</span> because they provide a sense of out-of-sample performance of the forest without using a distinct test set. In the <code>splinetree</code> package, we can predict BMIs for each individual in the NLSY sample either using “all” trees for each datapoint, only trees for which this datapoint was “out of the bag,” or only trees for which this datapoint was “in the bag” (or “itb”).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fullpreds &lt;-<span class="st"> </span><span class="kw"><a href="../reference/predictYForest.html">predictYForest</a></span>(forest, <span class="dt">method =</span> <span class="st">"all"</span>)
@@ -230,11 +265,11 @@ oobpreds &lt;-<span class="st"> </span><span class="kw"><a href="../reference/pr
 itbpreds &lt;-<span class="st"> </span><span class="kw"><a href="../reference/predictYForest.html">predictYForest</a></span>(forest, <span class="dt">method =</span> <span class="st">"itb"</span>)</code></pre></div>
 <p>If we look at these predictions, we see that the “oob” prediction errors are greater, but this lower performance is more representative of how our forest might perform on a new test set.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/cor">cor</a></span>(fullpreds, nlsySample$BMI)
-## [1] 0.4581262
+## [1] 0.4873666
 <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/cor">cor</a></span>(itbpreds, nlsySample$BMI)
-## [1] 0.4906948
+## [1] 0.5335418
 <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/cor">cor</a></span>(oobpreds, nlsySample$BMI)
-## [1] 0.3976721</code></pre></div>
+## [1] 0.3956219</code></pre></div>
 </div>
 <div id="variable-importance" class="section level2">
 <h2 class="hasAnchor">
