@@ -7,7 +7,7 @@
 avSize(forest)
 }
 \arguments{
-\item{forest}{A splineforest object}
+\item{forest}{A model returned by splineForest()}
 }
 \value{
 The average number of terminal nodes in forest

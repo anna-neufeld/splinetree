@@ -7,7 +7,7 @@
 spaghettiPlot(model, colors = NULL)
 }
 \arguments{
-\item{model}{a splinetree object}
+\item{model}{a model returned from splineTree()}
 
 \item{colors}{optional argument specifying colors to be used for each panel.}
 }

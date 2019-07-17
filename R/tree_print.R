@@ -1,11 +1,11 @@
-#' Print a spline tree object in the style of print.rpart
+#' Print a spline tree in the style of print.rpart
 #'
 #' The printout provides numbered labels for the terminal nodes,
 #' a description of the split at each node, the number of observations found at each node,
 #' and the predicted spline coefficients for each node. This code is primarily taken from rpart base code for print.rpart. It has been modified to
 #' ensure that the full vector of coefficients is printed for each node.
 #'
-#' @param t A splinetree object
+#' @param t A model returned by splineTree()
 #' @param digits Specifies how many digits of each coefficient should be printed
 #' @param cp Optional- if provided, a pruned version of the tree will be printed. The tree will be
 #' pruned using the provided cp as the complexity parameter.
@@ -23,7 +23,7 @@ stPrint <- function(t, cp, digits = getOption("digits"))
 {
   minlength = 0L
   spaces = 2L
-  if (!inherits(t, "rpart")) stop("Not a legitimate \"splinetree\" object")
+  if (!inherits(t, "rpart")) stop("Not a legitimate \"splinetree\" model")
 
   if (!missing(cp)) t <- prune.rpart(t, cp = cp)
   frame <- t$frame
@@ -63,13 +63,13 @@ stPrint <- function(t, cp, digits = getOption("digits"))
   invisible(t)
 }
 
-#' Prints the tree frame.
+#' Returns the tree frame.
 #'
 #' Provides a similar output to model$frame, but with the redundant information of yval and
 #' yval2 removed. Also omits the deviance, the complexity, and the weight. Useful for viewing
 #' node numbers and for extracting coefficients for a given node.
 #'
-#' @param model A splinetree object.
+#' @param model A model built with splineTree()
 #' @return A dataframe. The number of rows is the same as the number of nodes in the tree.
 #' The row names display the node labels of each node. The "var" attribute either displays
 #' the split variable selected at each node, or <leaf> if this node is a terminal node. The "n"
@@ -102,7 +102,7 @@ treeSummary <- function(model) {
 #' If no argument is provided for the parameter \code{node}, summaries are printed for every
 #' terminal node. Otherwise, the summary of just the requested node is printed.
 #'
-#' @param tree A splinetree object
+#' @param tree A model returned by splineTree().
 #' @param node The number of the node that you want summarized. To see which nodes correspond to
 #' which numbers, see stPrint(tree) or treeSummary(tree). If this parameter is provided, must correspond
 #' to a valid terminal node in the tree.

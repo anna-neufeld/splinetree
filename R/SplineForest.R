@@ -1,7 +1,7 @@
-#' Build a splineforest object.
+#' Build a spline random forest.
 #'
-#' Builds an ensemble of regression trees for longitudinal or functional data using the spline projection method. The resulting object
-#' contains a list of splinetree objects along with some additional information. All parameters are used in the same way that they are used in
+#' Builds an ensemble of regression trees for longitudinal or functional data using the spline projection method. The resulting model
+#' contains a list of spline trees along with some additional information. All parameters are used in the same way that they are used in
 #' the splineTree() function. The additional parameter ntree specifies how many trees should be in the ensemble, and prob controls the
 #' probability of selecting a given variable for split consideration at a node. This method may take several minutes to run- saving the forest after
 #' building it is recommended.
@@ -36,10 +36,11 @@
 #' @param bootstrap Boolean specifying whether bootstrap sampling should be used when choosing data to
 #' use for each tree. When set to FALSE (the default), sampling without replacement is used and 63.5% of the data
 #' is used for each tree. When set to TRUE, a bootstrap sample is used for each tree.
-#' @return A splineforest object, which stores a list of tree (in model$Trees), along with information about the
+#' @return A spline forest model, which is a named list with 15 components.
+#' The list stores a list of trees (in model$Trees), along with information about the
 #' spline basis used (model$intercept, model$innerKnots, model$boundaryKnots, etc.), and information about which datapoints were
 #' used to build each tree (model$oob_indices and model$index). Note that each element in model$Trees is an rpart object but
-#' it is not the same as a splinetree object because it does not store all relevant information in model$parms.
+#' it is not the same as a model returned from splineTree() because it does not store all relevant information in model$parms.
 #' @export
 #' @import nlme
 #' @import rpart
@@ -85,31 +86,32 @@ splineForest <- function(splitFormula, tformula,
     Ydata <- sapply(unique(data[[idvar]]), individual_spline,
         idvar, yvar, tvar, data, boundaryKnots,
         innerKnots, degree, intercept)
-    if (is.vector(Ydata)) {
-        flat_data$Ydata <- Ydata
-    } else {
-        flat_data$Ydata <- t(Ydata)
+    intercept_coeffs <- Ydata[1,]
+    if (!intercept) {
+      Ydata <- Ydata[-1,]
     }
+    if (is.vector(Ydata)) {
+      flat_data$Ydata <- Ydata
+    } else {
+      flat_data$Ydata <- t(Ydata)
+    }
+    flat_data$intercept_coeffs <- intercept_coeffs
 
     ### In new data frame, remove the original y data
-    flat_data <- flat_data[, names(flat_data) !=
-        yvar]
+    flat_data <- flat_data[, names(flat_data) != yvar]
 
 
     ### Another step of data processing - get rid of
     ### any row that has NA coeffs in the Y variable
     ### If we don't, RPART will do it for us, but our
     ### data structures will not match later
-    flat_data <- flat_data[complete.cases(Ydata),
-        ]
-    Ydata <- as.matrix(Ydata)[complete.cases(Ydata),
-        ]
-    data <- data[data[[idvar]] %in% flat_data[[idvar]],
-        ]
+    flat_data <- flat_data[complete.cases(Ydata),]
+    Ydata <- as.matrix(Ydata)[complete.cases(Ydata),]
+    data <- data[data[[idvar]] %in% flat_data[[idvar]],]
 
 
-    #### Now all forest stuff happens with respect to
-    #### the flat data dataframe
+    #### Now all forest computation happens with respect to
+    #### the flat_data dataframe
     ulist <- list(eval = spline_eval, split = splineforest_split,
         init = spline_init)
 
@@ -153,11 +155,11 @@ splineForest <- function(splitFormula, tformula,
 
     results = list(myForest, itbIndices, splits, data,
         flat_data, splitFormula, oobIndices, degree,
-        intercept, Ydata, df, boundaryKnots, innerKnots,
+        intercept, df, boundaryKnots, innerKnots,
         idvar, yvar, tvar)
     names(results) = c("Trees", "index", "splits",
         "data", "flat_data", "formula", "oob_indices",
-        "degree", "intercept", "Ydata", "df", "boundaryKnots",
+        "degree", "intercept", "df", "boundaryKnots",
         "innerKnots", "idvar", "yvar", "tvar")
     results
 }

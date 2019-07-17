@@ -7,12 +7,12 @@
 #' "oob", "itb", or "all". This parameter specifies which trees are used in making a prediction for a certain datapoint.
 #' This parameter is not relevant when predicting for a testset that is distinct from the training set.
 #'
-#' @param forest A splineforest object
+#' @param forest A model returned from splineForest()
 #' @param method A string; either "oob", "itb", or "all".
 #' If "oob" (the default), predictions for a given data point are made only using trees for which this
-#' data point was "out of the bag" (not in the bootstrap sample). If "itb", predictions for
+#' data point was "out of the bag" (not in the random subsample). If "itb", predictions for
 #' a given data point are made using only the trees for which this datapoint was "in the bag"
-#' (in the bootstrap sample). If "all", all trees are used for every datapoint.
+#' (in the random subsample). If "all", all trees are used for every datapoint.
 #' @param testdata The test data to make predictions for. If this is provided, then
 #' all trees are used for all datapoints.
 #' @return A matrix of predicted spline coefficients. The dimensions are forest$df x nrow(testdata). Each column of the matrix
@@ -99,12 +99,12 @@ predictCoeffsForest = function(forest, method = "oob", testdata=NULL) {
 #' be set to "oob", "itb", or "all") determines the method used for prediction. If the testdata parameter is not
 #' null, the methods parameter is ignored and all trees are used for the prediction of every datapoint.
 #'
-#' @param forest A splineforest object
+#' @param forest A model returned from splineForest()
 #' @param method A string. Must be either "oob", "itb", or "all". Only relevant when testdata is NULL.
 #' The default value is "oob". If "oob", predictions for a given data point are made only using
-#' trees for which this data point was "out of the bag" (not in the bootstrap sample).
+#' trees for which this data point was "out of the bag" (not in the random subsample).
 #'  If "itb", predictions for a given data point are made using only the trees for which this datapoint
-#'  was in the bag (in the bootstrap sample). If "all", all trees are used for every datapoint.
+#'  was in the bag (in the random subsample). If "all", all trees are used for every datapoint.
 #' @param testdata the Test data to make predictions for. If this is provided, then
 #' all trees are used for all datapoints.
 #' @return A vector of predicted responses. The indices of the vector correspond to rows of the testdata.

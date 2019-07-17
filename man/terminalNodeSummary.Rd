@@ -7,7 +7,7 @@
 terminalNodeSummary(tree, node = NULL)
 }
 \arguments{
-\item{tree}{A splinetree object}
+\item{tree}{A model returned by splineTree().}
 
 \item{node}{The number of the node that you want summarized. To see which nodes correspond to
 which numbers, see stPrint(tree) or treeSummary(tree). If this parameter is provided, must correspond

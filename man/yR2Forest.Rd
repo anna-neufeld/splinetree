@@ -7,19 +7,19 @@
 yR2Forest(forest, method = "oob")
 }
 \arguments{
-\item{forest}{A splineforest object}
+\item{forest}{The output from a call to splineForest()}
 
 \item{method}{How would you like to compute this metric? The choices are "oob", "itb", or "all".
 "oob" means that predictions for a datapoint can only be made using trees for which that datapoint was
-"out of the bag" (not in the bootstrap sample). "all" means that all trees are used in the prediction for every
-datapoint. "itb" means that predictions for a datapoint are made using only the trees for which this datapoint was IN the bootstrap sample.}
+"out of the bag" (not in the random subsample). "all" means that all trees are used in the prediction for every
+datapoint. "itb" means that predictions for a datapoint are made using only the trees for which this datapoint was IN the random subsample.}
 }
 \value{
 Returns 1-SSE/SST, where SSE is the total sum of squared errors of the true responses and predicted responses,
 and SST is the total sum of squared errors of the responses around their mean. If this forest was not built with an intercept, returns NULL.
 }
 \description{
-Computes the R-squared metric for a splineforest object. Goal is to see how well the predicted response values match the
+Computes the R-squared metric for a spline forest. Goal is to see how well the predicted response values match the
 actual response values. Note that this function should only be used on forests where the intercept parameter is TRUE.
 A simple 1-SSE/SST calculation.
 }

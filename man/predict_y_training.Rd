@@ -7,7 +7,7 @@
 predict_y_training(model)
 }
 \arguments{
-\item{model}{a splinetree object}
+\item{model}{a model created with splineTree()}
 }
 \value{
 A vector of predicted responses where each element in the vector corresponds to a row in model$parms$data.

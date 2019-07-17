@@ -2,7 +2,7 @@
 % Please edit documentation in R/splineTree.R
 \name{splineTree}
 \alias{splineTree}
-\title{Build a splinetree object}
+\title{Build a splinetree model.}
 \usage{
 splineTree(splitFormula, tformula, idvar, data, knots = NULL,
   df = NULL, degree = 3, intercept = FALSE, nGrid = 7,
@@ -52,14 +52,12 @@ knots of the spline basis used to build the tree. These are sometimes important 
 }
 \description{
 Builds a regression tree for longitudinal or functional data using the spline projection method. The underlying tree building process uses the rpart package,
-and the splinetree object is an rpart object with additional stored information. The parameters df, knots, degree, intercept allow for flexibility
+and the resulting spline tree is an rpart object with additional stored information. The parameters df, knots, degree, intercept allow for flexibility
 in customizing the spline basis used for projection. The parameters nGrid and gridPoints allow for flexibility in the grid on which the
 projection sum of squares is evaluated. The parameters minNodeSize and cp allow for flexibility in controlling the size of the final tree.
 }
 \examples{
-\dontshow{
-  nlsySample_subset <- nlsySample[nlsySample$ID \%in\% sample(unique(nlsySample$ID), 500),]
-}
+nlsySample_subset <- nlsySample[nlsySample$ID \%in\% sample(unique(nlsySample$ID), 500),]
 splitForm <- ~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs
 tree1 <- splineTree(splitForm, BMI~AGE, 'ID', nlsySample_subset, degree=3, intercept=TRUE, cp=0.005)
 stPrint(tree1)

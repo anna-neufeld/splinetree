@@ -1,18 +1,19 @@
 #' Computes a level-based or shape-based evaluation metric for a splineforest.
 #'
-#' Computes an R-squared-like evaluation metric for a splineforest object. Goal is to see how well the predicted spline coefficients for each individual
-#' match the spline coefficients obtained when fitting a spline only to this individual's data (we call these coefficients the true coefficients). Computes 1-SSE/SST, where SSE is the total sum of squared projection errors of the true coefficients compared
+#' Computes an R-squared-like evaluation metric for a spline forest. Goal is to see how well the predicted spline coefficients for each individual
+#' match the spline coefficients obtained when fitting a spline only to this individual's data (we call these coefficients the true coefficients). Computes 1-SSE/SST, where SSE is the total
+#' sum of squared projection errors of the true coefficients compared
 #' to the predicted coefficients, and SST is the total sum of squared projection errors of the true coefficients compared to
 #' the population mean coefficients. If this is an intercept forest, have the option to compute these sum of squares either with the intercept included or with the intercept ignored to isolate the shape.
 #'
-#' @param forest A splineforest object
+#' @param forest The output of a call to splineForest()
 #' @param method How would you like to compute this metric? The choices are "oob", "itb", or "all".
 #' "oob" means that predictions for a datapoint can only be made using trees for which that datapoint was
-#' "out of the bag" (not in the bootstrap sample). "all" means that all trees are used in the prediction for every
-#' datapoint. "itb" means that predictions for a datapoint are made using only the trees for which this datapoint was IN the bootstrap sample.
+#' "out of the bag" (not in the random subsample). "all" means that all trees are used in the prediction for every
+#' datapoint. "itb" means that predictions for a datapoint are made using only the trees for which this datapoint was IN the random subsample.
 #' @param removeIntercept If true, the projection sum of squared error is computed while ignoring the intercept coefficient.
 #' This will help capture the tree's performance at clustering based on shape, not based on level.
-#' This parameter is only meaningful if this tree was built using an intercept.
+#' This parameter is only meaningful if this forest was built using an intercept.
 #' @return Returns 1-SSE/SST, where SSE is the total sum of squared projection errors of the true coefficients compared
 #' to the predicted coefficients, and SST is the total sum of squared projection errors of the true coefficients compared to
 #' the population mean coefficients.
@@ -26,7 +27,7 @@ projectedR2Forest <- function(forest, method = "oob", removeIntercept = TRUE) {
     # First, get the predicted spline coefficients for every datapoint using the desired method.
     forest_pred_coeffs <- t(predictCoeffsForest(forest, method))
     # Goal will be to compare these to the true spline coefficients for every datapoint.
-    true_coeffs <- forest$flat_data$Ydata ### Note to self- change this to flat_data to be consistent with tree.
+    true_coeffs <- forest$flat_data$Ydata
 
     ### Goal is to see how closely the forest_pred_coeffs approximate the true_coeffs.
     ### To measure this, we use the projected sum of squares.
@@ -60,15 +61,15 @@ projectedR2Forest <- function(forest, method = "oob", removeIntercept = TRUE) {
 
 #' Computes a level-based evaluation metric for a splineforest that was built WITH an intercept.
 #'
-#' Computes the R-squared metric for a splineforest object. Goal is to see how well the predicted response values match the
+#' Computes the R-squared metric for a spline forest. Goal is to see how well the predicted response values match the
 #' actual response values. Note that this function should only be used on forests where the intercept parameter is TRUE.
 #' A simple 1-SSE/SST calculation.
 #'
-#' @param forest A splineforest object
+#' @param forest The output from a call to splineForest()
 #' @param method How would you like to compute this metric? The choices are "oob", "itb", or "all".
 #' "oob" means that predictions for a datapoint can only be made using trees for which that datapoint was
-#' "out of the bag" (not in the bootstrap sample). "all" means that all trees are used in the prediction for every
-#' datapoint. "itb" means that predictions for a datapoint are made using only the trees for which this datapoint was IN the bootstrap sample.
+#' "out of the bag" (not in the random subsample). "all" means that all trees are used in the prediction for every
+#' datapoint. "itb" means that predictions for a datapoint are made using only the trees for which this datapoint was IN the random subsample.
 #' @return Returns 1-SSE/SST, where SSE is the total sum of squared errors of the true responses and predicted responses,
 #' and SST is the total sum of squared errors of the responses around their mean. If this forest was not built with an intercept, returns NULL.
 #' @export

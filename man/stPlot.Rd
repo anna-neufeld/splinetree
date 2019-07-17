@@ -7,13 +7,13 @@
 stPlot(model, colors = NULL)
 }
 \arguments{
-\item{model}{A splinetree object}
+\item{model}{A model returned from splineTree()}
 
 \item{colors}{A list of colors that will be used for the trajectories (if NULL, will automatically select colors from
 rainbow color scheme.}
 }
 \description{
-Creates a two paneled plot of a splinetree object that shows both the tree and the trajectories side by side.
+Creates a two paneled plot of a splinetree that shows both the tree and the trajectories side by side.
 Note that this function has trouble when the plot window is not wide enough. If nothing shows up in RStudio,
 try increasing the size of the plot window and trying again. For a tree without an intercept, intercepts are
 estimated after-the-fact for each node using the average starting value in the data so that the plotted

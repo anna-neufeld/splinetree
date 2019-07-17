@@ -7,7 +7,7 @@
 yR2(model)
 }
 \arguments{
-\item{model}{a splinetree tree object}
+\item{model}{a model created with splineTree()}
 }
 \value{
 An R^2 goodness measure. 1-SSE/SST where SSE is the sum of squared errors between predicted responses and true

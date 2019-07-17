@@ -2,12 +2,12 @@
 % Please edit documentation in R/tree_evaluation.R
 \name{predictY}
 \alias{predictY}
-\title{Predictions from a splinetree object}
+\title{Predictions from a spline tree}
 \usage{
 predictY(model, testData = NULL)
 }
 \arguments{
-\item{model}{A splinetree object.}
+\item{model}{A model created with splineTree()}
 
 \item{testData}{The data to return predictions for. If ommitted, uses the training data.}
 }

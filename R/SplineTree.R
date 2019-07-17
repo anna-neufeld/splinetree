@@ -28,11 +28,12 @@ individual_spline <- function(person, idvar, yvar,
         degree = degree)
 
     # returns the spline coefficients
-    if (intercept) {
-        lm(Ys ~ X)$coefficients
-    } else {
-        lm(Ys ~ X)$coefficients[-1]
-    }
+    # CHANGE: returns all coefficients even if intercept is FALSE.
+    #if (intercept) {
+    lm(Ys ~ X)$coefficients
+    #} else {
+     #   lm(Ys ~ X)$coefficients[-1]
+    #}
 }
 
 #' Flattens predictor variable data into one row per person
@@ -130,10 +131,10 @@ getBasisMat <- function(yvar, tvar, idvar, data,
 
 }
 
-#' Build a splinetree object
+#' Build a splinetree model.
 #'
 #' Builds a regression tree for longitudinal or functional data using the spline projection method. The underlying tree building process uses the rpart package,
-#' and the splinetree object is an rpart object with additional stored information. The parameters df, knots, degree, intercept allow for flexibility
+#' and the resulting spline tree is an rpart object with additional stored information. The parameters df, knots, degree, intercept allow for flexibility
 #' in customizing the spline basis used for projection. The parameters nGrid and gridPoints allow for flexibility in the grid on which the
 #' projection sum of squares is evaluated. The parameters minNodeSize and cp allow for flexibility in controlling the size of the final tree.
 #'
@@ -171,9 +172,7 @@ getBasisMat <- function(yvar, tvar, idvar, data,
 #' @importFrom graphics barplot layout par plot points rect text
 #' @importFrom stats complete.cases formula lm quantile runif sd terms time
 #' @examples
-#' \dontshow{
-#'   nlsySample_subset <- nlsySample[nlsySample$ID %in% sample(unique(nlsySample$ID), 500),]
-#' }
+#' nlsySample_subset <- nlsySample[nlsySample$ID %in% sample(unique(nlsySample$ID), 500),]
 #' splitForm <- ~HISP+WHITE+BLACK+HGC_MOTHER+HGC_FATHER+SEX+Num_sibs
 #' tree1 <- splineTree(splitForm, BMI~AGE, 'ID', nlsySample_subset, degree=3, intercept=TRUE, cp=0.005)
 #' stPrint(tree1)
@@ -214,11 +213,19 @@ splineTree <- function(splitFormula, tformula,
     Ydata <- sapply(unique(data[[idvar]]), individual_spline,
         idvar, yvar, tvar, data, boundaryKnots,
         innerKnots, degree, intercept)
-    if (is.vector(Ydata)) {
-        flat_data$Ydata <- Ydata
-    } else {
-        flat_data$Ydata <- t(Ydata)
+
+    intercept_coeffs <- Ydata[1,]
+    if (!intercept) {
+        Ydata <- Ydata[-1,]
     }
+    if (is.vector(Ydata)) {
+      flat_data$Ydata <- Ydata
+    } else {
+    flat_data$Ydata <- t(Ydata)
+    }
+    flat_data$intercept_coeffs <- intercept_coeffs
+    ### Note that intercept_coeffs is redundant (stored twice) if the tree was built
+    ### with intercept=TRUE.
 
     ### In new data frame, remove the original y data
     flat_data <- flat_data[, names(flat_data) !=

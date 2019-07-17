@@ -7,7 +7,7 @@
 projectedR2(model, includeIntercept = FALSE)
 }
 \arguments{
-\item{model}{a splinetree tree object}
+\item{model}{a model created with splineTree()}
 
 \item{includeIntercept}{If FALSE and if the model was built with an intercept, the projected squared errors are computed
 while ignoring the intercept. If the model was built without an intercept, this parameter does not do anything.}

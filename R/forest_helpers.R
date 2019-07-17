@@ -2,7 +2,7 @@
 #'
 #' Returns the average number of terminal nodes for trees in a forest
 #'
-#' @param forest A splineforest object
+#' @param forest A model returned by splineForest()
 #'
 #' @return The average number of terminal nodes in forest
 #' @export
@@ -17,8 +17,8 @@ avSize <- function(forest) {
 #'
 #' Prunes each tree in the list forest$Trees according to the provided complexity parameter. Returns a new forest.
 #'
-#' @return A new splineforest object where each tree has been pruned to the desired level.
-#' @param forest A spline forest object
+#' @return A new spline forest model (named list) where each tree has been pruned to the desired level.
+#' @param forest A model returned by splineForest()
 #' @param cp The complexity parameter that will be used to prune each tree (see rpart package documentation for detailed description of complexity parameter)
 #' @examples
 #' print(avSize(forest))

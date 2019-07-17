@@ -1,5 +1,5 @@
 #' Returns number of terminal nodes in a tree.
-#' @param model A splinetree object, or any rpart object
+#' @param model A model returned by splineTree(). Also works on any rpart object
 #' @return The number of terminal nodes in the tree
 #' @export
 #' @examples
@@ -20,8 +20,8 @@ treeSize <- function(model) {
 #' In the case of correlated covariates, two trees that split on entirely different variables may actually
 #' describe similar partitions of the population. This metric allows us to detect when two trees are partitioning
 #' the population similarly. A value close to 1 indicates a similar clustering.
-#' @param tree1 a splinetree object
-#' @param tree2 a splinetree object
+#' @param tree1 a model returned from splineTree()
+#' @param tree2 a model returned from splineTree()
 #' @return The Adjusted Rand Index of the clusterings created by the two trees.
 #' @importFrom mclust adjustedRandIndex
 #' @seealso mclust::adjustedRandIndex
@@ -45,7 +45,7 @@ treeSimilarity <- function(tree1, tree2) {
 #' original dataset that fall in this node.  Otherwise, the flattened data that belongs to
 #' this node is returned (one row of data per ID, original responses replaced by spline coefficients).
 #'
-#' @param tree a splinetree object
+#' @param tree a model returned from splineTree()
 #' @param node The number of the node to retrieve data from. Must be valid
 #' number of a terminal node. Node numbers can be seen using stPrint(tree)
 #' or treeSummary(tree).

@@ -2,12 +2,12 @@
 % Please edit documentation in R/tree_print.R
 \name{treeSummary}
 \alias{treeSummary}
-\title{Prints the tree frame.}
+\title{Returns the tree frame.}
 \usage{
 treeSummary(model)
 }
 \arguments{
-\item{model}{A splinetree object.}
+\item{model}{A model built with splineTree()}
 }
 \value{
 A dataframe. The number of rows is the same as the number of nodes in the tree.

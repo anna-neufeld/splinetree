@@ -4,7 +4,7 @@
 #' This metric is only meaningful if model$intercept==TRUE.
 #' If the tree includes an intercept, the measure will be between 0 and 1.
 #'
-#' @param model a splinetree tree object
+#' @param model a model created with splineTree()
 #' @export
 #' @return An R^2 goodness measure. 1-SSE/SST where SSE is the sum of squared errors between predicted responses and true
 #' responses, and SST is sum of squared errors of true responses around population mean. Note that if the tree passed in was built
@@ -33,12 +33,12 @@ yR2 <- function(model) {
 }
 
 
-#' Predictions from a splinetree object
+#' Predictions from a spline tree
 #'
 #' Returns a vector of predicted responses for the testData. If testData is ommitted,
 #' returns predictions for the training data. This function is most meaningful if model$intercept==TRUE.
 #'
-#' @param model A splinetree object.
+#' @param model A model created with splineTree()
 #' @param testData The data to return predictions for. If ommitted, uses the training data.
 #' @return A vector of predictions with rows corresponding to the testdata.
 #' @importFrom treeClust rpart.predict.leaves
@@ -102,7 +102,7 @@ predictY <- function(model, testData = NULL) {
 #' When the intercept is ignored, the metric captures how well the model explains variation in shape, and ignores
 #' any variation in intercept explained by the model.
 #' @export
-#' @param model a splinetree tree object
+#' @param model a model created with splineTree()
 #' @param includeIntercept If FALSE and if the model was built with an intercept, the projected squared errors are computed
 #' while ignoring the intercept. If the model was built without an intercept, this parameter does not do anything.
 #' @return The percentage of variation in projected trajectory explained by the model. Computed as 1-SSE/SST. See description.
@@ -147,14 +147,14 @@ projectedR2 <- function(model, includeIntercept = FALSE) {
 
 
 
-#' Predict spline coefficients for a testset using a splinetree object
+#' Predict spline coefficients for a testset using a spline tree
 #'
 #' Returns a matrix of spline coefficients for each observation in the testset. If no testset is provided,
 #' returns predicted coefficients for the individuals in training set; in this case, the columns of the
 #' returned predictions correspond to the rows of the flattened training dataset (found in tree$parms$flat_data).
 #'
 #' importFrom treeClust rpart.predict.leaves
-#' @param tree A splinetree object
+#' @param tree A model created with splineTree()
 #' @param testset The dataset to predict coefficients for. Default is the flattened dataset used to make the tree.
 #' @export
 #' @return A matrix of spline coefficients. The dimension of the matrix is the degrees of freedom of
@@ -191,7 +191,7 @@ predictCoeffs <- function(tree, testset = tree$parms$flat_data) {
 #' can be used when you know that you wish to predict on the training data. It is faster because it takes advantage
 #' of the relationship between model$parms$flat_data and model$parms$data.
 #'
-#' @param model a splinetree object
+#' @param model a model created with splineTree()
 #' @return A vector of predicted responses where each element in the vector corresponds to a row in model$parms$data.
 #' @export
 #' @keywords internal
