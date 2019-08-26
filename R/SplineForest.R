@@ -76,7 +76,7 @@ splineForest <- function(splitFormula, tformula,
     flat_data <- flatten_predictors(idvar, data)
 
     results <- getBasisMat(yvar, tvar, idvar, data,
-        knots = NULL, df, degree, intercept, gridPoints, nGrid)
+        knots, df, degree, intercept, gridPoints, nGrid)
 
     basisMatrix <- results[[1]]
     innerKnots <- results[[2]]
@@ -107,7 +107,7 @@ splineForest <- function(splitFormula, tformula,
     ### data structures will not match later
     flat_data <- flat_data[complete.cases(Ydata),]
     Ydata <- as.matrix(Ydata)[complete.cases(Ydata),]
-    data <- data[data[[idvar]] %in% flat_data[[idvar]],]
+    data <- data.frame(data[data[[idvar]] %in% flat_data[[idvar]],])
 
 
     #### Now all forest computation happens with respect to

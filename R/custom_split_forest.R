@@ -21,8 +21,13 @@ splineforest_split <- function(y, wt, x, parms = NULL, continuous) {
     direction <- res[[2]]
   } else {
     # If not chosen as a split var, set goodness to be 0 so that it won't get chosen
-    goodness <- rep(0, length(x) - 1)
-    direction <- rep(-1, length(x) - 1)
+    if(continuous){
+      goodness <- rep(0, length(x) - 1)
+      direction <- rep(-1, length(x) - 1)
+    }else{
+      goodness <- rep(0, length(unique(x)) - 1)
+      direction <- rep(-1, length(unique(x)))
+    }
   }
   list(goodness = goodness, direction = direction)
 }
