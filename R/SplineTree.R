@@ -48,10 +48,10 @@ flatten_predictors <- function(idvar, data) {
     ## Assuming that the splitting explanatory
     ## variables are not varying with time
     people = unique(data[[idvar]])
-    X_data = t(sapply(people, function(p) data[which(data[[idvar]] ==
-        p), ][1, ]))
-    X_data2 = data.frame(apply(X_data, 2, unlist))
-    return(X_data2)
+    X_data = data %>%
+      group_by(get(idvar)) %>%
+      slice(1)
+    return(X_data)
 }
 
 #' Get the basis matrix to be used for this spline tree
