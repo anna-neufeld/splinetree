@@ -141,7 +141,7 @@ spline_split <- function(y, wt, x, parms = NULL, continuous) {
 
     # Putting categories in order by PC1 of average spline coefficients (multidimensional scaling to 1D from average vectors)
     for(i in 1:length(xUnique)){
-      Yscore[i,] <- colMeans(y[x == xUnique[i],], na.rm = TRUE)
+      Yscore[i,] <- colMeans(as.matrix(y[x == xUnique[i],]), na.rm = TRUE)
     }
     dir <- order(prcomp(Yscore)$x[,1]) # Linear combo of spline coefficients that explain the most variation
 
