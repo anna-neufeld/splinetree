@@ -51,7 +51,7 @@ flatten_predictors <- function(idvar, data) {
     X_data = data %>%
       group_by(get(idvar)) %>%
       slice(1)
-    return(as.data.frame(X_data))
+    return(data.frame(X_data))
 }
 
 #' Get the basis matrix to be used for this spline tree
