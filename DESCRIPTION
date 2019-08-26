@@ -3,7 +3,7 @@ Title: Longitudinal Regression Trees and Forests
 Version: 0.2.0
 Authors@R: c(person("Anna", "Neufeld", email = "aneufeld@uw.edu", role = c("aut", "cre")), person("Brianna", "Heggeseth", email = "bheggese@macalester.edu", role = c("aut","ths")))
 Description: Builds regression trees and random forests for longitudinal or functional data using a spline projection method. Implements and extends the work of Yu and Lambert (1999) <doi:10.1080/10618600.1999.10474847>. This method allows trees and forests to be built while considering either level and shape or only shape of response trajectories. 
-Depends: R (>= 3.5.0), rpart, nlme, splines
+Depends: R (>= 3.5.0), rpart, nlme, splines, dplyr
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
